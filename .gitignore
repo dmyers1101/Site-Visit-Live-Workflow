@@ -1,0 +1,28 @@
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+.venv/
+venv/
+*.pyc
+
+# Node
+node_modules/
+.next/
+.npm/
+
+# Build artifacts
+dist/
+build/
+coverage/
+
+# Local data
+*.log
+*.local
+
+# OS
+.DS_Store
+Thumbs.db
