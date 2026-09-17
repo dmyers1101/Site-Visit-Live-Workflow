@@ -29,8 +29,12 @@ This workspace coordinates:
 
 The first milestone is the foundation: secure setup, auth, and a clear handoff path before executing a live pipeline.
 
+For Phase 2, the intake library is a Google Drive Shared Folder, not a local folder. The first validation folder is:
+- https://drive.google.com/drive/folders/1VnKg4XG_sxp9PhA76OgatkAYGhR1sjmy?usp=drive_link
+
 See:
 - `docs/ARCHITECTURE.md`
 - `docs/SETUP.md`
 - `docs/AUTH.md`
 - `docs/OPERATIONS.md`
+- `docs/PHASE2_PART1_MINIMAL_IMPLEMENTATION_PLAN.md`

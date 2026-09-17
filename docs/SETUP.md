@@ -30,12 +30,22 @@ apps/live-workflow/
 └── .gitignore
 ```
 
+## Intake library setup
+
+The live app intake library is a Google Drive Shared Folder, not a local folder.
+
+For the first validation pass, use this shared folder:
+- https://drive.google.com/drive/folders/1VnKg4XG_sxp9PhA76OgatkAYGhR1sjmy?usp=drive_link
+
+This will be treated as the source-of-truth test library while the pipeline is being built.
+
 ## First steps
 
 1. verify this workspace is the active live path
-2. copy `.env.example` to `.env` and fill in real values
-3. confirm the Google Cloud project and service account
-4. validate that the environment can authenticate before file processing begins
+2. confirm access to the Google Drive shared folder above
+3. copy `.env.example` to `.env` and fill in real values
+4. confirm the Google Cloud project and service account
+5. validate that the environment can authenticate before file processing begins
 
 ## Validation checklist
 
