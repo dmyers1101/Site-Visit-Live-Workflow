@@ -97,7 +97,7 @@ memory limit, and the work directory is never cleaned. Use `--memory=8Gi
 ## Prompts are versioned governance artifacts
 
 `prompts/l1-extraction.md` (1.2.0), `l2-enrichment.md` (1.1.0),
-`l3-refinement.md` (1.1.0) are read from disk at runtime and are shipped in the
+`l3-refinement.md` (1.2.0) are read from disk at runtime and are shipped in the
 image by `COPY prompts ./prompts`. Changing a prompt means bumping its version
 and updating the validator and tests first. The layer boundaries are enforced in
 `src/site_visit_workflow/models.py`, not only in prompt text, because the pilot
