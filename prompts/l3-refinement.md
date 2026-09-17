@@ -1,6 +1,6 @@
 # L3 refinement prompt
 
-**Semantic version:** 1.1.0
+**Semantic version:** 1.2.0
 
 ## Purpose
 
@@ -43,6 +43,14 @@ section. Disagreement is reported via `disputed_prior_fields` instead of being
 overwritten. Input contract comes from `prompts/l2-enrichment.md`; governance
 from `prompts/prompt-governance.md`.
 
+**Changed in 1.2.0 (2026-09-17):** the full-library run
+`20260917T072151Z` had 2 of 16 assets rejected by the L3 validator with
+"responsible_party/urgency_window must be null for this status". The model had
+partial confidence and kept the single field it was sure of while declaring
+INSUFFICIENT_EVIDENCE. The coupling rule was already correct and the validator
+behaved correctly; the prompt simply did not say the rule is all-or-nothing.
+That is now explicit. No schema or validator change.
+
 ## Expected input JSON/text
 
 ```json
@@ -61,7 +69,11 @@ refinement_note. Copy source_asset_identifier and prior_layer_record_id
 exactly from the input; set prior_layer to "L2". Set refinement_status to
 REFINED only when the evidence supports both an owner class and an urgency
 window; otherwise use INSUFFICIENT_EVIDENCE and set responsible_party and
-urgency_window to null. responsible_party is one of in-house, vendor.
+urgency_window to null. This is all-or-nothing: if you can determine only one
+of the two, the status is INSUFFICIENT_EVIDENCE and you must still set BOTH
+fields to null. Do not keep the one you are confident about. Put what you did
+determine in refinement_note instead. A non-null responsible_party or
+urgency_window alongside INSUFFICIENT_EVIDENCE is rejected. responsible_party is one of in-house, vendor.
 urgency_window is one of immediate, this-week, this-month, routine.
 disputed_prior_fields is an array, possibly empty, whose members are drawn
 only from location, issue_description, suggested_filename, trade, area_type,

@@ -487,10 +487,28 @@ def await_transcription(
     )
     deadline = time.monotonic() + timeout_seconds
     delay = 5.0
+    # A 429 on the poll is a transient project-quota condition, not a failed
+    # transcription: the operation is still running server-side. Back off and
+    # keep polling rather than abandoning a job that may well succeed. Only a
+    # sustained 429 past the deadline is reported as an error.
+    quota_backoff = 15.0
     while True:
         try:
             operation = client.transport.operations_client.get_operation(operation_name)
         except GoogleAPICallError as error:
+            if getattr(error, "code", None) == 429 or "429" in str(error):
+                if time.monotonic() >= deadline:
+                    return {
+                        "done": False,
+                        "operation_name": operation_name,
+                        "error": (
+                            "Speech-to-Text quota (429) was still exhausted at the deadline; "
+                            "the operation may still be running. Re-run this asset later."
+                        ),
+                    }
+                time.sleep(min(quota_backoff, max(1.0, deadline - time.monotonic())))
+                quota_backoff = min(quota_backoff * 2, 120.0)
+                continue
             raise ExternalServiceError(
                 f"Operation poll failed for {operation_name}: {error}"
             ) from error
