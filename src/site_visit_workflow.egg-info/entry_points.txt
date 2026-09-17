@@ -1,0 +1,2 @@
+[console_scripts]
+site-visit = site_visit_workflow.cli:main

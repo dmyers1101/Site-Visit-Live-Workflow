@@ -1,50 +1,42 @@
-# Setup guide
+﻿# Setup guide
 
 ## Objective
 
-This file covers the first live setup step before the workflow can run.
+Prepare the local environment for the Phase 2 single-visit workflow without processing media until Drive access, prompts, and the human approval gate are complete.
 
-## Prerequisites
+## Required access and APIs
 
-- GitHub repo access
-- Google Cloud project and billing enabled
-- service account with required permissions
-- Python or Node available locally
-- working clone of this repo
+- Google Drive API, with access to the approved Shared Folder.
+- Cloud Storage API and a dedicated staging bucket/path.
+- Speech-to-Text v2 API, including BatchRecognize and the currently supported Chirp configuration.
+- Vertex AI API only when the L1 extraction prompt is explicitly wired and approved.
+- Google Sheets API for draft catalog rows only.
+- The dedicated service-account identity and resource-sharing procedure in [Site Visit workflow service account](RUNBOOKS/service-account-onboarding.md).
 
-## Repository structure
+## Local prerequisites
 
-```text
-apps/live-workflow/
-├── README.md
-├── .env.example
-├── docs/
-├── prompts/
-├── apps/
-├── services/
-├── libs/
-├── infra/
-├── scripts/
-├── data/
-├── tests/
-└── .gitignore
-```
+- Git and a clean working tree.
+- Google Cloud CLI authenticated to the intended project.
+- `ffprobe` and `ffmpeg` available on `PATH`.
+- A supported local runtime for the eventual workflow implementation.
+- A local `.env` copied from `.env.example`; keep it untracked.
 
-## First steps
+## Required environment configuration
 
-1. verify this workspace is the active live path
-2. copy `.env.example` to `.env` and fill in real values
-3. confirm the Google Cloud project and service account
-4. validate that the environment can authenticate before file processing begins
+Set the project, region, service account identity, GCS staging location, catalog sheet ID, and safe local staging/output locations. Do not commit values that reveal credentials, OAuth tokens, service-account keys, or media contents. Add `DRIVE_SHARED_FOLDER_ID`, `GCS_STAGING_BUCKET`, and a non-secret `CATALOG_SHEET_ID` when the implementation is introduced.
 
-## Validation checklist
+## Access validation (explicit operator action)
 
-Before moving to Phase 2, ensure:
-- this workspace is the active canonical path
-- GitHub is the source of truth for code and docs
-- the Google Cloud project and auth are validated
-- the folder layout is stable and easy to extend
+1. Confirm the active Git remote and intended branch.
+2. Complete [Drive HTTP 403 recovery](RUNBOOKS/drive-access-recovery.md) using the intended account and approved Shared Folder.
+3. Call Drive API `files.list` with `supportsAllDrives=true` and `includeItemsFromAllDrives=true` against the folder ID.
+4. List only immediate subfolders, select one, and list that folder's immediate media files.
+5. Do not proceed if access fails or returns an ambiguous scope.
 
-## Update path
+This repository has not performed a live cloud or Drive access test. The
+operator must identify scope, membership, and Shared Drive policy before any
+media operation. Do not substitute another folder when validation fails.
 
-When a new service is added, update this file with setup notes, env vars, and validation steps.
+## How to update this later
+
+Whenever an API, runtime, environment variable, or validation command changes, update this guide and the related GCP research note in the same pull request.

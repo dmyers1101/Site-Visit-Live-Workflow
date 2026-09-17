@@ -1,3 +1,17 @@
+Metadata-Version: 2.4
+Name: site-visit-workflow
+Version: 0.1.0
+Summary: Safety-first, single-visit Site Visit workflow foundation
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: google-api-python-client>=2.169.0
+Requires-Dist: google-auth>=2.40.0
+Requires-Dist: google-auth-httplib2>=0.2.0
+Requires-Dist: google-cloud-speech>=2.32.0
+Requires-Dist: google-cloud-storage>=2.19.0
+Provides-Extra: test
+Requires-Dist: pytest>=8.3; extra == "test"
+
 # Live Site Visit Workflow
 
 This is the active live-build workspace for the Site Visit App.
@@ -37,10 +51,8 @@ record.
 
 Install locally with `python -m pip install -e ".[test]"` (or install the
 listed runtime dependencies and `pytest` separately), copy `.env.example` to
-an untracked `.env`, then use `python -m site_visit_workflow.cli --help`.
-Importing the package and `python -m site_visit_workflow.cli config-check` do
-not contact Google. Run `list-visits` before `intake` to discover eligible
-immediate visit folders. Commands named `list-visits`, `intake`,
+an untracked `.env`, then use `site-visit --help`. Importing the package and
+`site-visit config-check` do not contact Google. Commands named `intake`,
 `stage-video`, `transcribe`, `rename-drive`, and `publish-catalog` are the
 only external-call boundaries.
 

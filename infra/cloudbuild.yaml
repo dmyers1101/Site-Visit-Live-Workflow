@@ -1,0 +1,8 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: ["build", "-f", "infra/Dockerfile", "-t", "${_IMAGE}", "."]
+images:
+  - "${_IMAGE}"
+
+# How to update this later: review build identity, image provenance, and
+# vulnerability scanning before changing the image publication flow.

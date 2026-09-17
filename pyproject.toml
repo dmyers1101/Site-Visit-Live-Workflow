@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "site-visit-workflow"
+version = "0.1.0"
+description = "Safety-first, single-visit Site Visit workflow foundation"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "google-api-python-client>=2.169.0",
+  "google-auth>=2.40.0",
+  "google-auth-httplib2>=0.2.0",
+  "google-cloud-speech>=2.32.0",
+  "google-cloud-storage>=2.19.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.3"]
+
+[project.scripts]
+site-visit = "site_visit_workflow.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
