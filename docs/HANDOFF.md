@@ -108,6 +108,29 @@ note. L2 adds trade, area type, severity (integer 1–4), recommended action. L3
 adds responsible party and urgency window and may **not** overwrite upstream
 values — it reports disagreement via `disputed_prior_fields`.
 
+## Current verified state (2026-09-17)
+
+The pipeline has been run end to end against the full test library.
+
+| Run | Scope | Result |
+| --- | --- | --- |
+| `20260917T071718Z` | 1 asset | All five gates passed |
+| `20260917T072151Z` | 16 assets | 13 catalogued, 3 needs-review |
+| `20260917T073809Z` | 16 assets | 9 failed on Speech 429 quota — fixed with backoff |
+| `20260917T075400Z` | 16 assets | **14 catalogued, 2 needs-review, 0 failed** |
+
+The catalog Sheet holds exactly 16 rows, one per video, after four runs. Every
+upsert in the final run was an UPDATE, so the idempotent row key works.
+
+The two needs-review assets are `IMG_3662.MOV` (empty transcript after one
+retry) and `IMG_3667.MOV` (L3 returned a prior-layer record id that did not
+match its L2 record, so the traceability validator rejected it). Both are
+guardrails firing correctly, not defects.
+
+**Do not re-run the full library twice within about 30 minutes** — that exceeds
+the project's Speech-to-Text quota. The poll loop now backs off rather than
+failing, but the underlying quota is still finite.
+
 ## Known open items
 
 - **`trade` vocabulary is closed at 8 values** and has real gaps: pest control,
