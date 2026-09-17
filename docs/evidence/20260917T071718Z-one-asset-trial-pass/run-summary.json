@@ -1,0 +1,66 @@
+{
+  "assets": [
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": true,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": "NOT_ATTEMPTED; suggested names are proposals only.",
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260917T071718Z/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260917T071718Z/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260917T071718Z/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw/transcription-record.json",
+      "index": 1,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 1,
+      "original_drive_name": "IMG_3651.MOV",
+      "source_asset_identifier": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260917T071718Z/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw/audio/attempt-0/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw.wav"
+    }
+  ],
+  "catalog_sheet_id": "158eA2K5FgGc4dQ43xHxdTuri-KOwPSuNn8qQqsasBy0",
+  "catalog_tab_name": "Catalog",
+  "drive_folder_id": "1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF",
+  "dry_run": false,
+  "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260917T071718Z",
+  "excluded_items": [
+    {
+      "drive_id": "1La2hU5Q5a1umoJ6IipQR8DM1k992aBl6",
+      "mime_type": "image/heif",
+      "name": "IMG_3663.HEIC",
+      "reason": "EXCLUDED_UNSUPPORTED_MIME_TYPE: only video/* sources can be transcribed.",
+      "web_view_link": "https://drive.google.com/file/d/1La2hU5Q5a1umoJ6IipQR8DM1k992aBl6/view?usp=drivesdk"
+    },
+    {
+      "drive_id": "1AS9KnGN1JojU2WN0IUfV4Uf1maWm4ILU",
+      "mime_type": "image/heif",
+      "name": "IMG_3660.HEIC",
+      "reason": "EXCLUDED_UNSUPPORTED_MIME_TYPE: only video/* sources can be transcribed.",
+      "web_view_link": "https://drive.google.com/file/d/1AS9KnGN1JojU2WN0IUfV4Uf1maWm4ILU/view?usp=drivesdk"
+    },
+    {
+      "drive_id": "1w7OBl4e5eiyQ4yBqRihISFTppzfO4fN9",
+      "mime_type": "image/heif",
+      "name": "IMG_3659.HEIC",
+      "reason": "EXCLUDED_UNSUPPORTED_MIME_TYPE: only video/* sources can be transcribed.",
+      "web_view_link": "https://drive.google.com/file/d/1w7OBl4e5eiyQ4yBqRihISFTppzfO4fN9/view?usp=drivesdk"
+    }
+  ],
+  "gate": "run-summary",
+  "manifest_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260917T071718Z/manifest.json",
+  "processing_boundary": "DIRECT_MEDIA_CHILDREN",
+  "run_id": "20260917T071718Z",
+  "runtime_service_account": "site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com",
+  "selected_asset_count": 1,
+  "speech_location": "us",
+  "status_counts": {
+    "CATALOGUED": 1
+  },
+  "vertex_location": "us-central1",
+  "vertex_model": "gemini-2.5-flash"
+}

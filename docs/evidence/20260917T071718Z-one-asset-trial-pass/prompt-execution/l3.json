@@ -1,0 +1,52 @@
+{
+  "completed_at": "2026-09-17T07:20:27.754861+00:00",
+  "error": null,
+  "layer": "L3",
+  "model_id": "gemini-2.5-flash",
+  "parsed_output": {
+    "disputed_prior_fields": [],
+    "prior_layer": "L2",
+    "prior_layer_record_id": "L2-1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw-1df150ce69639f71",
+    "refinement_note": "The transcript confirms the water dripping from the siding outside unit 2107. However, it does not provide sufficient information to determine the responsible party or a specific urgency window for the repair of the leak.",
+    "refinement_status": "INSUFFICIENT_EVIDENCE",
+    "responsible_party": null,
+    "source_asset_identifier": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+    "urgency_window": null
+  },
+  "prompt_file": "prompts/l3-refinement.md",
+  "prompt_sha256": "188840a59bf83610d65c3d100df8ae6b173b6763cb4a5826c5e87d284dd7410f",
+  "prompt_version": "1.1.0",
+  "raw_response": "{\"source_asset_identifier\": \"1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw\", \"prior_layer\": \"L2\", \"prior_layer_record_id\": \"L2-1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw-1df150ce69639f71\", \"refinement_status\": \"INSUFFICIENT_EVIDENCE\", \"responsible_party\": null, \"urgency_window\": null, \"disputed_prior_fields\": [], \"refinement_note\": \"The transcript confirms the water dripping from the siding outside unit 2107. However, it does not provide sufficient information to determine the responsible party or a specific urgency window for the repair of the leak.\"}",
+  "record_id": "L3-1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw-f150dfa6fc329365",
+  "request_payload": {
+    "l1": {
+      "confidence_note": "The location and issue of water dripping from siding with a potential leak are explicitly stated in the transcript.",
+      "issue_description": "Water dripping from siding, indicating a potential leak.",
+      "location": "outside unit 2107",
+      "suggested_filename": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw_unit_2107_siding_water_leak.mov"
+    },
+    "l2": {
+      "area_type": "exterior",
+      "enrichment_note": "Multiple maintenance issues identified in the transcript: uncleaned common hallway, water dripping from siding outside unit 2107, a damaged fence near an electrical room, and an AC condensation leak outside unit 1131. The primary enrichment focuses on the water leak from the siding.",
+      "enrichment_status": "ENRICHED",
+      "prior_layer": "L1",
+      "prior_layer_record_id": "L1-1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw-1dff013dd0dbbcb6",
+      "recommended_action": "Investigate and repair water leak from siding outside unit 2107.",
+      "severity": 3,
+      "source_asset_identifier": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+      "trade": "plumbing"
+    },
+    "l2_record_id": "L2-1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw-1df150ce69639f71",
+    "source_asset_identifier": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+    "transcript_text": "Alma hallway one. I would say this side of the building which is in the back here does not look great. It clearly has not been vacuumed or cleaned up in a little bit. Well, let's go and that that area was right outside 2117. That's that should have been cleaned out. Oh wow, there's some water dripping from the siding right here outside unit 2107. I wonder where the leak is from. So I'm going to go up there and and check that out in a second here, but that's where all this water is coming from. Continuing with hallway one on the other side here. The rock bed looks good. Nothing's kind of out of place. The mature plants look good, too. This parking lot looks good. There's the fence here needs to be fixed right in front of this electrical room. So that's probably some homeless activity here as you can see all the trash right here. So this should be fixed. Perhaps install a camera there if we can use one of the units internet. But there's definitely some activity there. Walking the hallway for units 1145 onward. All the ceiling and lights and all that looks looks clean here. There's some AC condensation leak, but nothing nothing too crazy. That should be cleaned out outside unit 1131. I think this is a Oh, excuse me. I'm just doing a property walk and was identifying some issues there. Oh, sorry, what? Oh, I was"
+  },
+  "sdk_version": "2.24.0",
+  "source_asset_identifier": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+  "started_at": "2026-09-17T07:20:21.365582+00:00",
+  "usage": {
+    "candidates_token_count": 180,
+    "prompt_token_count": 1216,
+    "total_token_count": 2375
+  },
+  "validated": true
+}
