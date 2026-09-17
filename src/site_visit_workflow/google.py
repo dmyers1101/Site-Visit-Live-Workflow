@@ -205,32 +205,67 @@ def speech_client_options(settings: Settings) -> Any:
 
 
 def submit_transcription(
-    settings: Settings, wav_path: Path, asset_id: str, attempt: int, object_name: str
+    settings: Settings,
+    wav_path: Path | None,
+    asset_id: str,
+    attempt: int,
+    object_name: str,
+    staged_wav_uri: str | None = None,
 ) -> TranscriptionRecord:
-    """Explicitly upload one WAV and submit one Chirp BatchRecognize operation."""
+    """Submit one Chirp BatchRecognize operation for one WAV.
+
+    Boundary: when `staged_wav_uri` is supplied the WAV is ALREADY in GCS and
+    this function uploads nothing. Re-uploading an existing object is an
+    overwrite, and an overwrite needs `storage.objects.delete`, which the
+    runtime identity deliberately does not hold (ADR 0005). A live trial run
+    caught exactly that double-write, so the staged URI is now the normal path
+    and the upload here is the compatibility fallback for the standalone
+    `transcribe` command.
+
+    `object_name` remains the single source of truth for the object's path. A
+    supplied `staged_wav_uri` must agree with it, so there is no second path
+    that can drift away from what Gate 3 actually staged.
+    """
     if attempt not in (0, 1):
         raise ValidationError("Only attempts 0 and 1 are permitted.")
-    if not wav_path.is_file():
-        raise ValidationError(f"WAV input does not exist: {wav_path}")
     if not object_name.endswith(".wav") or asset_id not in object_name:
         raise ValidationError("GCS object must be a clearly named .wav path containing the Drive asset ID.")
+    expected_uri = gcs_uri(settings.gcs_staging_bucket, object_name)
+    if staged_wav_uri is not None and staged_wav_uri != expected_uri:
+        raise ValidationError(
+            "Staged WAV URI does not match the computed object path. "
+            f"Staged: {staged_wav_uri}. Expected: {expected_uri}."
+        )
+    if staged_wav_uri is None and (wav_path is None or not wav_path.is_file()):
+        raise ValidationError(f"WAV input does not exist: {wav_path}")
     try:
-        from google.api_core.exceptions import GoogleAPICallError
+        from google.api_core.exceptions import GoogleAPICallError, PreconditionFailed
         from google.cloud import speech_v2, storage
         from google.cloud.speech_v2.types import cloud_speech
     except ImportError as error:
         raise ExternalServiceError("Speech and Storage dependencies are not installed.") from error
 
     credentials = runtime_credentials(settings)
-    wav_uri = gcs_uri(settings.gcs_staging_bucket, object_name)
+    wav_uri = expected_uri
     # Run-scoped so a second run of the same asset writes beside the first
     # instead of colliding with objects this identity cannot delete.
     output_uri = gcs_uri(settings.gcs_staging_bucket, speech_output_prefix(settings, asset_id, attempt))
     try:
-        bucket = storage.Client(project=settings.project_id, credentials=credentials).bucket(
-            settings.gcs_staging_bucket
-        )
-        bucket.blob(object_name).upload_from_filename(str(wav_path), content_type="audio/wav")
+        if staged_wav_uri is None:
+            # Compatibility path only. `if_generation_match=0` makes a collision
+            # a loud failure rather than a silent overwrite.
+            bucket = storage.Client(project=settings.project_id, credentials=credentials).bucket(
+                settings.gcs_staging_bucket
+            )
+            try:
+                bucket.blob(object_name).upload_from_filename(
+                    str(wav_path), content_type="audio/wav", if_generation_match=0
+                )
+            except PreconditionFailed as error:
+                raise ValidationError(
+                    f"Refusing to overwrite an existing staged WAV: {wav_uri}. "
+                    "Pass the staged URI instead of re-uploading, or use a fresh RUN_ID."
+                ) from error
         client = speech_v2.SpeechClient(
             credentials=credentials, client_options=speech_client_options(settings)
         )
