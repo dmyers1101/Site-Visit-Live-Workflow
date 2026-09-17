@@ -157,7 +157,14 @@ def cmd_transcribe(args: argparse.Namespace) -> None:
         required=("GOOGLE_CLOUD_PROJECT", "GCS_STAGING_BUCKET")
     )
     try:
-        record = submit_transcription(settings, args.wav, args.asset_id, args.attempt, args.gcs_object)
+        record = submit_transcription(
+            settings,
+            args.wav,
+            args.asset_id,
+            args.attempt,
+            args.gcs_object,
+            staged_wav_uri=getattr(args, "staged_wav_uri", None),
+        )
     except ExternalServiceError as error:
         failed = TranscriptionRecord(
             source_asset_identifier=args.asset_id,
@@ -347,16 +354,30 @@ def _gate3_transcribe(
     asset: DriveMediaFile,
     wav_path: Path,
     poll_timeout: int,
+    staged_wav_uri: str,
 ) -> dict[str, Any]:
     """Submit one BatchRecognize per WAV, poll it, and apply the empty-transcript policy.
 
     An empty transcript is retried exactly once. A second empty result is
     NEEDS_REVIEW: the extraction path stops and no finding is fabricated.
+
+    Boundary: each attempt's WAV object is written EXACTLY ONCE. Attempt 0
+    reuses the object the caller already staged; the retry stages its own
+    distinct attempt-1 object. `submit_transcription` is always given the
+    staged URI so it never re-uploads - a re-upload is an overwrite, and the
+    identity has no GCS delete permission by design.
     """
     attempts: list[dict[str, Any]] = []
     for attempt in (0, 1):
         object_name = wav_object_name(settings, asset.drive_id, attempt)
-        record = submit_transcription(settings, wav_path, asset.drive_id, attempt, object_name)
+        attempt_uri = (
+            staged_wav_uri
+            if attempt == 0
+            else storage.upload_file(wav_path, object_name, "audio/wav")
+        )
+        record = submit_transcription(
+            settings, None, asset.drive_id, attempt, object_name, staged_wav_uri=attempt_uri
+        )
         operation = await_transcription(settings, record.operation_name, timeout_seconds=poll_timeout)
         entry: dict[str, Any] = {
             "attempt": attempt,
@@ -525,8 +546,10 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
                 _emit(summary)
                 continue
 
+            # The attempt-0 WAV was staged above and is reused as-is; Gate 3
+            # must not write that object a second time.
             transcription = _gate3_transcribe(
-                settings, storage, asset, wav_path, args.poll_timeout_seconds
+                settings, storage, asset, wav_path, args.poll_timeout_seconds, wav_uri
             )
             transcript = transcription["transcript_text"]
             final = transcription["final"]
@@ -716,6 +739,14 @@ def parser() -> argparse.ArgumentParser:
     transcribe.add_argument("--wav", required=True, type=_path)
     transcribe.add_argument("--attempt", required=True, type=int, choices=(0, 1))
     transcribe.add_argument("--gcs-object", required=True)
+    transcribe.add_argument(
+        "--staged-wav-uri",
+        default=None,
+        help=(
+            "gs:// URI of a WAV already staged in GCS. Supplying it skips the upload entirely; "
+            "without it the WAV is uploaded once and a collision fails rather than overwriting."
+        ),
+    )
     transcribe.add_argument("--output", required=True, type=_path)
     transcribe.set_defaults(func=cmd_transcribe)
 
