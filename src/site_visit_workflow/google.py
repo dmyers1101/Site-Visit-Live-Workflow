@@ -88,6 +88,18 @@ class DriveGateway:
             for item in self._children(self._shared_folder_id, folder_only=True)
         ]
 
+    def list_immediate_children(self, parent_id: str | None = None) -> list[dict[str, Any]]:
+        """Return metadata for every immediate child, without filtering by type."""
+        return [
+            {
+                "name": item["name"],
+                "drive_id": item["id"],
+                "mime_type": item["mimeType"],
+                "web_view_link": item.get("webViewLink"),
+            }
+            for item in self._children(parent_id or self._shared_folder_id, folder_only=False)
+        ]
+
     def list_immediate_videos(self, visit_id: str) -> list[DriveMediaFile]:
         return [
             DriveMediaFile(

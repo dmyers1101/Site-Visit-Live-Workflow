@@ -73,6 +73,25 @@ def cmd_list_visits(_: argparse.Namespace) -> None:
     )
 
 
+def cmd_list_folder_children(_: argparse.Namespace) -> None:
+    """Read-only: list every immediate child of the configured Drive folder."""
+    settings = Settings.from_environment(
+        required=("GOOGLE_CLOUD_PROJECT", "DRIVE_SHARED_FOLDER_ID")
+    )
+    children = DriveGateway.from_settings(settings).list_immediate_children()
+    print(
+        json.dumps(
+            {
+                "folder_id": settings.drive_shared_folder_id,
+                "runtime_service_account": settings.runtime_service_account,
+                "immediate_child_count": len(children),
+                "immediate_children": children,
+            },
+            indent=2,
+        )
+    )
+
+
 def cmd_intake(args: argparse.Namespace) -> None:
     settings = Settings.from_environment(
         required=("GOOGLE_CLOUD_PROJECT", "DRIVE_SHARED_FOLDER_ID")
@@ -276,6 +295,10 @@ def parser() -> argparse.ArgumentParser:
     )
     commands = root.add_subparsers(dest="command", required=True)
     commands.add_parser("config-check").set_defaults(func=cmd_config_check)
+    commands.add_parser(
+        "list-folder-children",
+        help="Read-only: list every immediate child of the configured Drive folder.",
+    ).set_defaults(func=cmd_list_folder_children)
     commands.add_parser(
         "list-visits",
         help="Explicitly list only immediate visit folders in the configured Drive folder.",
