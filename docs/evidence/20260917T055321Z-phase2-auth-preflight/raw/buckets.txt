@@ -1,0 +1,3 @@
+NAME                       LOCATION  STORAGE_CLASS
+shir-sitevisit-pilot       US
+shir-sitevisit_cloudbuild  US

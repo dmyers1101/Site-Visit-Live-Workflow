@@ -1,0 +1,66 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  annotations:
+    run.googleapis.com/client-name: gcloud
+    run.googleapis.com/client-version: 578.0.0
+    run.googleapis.com/creator: dmyers@shircapital.com
+    run.googleapis.com/lastModifier: dmyers@shircapital.com
+    run.googleapis.com/operation-id: 0d4fd0d3-9b76-434c-ac86-f78217fdd92b
+  creationTimestamp: '2026-09-17T01:52:24.648218Z'
+  generation: 4
+  labels:
+    cloud.googleapis.com/location: us-central1
+    run.googleapis.com/lastUpdatedTime: '2026-09-17T04:35:44.683362Z'
+  name: site-visit-workflow
+  namespace: '847827326811'
+  resourceVersion: AAZbplt71J0
+  selfLink: /apis/run.googleapis.com/v1/namespaces/847827326811/jobs/site-visit-workflow
+  uid: 391bf9f0-a6b3-4144-ae24-d6fddb3540d4
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/client-name: gcloud
+        run.googleapis.com/client-version: 578.0.0
+        run.googleapis.com/execution-environment: gen2
+      labels:
+        client.knative.dev/nonce: fah_pig_hej
+    spec:
+      parallelism: 1
+      taskCount: 1
+      template:
+        spec:
+          containers:
+          - args:
+            - list-folder-children
+            command:
+            - site-visit
+            env:
+            - name: SITE_VISIT_ENVIRONMENT
+              value: deployed
+            - name: GOOGLE_CLOUD_PROJECT
+              value: shir-sitevisit
+            - name: DRIVE_SHARED_FOLDER_ID
+              value: 1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF
+            - name: SITE_VISIT_RUNTIME_SERVICE_ACCOUNT
+              value: site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com
+            image: us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit:direct-sa-20260916-r3
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 512Mi
+          maxRetries: 0
+          serviceAccountName: site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com
+          timeoutSeconds: '180'
+status:
+  conditions:
+  - status: 'True'
+    type: Ready
+  executionCount: 3
+  latestCreatedExecution:
+    completionStatus: EXECUTION_SUCCEEDED
+    completionTimestamp: '2026-09-17T04:38:36.545884Z'
+    creationTimestamp: '2026-09-17T04:36:15.628858Z'
+    name: site-visit-workflow-vrrr2
+  observedGeneration: 4

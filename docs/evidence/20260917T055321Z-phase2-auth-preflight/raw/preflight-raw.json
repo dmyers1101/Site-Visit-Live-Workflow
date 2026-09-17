@@ -1,0 +1,226 @@
+{
+  "preflight_version": "1.0.0",
+  "read_only": true,
+  "configured_folder_id": "1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF",
+  "configured_project": "shir-sitevisit",
+  "configured_region": "us-central1",
+  "runtime_environment": {
+    "python_version": "3.11.16",
+    "platform": "Linux-6.9.12-x86_64-with-glibc2.41",
+    "package_versions": {
+      "google-api-python-client": "2.200.0",
+      "google-auth": "2.58.0",
+      "google-cloud-speech": "2.40.0",
+      "google-cloud-storage": "3.14.1",
+      "google-genai": "2.24.0"
+    },
+    "binaries": {
+      "ffmpeg": {
+        "available": true,
+        "path": "/usr/bin/ffmpeg",
+        "version": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers"
+      },
+      "ffprobe": {
+        "available": true,
+        "path": "/usr/bin/ffprobe",
+        "version": "ffprobe version 7.1.5-0+deb13u1 Copyright (c) 2007-2026 the FFmpeg developers"
+      }
+    }
+  },
+  "identity": {
+    "resolved": true,
+    "service_account_email": "site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com",
+    "matches_designated_identity": true,
+    "designated_identity": "site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com",
+    "credential_class": "Credentials",
+    "scopes": [
+      "https://www.googleapis.com/auth/drive",
+      "https://www.googleapis.com/auth/devstorage.read_write",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/spreadsheets"
+    ],
+    "quota_project_id": null
+  },
+  "drive": {
+    "folder_id": "1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF",
+    "build_service": {
+      "ok": true
+    },
+    "folder_get": {
+      "ok": true,
+      "folder": {
+        "id": "1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF",
+        "name": "2026-08 Executive - Parth Vaidya",
+        "mimeType": "application/vnd.google-apps.folder",
+        "trashed": false,
+        "parents": [
+          "17ibkbQiS77RDz06GyMK_zIWFRFye5RFy"
+        ],
+        "webViewLink": "https://drive.google.com/drive/folders/1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF",
+        "createdTime": "2026-08-04T16:12:15.324Z",
+        "modifiedTime": "2026-08-04T16:12:15.324Z",
+        "driveId": "0AGzXWk46WhgyUk9PVA",
+        "capabilities": {
+          "canAccessViaGenAi": true,
+          "canAddChildren": true,
+          "canAddFolderFromAnotherDrive": false,
+          "canChangeCopyRequiresWriterPermission": false,
+          "canChangeItemDownloadRestriction": false,
+          "canChangeSecurityUpdateEnabled": false,
+          "canChangeViewersCanCopyContent": false,
+          "canComment": true,
+          "canCopy": true,
+          "canDelete": false,
+          "canDeleteChildren": false,
+          "canDisableInheritedPermissions": false,
+          "canDownload": true,
+          "canEdit": true,
+          "canEnableInheritedPermissions": false,
+          "canListChildren": true,
+          "canModifyContent": true,
+          "canModifyContentRestriction": false,
+          "canModifyEditorContentRestriction": false,
+          "canModifyOwnerContentRestriction": false,
+          "canModifyLabels": false,
+          "canMoveChildrenOutOfTeamDrive": false,
+          "canMoveChildrenOutOfDrive": false,
+          "canMoveChildrenWithinTeamDrive": false,
+          "canMoveChildrenWithinDrive": false,
+          "canMoveItemIntoTeamDrive": false,
+          "canMoveItemOutOfTeamDrive": false,
+          "canMoveItemOutOfDrive": false,
+          "canMoveItemWithinTeamDrive": false,
+          "canMoveItemWithinDrive": false,
+          "canMoveTeamDriveItem": false,
+          "canReadLabels": false,
+          "canReadRevisions": true,
+          "canReadTeamDrive": false,
+          "canReadDrive": false,
+          "canRemoveChildren": false,
+          "canRemoveContentRestriction": false,
+          "canRename": true,
+          "canShare": false,
+          "canTrash": false,
+          "canTrashChildren": false,
+          "canUntrash": true,
+          "canStartApproval": false
+        }
+      }
+    },
+    "shared_drive": {
+      "ok": false,
+      "in_shared_drive": true,
+      "drive_id": "0AGzXWk46WhgyUk9PVA",
+      "error": {
+        "error_type": "HttpError",
+        "http_status": 404,
+        "details": "[{'message': 'Shared drive not found: 0AGzXWk46WhgyUk9PVA', 'domain': 'global', 'reason': 'notFound', 'location': 'driveId', 'locationType': 'parameter'}]",
+        "message": "<HttpError 404 when requesting https://www.googleapis.com/drive/v3/drives/0AGzXWk46WhgyUk9PVA?fields=id%2Cname%2Ccapabilities%2Crestrictions%2CcreatedTime&alt=json returned \"Shared drive not found: 0AGzXWk46WhgyUk9PVA\". Details: \"[{'message': 'Shared drive not found: 0AGzXWk46WhgyUk9PVA', 'domain': 'global', 'reason': 'notFound', 'location': 'driveId', 'locationType': 'parameter'}]\">"
+      }
+    },
+    "child_folders": {
+      "ok": true,
+      "count": 0,
+      "truncated": false,
+      "mime_types": [],
+      "sample_items": []
+    },
+    "child_files": {
+      "ok": true,
+      "count": 19,
+      "truncated": false,
+      "mime_types": [
+        "image/heif",
+        "video/quicktime"
+      ],
+      "sample_items": [
+        {
+          "driveId": "0AGzXWk46WhgyUk9PVA",
+          "mimeType": "video/quicktime",
+          "parents": [
+            "1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF"
+          ],
+          "webViewLink": "https://drive.google.com/file/d/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw/view?usp=drivesdk",
+          "size": "255516574",
+          "id": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+          "name": "IMG_3651.MOV",
+          "trashed": false,
+          "modifiedTime": "2026-09-15T21:49:49.392Z",
+          "capabilities": {
+            "canDownload": true,
+            "canReadDrive": false,
+            "canRename": true,
+            "canEdit": true,
+            "canDelete": false
+          }
+        },
+        {
+          "driveId": "0AGzXWk46WhgyUk9PVA",
+          "mimeType": "video/quicktime",
+          "parents": [
+            "1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF"
+          ],
+          "webViewLink": "https://drive.google.com/file/d/1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5/view?usp=drivesdk",
+          "size": "246619179",
+          "id": "1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5",
+          "name": "IMG_3650.MOV",
+          "trashed": false,
+          "modifiedTime": "2026-09-15T21:49:04.883Z",
+          "capabilities": {
+            "canDownload": true,
+            "canReadDrive": false,
+            "canRename": true,
+            "canEdit": true,
+            "canDelete": false
+          }
+        },
+        {
+          "driveId": "0AGzXWk46WhgyUk9PVA",
+          "mimeType": "video/quicktime",
+          "parents": [
+            "1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF"
+          ],
+          "webViewLink": "https://drive.google.com/file/d/19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km/view?usp=drivesdk",
+          "size": "237079385",
+          "id": "19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km",
+          "name": "IMG_3653.MOV",
+          "trashed": false,
+          "modifiedTime": "2026-09-15T21:47:46.906Z",
+          "capabilities": {
+            "canDownload": true,
+            "canReadDrive": false,
+            "canRename": true,
+            "canEdit": true,
+            "canDelete": false
+          }
+        }
+      ]
+    },
+    "capability_probe": {
+      "probed_file_name": "IMG_3651.MOV",
+      "probed_file_id": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+      "can_download": true,
+      "can_read_drive": false,
+      "can_rename": true,
+      "can_edit": true,
+      "can_delete": false,
+      "note": "Capability metadata only. No download, rename, or edit was performed."
+    }
+  },
+  "cloud_storage": {
+    "configured": true,
+    "bucket": "shir-sitevisit-staging",
+    "error": {
+      "error_type": "Forbidden",
+      "message": "403 GET https://storage.googleapis.com/storage/v1/b/shir-sitevisit-staging?fields=name&prettyPrint=false: site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com does not have storage.buckets.get access to the Google Cloud Storage bucket. Permission 'storage.buckets.get' denied on resource '//storage.googleapis.com/projects/_/buckets/shir-sitevisit-staging' (or it may not exist)."
+    }
+  },
+  "sheets": {
+    "configured": false,
+    "blocking_gap": "No CATALOG_SHEET_ID is configured for the deployed runtime."
+  },
+  "catalog_sheet_creation": {
+    "attempted": false,
+    "reason": "No Shared Drive ID resolved; refusing to create in SA My Drive."
+  }
+}
