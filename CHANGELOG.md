@@ -16,6 +16,37 @@ Google Sheet; edits permitted; **no deletions**.
 
 ### Added
 
+- **`docs/RUNBOOKS/full-pipeline.md`** — end-to-end `process-folder` runbook:
+  the five gates, the cheap-trial ladder, what to check after a run, and a
+  failure-handling table.
+
+### Changed
+
+- **Operator documentation rewritten for the cloud-native workflow.**
+  `README.md`, `docs/SETUP.md`, `docs/DEPLOYMENT.md`, `docs/OPERATIONS.md`,
+  `docs/AUTH.md`, `docs/ARCHITECTURE.md` and the Drive-intake, transcription
+  and catalog runbooks now describe the deployed Cloud Run Job path (Drive ->
+  container -> GCS, media never on a workstation), carry the real project,
+  folder, bucket, Sheet, model and region values, document the deployer vs
+  runtime identity split, and state the no-delete constraint and its
+  operational consequences. Superseded wording is marked in place rather than
+  removed.
+- **`docs/DEPLOYMENT.md` Cloud Run sizing.** The documented configuration moves
+  from 1Gi / 600s to `--memory=8Gi --cpu=2 --task-timeout=3600s`: `/tmp` is an
+  in-memory tmpfs that counts against `--memory`, and the never-cleaned work
+  directory accumulates every staged source and WAV for the life of the
+  execution, so the old sizing would OOM or time out on a 16-video run.
+
+### Known gaps
+
+- **[OPEN] `infra/Dockerfile` does not copy `prompts/` into the image**, and the
+  prompt files are not declared as package data. `process-folder` reads
+  `prompts/l1-extraction.md`, `l2-enrichment.md` and `l3-refinement.md` at
+  runtime and treats a missing file as a hard stop, so Gate 4 will fail on
+  every asset until `COPY prompts ./prompts` is added and the image is rebuilt.
+  Gates 1-3 and `--dry-run` runs are unaffected. Recorded in
+  `docs/DEPLOYMENT.md` and `docs/RUNBOOKS/full-pipeline.md`.
+
 - **Phase 2 authorization preflight evidence** under
   `docs/evidence/20260917T055321Z-phase2-auth-preflight/` — authorization
   matrix, command ledger, go/no-go, source map, and raw outputs. Overall
