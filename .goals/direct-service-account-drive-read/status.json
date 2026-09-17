@@ -1,0 +1,16 @@
+{
+  "goal_id": "direct-service-account-drive-read",
+  "status": "blocked",
+  "iteration": 1,
+  "builder_model": "GPT:5.6-Luna",
+  "inspector_model": "GPT:5.6-Sol",
+  "initial_sha": "00fe644",
+  "created_at": "2026-09-16T20:41:15-05:00",
+  "history": [
+    {
+      "iteration": 1,
+      "verdict": "BLOCKED",
+      "summary": "Cloud Build permission denied; direct job deployment could not find an image, so no Drive execution was started."
+    }
+  ]
+}

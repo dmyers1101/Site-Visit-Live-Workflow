@@ -1,0 +1,69 @@
+Metadata-Version: 2.4
+Name: site-visit-workflow
+Version: 0.1.0
+Summary: Safety-first, single-visit Site Visit workflow foundation
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: google-api-python-client>=2.169.0
+Requires-Dist: google-auth>=2.40.0
+Requires-Dist: google-auth-httplib2>=0.2.0
+Requires-Dist: google-cloud-speech>=2.32.0
+Requires-Dist: google-cloud-storage>=2.19.0
+Provides-Extra: test
+Requires-Dist: pytest>=8.3; extra == "test"
+
+# Live Site Visit Workflow
+
+This is the active live-build workspace for the Site Visit App.
+
+It is intentionally separate from `pilot/` and from the frozen `_design/` record. `pilot/` remains a reference sandbox only; the live workflow is the operational path for current work.
+
+## Purpose
+
+This workspace coordinates:
+- GitHub as the live source of truth across devices
+- Google Cloud as the processing platform for transcription and downstream output
+- human review checkpoints before publishing generated work
+
+## Phase plan
+
+1. Foundation / setup / authorization
+2. One Drive Shared Folder test visit: manifest, one video, draft catalog, review
+3. Auto report generation
+4. Hardening / handoff
+
+## Working boundaries
+
+- `pilot/` is not the active build path
+- `prompts/` holds prompt templates, not runtime code
+- `docs/` is the canonical operating record
+- each service/app should include a README and a short update note
+
+## First live milestone
+
+Phase 2 starts with one configured Google Drive Shared Folder test visit. It
+discovers only immediate visit subfolders, selects exactly one, creates a
+manifest before one video is processed, and stops at human review. It never
+renames Drive media or publishes a catalog row without an explicit approval
+record.
+
+## Python CLI
+
+Install locally with `python -m pip install -e ".[test]"` (or install the
+listed runtime dependencies and `pytest` separately), copy `.env.example` to
+an untracked `.env`, then use `site-visit --help`. Importing the package and
+`site-visit config-check` do not contact Google. Commands named `intake`,
+`stage-video`, `transcribe`, `rename-drive`, and `publish-catalog` are the
+only external-call boundaries.
+
+See:
+- `docs/ARCHITECTURE.md`
+- `docs/SETUP.md`
+- `docs/AUTH.md`
+- `docs/OPERATIONS.md`
+- `docs/DEPLOYMENT.md`
+
+## How to update this later
+
+Keep the CLI command list, safety boundaries, and phase wording synchronized
+with `docs/ARCHITECTURE.md`, the runbooks, and prompt versions.
