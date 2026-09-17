@@ -12,8 +12,11 @@ dependencies = [
   "google-api-python-client>=2.169.0",
   "google-auth>=2.40.0",
   "google-auth-httplib2>=0.2.0",
-  "google-cloud-speech>=2.32.0",
-  "google-cloud-storage>=2.19.0",
+  "google-cloud-speech>=2.40.0",
+  "google-cloud-storage>=3.13.1",
+  # google-genai 2.x is the SDK surface extraction.py is written against
+  # (Client(vertexai=True), types.GenerateContentConfig, response_schema).
+  "google-genai>=2.24.0",
 ]
 
 [project.optional-dependencies]

@@ -129,11 +129,29 @@ def evaluate_transcript(text: str, attempt: int) -> EmptyTranscriptDecision:
     return EmptyTranscriptDecision.RETRY_ONCE if attempt == 0 else EmptyTranscriptDecision.NEEDS_REVIEW
 
 
+# The L1 boundary in prompts/claude-overnight-phase2-trial.md types `location`
+# and `issue_description` as "string or null": a genuinely location-less clip is
+# a real outcome on this corpus, not a validation failure. The identifier, the
+# proposed filename, and the confidence note stay required and non-empty.
+L1_NULLABLE_FIELDS = frozenset({"location", "issue_description"})
+
+
+def _required_or_null(value: Any, label: str) -> str | None:
+    """Accept an explicit null or a non-empty string; an empty string is neither."""
+    if value is None:
+        return None
+    if not isinstance(value, str) or not value.strip():
+        raise ValidationError(
+            f"{label} must be a non-empty string or an explicit null, not an empty value."
+        )
+    return value.strip()
+
+
 @dataclass(frozen=True)
 class L1Extraction:
     source_asset_identifier: str
-    location: str
-    issue_description: str
+    location: str | None
+    issue_description: str | None
     suggested_filename: str
     confidence_note: str
 
@@ -143,11 +161,216 @@ class L1Extraction:
             raise ValidationError(
                 "L1 result must contain exactly: " + ", ".join(sorted(L1_FIELDS)) + "."
             )
-        for key in L1_FIELDS:
-            _required(payload[key], f"L1 field {key}")
-        if payload["source_asset_identifier"] != expected_source_id:
+        normalized = dict(payload)
+        for key in sorted(L1_FIELDS):
+            if key in L1_NULLABLE_FIELDS:
+                normalized[key] = _required_or_null(payload[key], f"L1 field {key}")
+            else:
+                normalized[key] = _required(payload[key], f"L1 field {key}")
+        if normalized["source_asset_identifier"] != expected_source_id:
             raise ValidationError("L1 source_asset_identifier does not match the selected Drive asset.")
+        return cls(**normalized)
+
+
+L2_FIELDS = frozenset(
+    {
+        "source_asset_identifier",
+        "prior_layer",
+        "prior_layer_record_id",
+        "enrichment_status",
+        "trade",
+        "area_type",
+        "severity",
+        "recommended_action",
+        "enrichment_note",
+    }
+)
+L2_CONDITIONAL_FIELDS = ("trade", "area_type", "severity", "recommended_action")
+L2_TRADES = ("plumbing", "electrical", "hvac", "landscaping", "cleaning", "general-maintenance", "safety", "structural")
+L2_AREA_TYPES = ("unit", "common-interior", "exterior", "amenity")
+# Per prompts/l2-enrichment.md v1.0.0 severity is the pilot's INTEGER 1-4 scale:
+# 1 urgent/safety, 2 high, 3 medium, 4 low/cosmetic. A string form ("high",
+# "2", "urgent-safety") is a validation failure, never something to coerce.
+L2_SEVERITIES = (1, 2, 3, 4)
+L2_SEVERITY_MEANINGS = {1: "urgent/safety", 2: "high", 3: "medium", 4: "low/cosmetic"}
+L2_STATUSES = ("ENRICHED", "NO_FINDING", "INSUFFICIENT_EVIDENCE")
+
+L3_FIELDS = frozenset(
+    {
+        "source_asset_identifier",
+        "prior_layer",
+        "prior_layer_record_id",
+        "refinement_status",
+        "responsible_party",
+        "urgency_window",
+        "disputed_prior_fields",
+        "refinement_note",
+    }
+)
+L3_CONDITIONAL_FIELDS = ("responsible_party", "urgency_window")
+L3_RESPONSIBLE_PARTIES = ("in-house", "vendor")
+L3_URGENCY_WINDOWS = ("immediate", "this-week", "this-month", "routine")
+L3_STATUSES = ("REFINED", "INSUFFICIENT_EVIDENCE")
+L3_DISPUTABLE_FIELDS = (
+    "location",
+    "issue_description",
+    "suggested_filename",
+    "trade",
+    "area_type",
+    "severity",
+    "recommended_action",
+)
+
+
+CODE_FENCE_MARKER = "```"
+
+
+def parse_strict_json(raw: str, layer: str) -> dict[str, Any]:
+    """Parse one layer response as strict JSON, with the pilot failure modes rejected.
+
+    The pilot returned every response inside a ```json fence, and this parser
+    deliberately does NOT strip one: a fence means the model ignored the
+    response_mime_type contract, and that is a validation failure to record,
+    not a formatting quirk to paper over.
+    """
+    import json as _json
+
+    if not isinstance(raw, str) or not raw.strip():
+        raise ValidationError(f"{layer} response was empty.")
+    if CODE_FENCE_MARKER in raw:
+        raise ValidationError(
+            f"{layer} response contained a Markdown code fence; strict JSON only is required."
+        )
+    try:
+        payload = _json.loads(raw)
+    except ValueError as error:
+        raise ValidationError(f"{layer} response was not valid JSON: {error}") from error
+    if not isinstance(payload, dict):
+        raise ValidationError(f"{layer} response must be a single JSON object.")
+    return payload
+
+
+def _exact_keys(payload: dict[str, Any], allowed: frozenset[str], layer: str) -> None:
+    """The layer objects are closed: an extra or missing key is a rejection, not a warning."""
+    if not isinstance(payload, dict) or set(payload) != allowed:
+        raise ValidationError(
+            f"{layer} result must contain exactly: " + ", ".join(sorted(allowed)) + "."
+        )
+
+
+def _enum(value: Any, allowed: tuple[str, ...], label: str) -> str:
+    if not isinstance(value, str) or value not in allowed:
+        raise ValidationError(f"{label} must be one of: " + ", ".join(allowed) + ".")
+    return value
+
+
+def _int_enum(value: Any, allowed: tuple[int, ...], label: str) -> int:
+    """Strictly an int from the allowed set.
+
+    `isinstance(True, int)` is True and `True == 1`, so booleans are excluded
+    explicitly. A string form is rejected outright rather than coerced: the
+    prompt file states severity is an integer enum and never a string.
+    """
+    if isinstance(value, bool) or not isinstance(value, int) or value not in allowed:
+        raise ValidationError(
+            f"{label} must be the integer: " + ", ".join(str(item) for item in allowed) + "."
+        )
+    return value
+
+
+def _gated_nullable(payload: dict[str, Any], fields: tuple[str, ...], populated: bool, layer: str) -> None:
+    """Populated statuses require every conditional field; downgraded statuses require explicit nulls."""
+    for name in fields:
+        if populated and payload[name] is None:
+            raise ValidationError(f"{layer} field {name} cannot be null for this status.")
+        if not populated and payload[name] is not None:
+            raise ValidationError(f"{layer} field {name} must be null for this status.")
+
+
+@dataclass(frozen=True)
+class L2Enrichment:
+    source_asset_identifier: str
+    prior_layer: str
+    prior_layer_record_id: str
+    enrichment_status: str
+    trade: str | None
+    area_type: str | None
+    severity: int | None
+    recommended_action: str | None
+    enrichment_note: str
+
+    @classmethod
+    def from_external_result(
+        cls,
+        payload: dict[str, Any],
+        expected_source_id: str,
+        expected_prior_record_id: str,
+        evidence_supports_finding: bool = True,
+    ) -> "L2Enrichment":
+        _exact_keys(payload, L2_FIELDS, "L2")
+        if payload["source_asset_identifier"] != expected_source_id:
+            raise ValidationError("L2 source_asset_identifier does not match the selected Drive asset.")
+        if payload["prior_layer"] != "L1":
+            raise ValidationError("L2 prior_layer must be the literal L1.")
+        if payload["prior_layer_record_id"] != expected_prior_record_id:
+            raise ValidationError("L2 prior_layer_record_id does not match the validated L1 record.")
+        status = _enum(payload["enrichment_status"], L2_STATUSES, "L2 enrichment_status")
+        if not evidence_supports_finding and status != "NO_FINDING":
+            raise ValidationError(
+                "L2 must return NO_FINDING when the L1 issue description or the transcript "
+                "carries no evidence of a finding."
+            )
+        _required(payload["enrichment_note"], "L2 field enrichment_note")
+        _gated_nullable(payload, L2_CONDITIONAL_FIELDS, status == "ENRICHED", "L2")
+        if status == "ENRICHED":
+            _enum(payload["trade"], L2_TRADES, "L2 trade")
+            _enum(payload["area_type"], L2_AREA_TYPES, "L2 area_type")
+            _int_enum(payload["severity"], L2_SEVERITIES, "L2 severity")
+            _required(payload["recommended_action"], "L2 field recommended_action")
         return cls(**payload)
+
+
+@dataclass(frozen=True)
+class L3Refinement:
+    source_asset_identifier: str
+    prior_layer: str
+    prior_layer_record_id: str
+    refinement_status: str
+    responsible_party: str | None
+    urgency_window: str | None
+    disputed_prior_fields: tuple[str, ...]
+    refinement_note: str
+
+    @classmethod
+    def from_external_result(
+        cls, payload: dict[str, Any], expected_source_id: str, expected_prior_record_id: str
+    ) -> "L3Refinement":
+        _exact_keys(payload, L3_FIELDS, "L3")
+        if payload["source_asset_identifier"] != expected_source_id:
+            raise ValidationError("L3 source_asset_identifier does not match the selected Drive asset.")
+        if payload["prior_layer"] != "L2":
+            raise ValidationError("L3 prior_layer must be the literal L2.")
+        if payload["prior_layer_record_id"] != expected_prior_record_id:
+            raise ValidationError("L3 prior_layer_record_id does not match the validated L2 record.")
+        status = _enum(payload["refinement_status"], L3_STATUSES, "L3 refinement_status")
+        _required(payload["refinement_note"], "L3 field refinement_note")
+        _gated_nullable(payload, L3_CONDITIONAL_FIELDS, status == "REFINED", "L3")
+        if status == "REFINED":
+            _enum(payload["responsible_party"], L3_RESPONSIBLE_PARTIES, "L3 responsible_party")
+            _enum(payload["urgency_window"], L3_URGENCY_WINDOWS, "L3 urgency_window")
+        disputed = payload["disputed_prior_fields"]
+        if not isinstance(disputed, list):
+            raise ValidationError("L3 disputed_prior_fields must always be present as an array.")
+        if len(set(disputed)) != len(disputed):
+            raise ValidationError("L3 disputed_prior_fields members must be unique.")
+        for name in disputed:
+            _enum(name, L3_DISPUTABLE_FIELDS, "L3 disputed_prior_fields member")
+        return cls(**{**payload, "disputed_prior_fields": tuple(disputed)})
+
+
+def l3_is_permitted(enrichment: L2Enrichment) -> bool:
+    """L3 runs only on an ENRICHED L2; NO_FINDING and INSUFFICIENT_EVIDENCE stop the chain."""
+    return enrichment.enrichment_status == "ENRICHED"
 
 
 @dataclass(frozen=True)

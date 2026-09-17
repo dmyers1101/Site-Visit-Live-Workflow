@@ -1,12 +1,19 @@
 # L2 enrichment prompt
 
-**Semantic version:** 1.0.0
+**Semantic version:** 1.1.0
 
 ## Purpose
 
 Add controlled analysis fields to a single **validated** L1 result. It is a
-payload for an explicitly approved external model run; the CLI never invokes
-Vertex AI or Gemini automatically. L2 enriches; it does not re-extract, does
+payload for an approved model run.
+
+**Changed in 1.1.0 (2026-09-17):** the prior statement that "the CLI never
+invokes Vertex AI or Gemini automatically" is superseded — `process-folder`
+invokes Vertex AI directly from the deployed Cloud Run Job. Preserved here
+rather than removed. Layer boundaries are unchanged and are now enforced by
+validators in `src/site_visit_workflow/models.py`.
+
+L2 enriches; it does not re-extract, does
 not correct L1 facts, and does not create work.
 
 ## Source/reference lineage

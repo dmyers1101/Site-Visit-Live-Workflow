@@ -1,12 +1,20 @@
 # L3 refinement prompt
 
-**Semantic version:** 1.0.0
+**Semantic version:** 1.1.0
 
 ## Purpose
 
 Add controlled ownership, urgency, and uncertainty fields to a single
 **validated** L2 result. It is a payload for an explicitly approved external
-model run; the CLI never invokes Vertex AI or Gemini automatically. L3
+model run.
+
+**Changed in 1.1.0 (2026-09-17):** the prior statement that "the CLI never
+invokes Vertex AI or Gemini automatically" is superseded — `process-folder`
+invokes Vertex AI directly from the deployed Cloud Run Job. Preserved here
+rather than removed. Layer boundaries are unchanged and are now enforced by
+validators in `src/site_visit_workflow/models.py`.
+
+L3
 refines; it does not rewrite L1 or L2 fields, and it does not assign work.
 
 ## Source/reference lineage
