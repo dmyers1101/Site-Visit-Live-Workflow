@@ -377,7 +377,65 @@ report prompt.
 
 ---
 
-*S10 (documentation, commit, push) is the final step.*
+## S10 — Documentation and handoff
+
+Everything is committed and pushed to `main` as **`c932cbd`**; local matches the remote exactly.
+178 tests pass.
+
+The evidence folder `docs/evidence/20260918-e2e-full-run/` holds the complete record:
+
+| File | What it is |
+| --- | --- |
+| `FLOW.md` | This file — the **wiring narrative**: how each step connects to the next |
+| `RESULT.md` | The **human-readable outcome** — what happened and what came out of it |
+| `SCRATCHPAD.md` | The live plan, now closed out with the run result |
+| `PRE-RENAME-STATE.md` | The folder as it stood before Gate 6 touched it |
+| `manifest.json` | Gate 1 output — what was discovered and what was excluded |
+| `run-summary.json` | The job's own self-report |
+| `post-rename-drive-listing-raw.json` | The S9 independent read-back, raw |
+
+The division of labour between the two prose documents matters: **`RESULT.md` tells you what
+happened; `FLOW.md` tells you how the parts are joined and where the joins are weak.** Read
+`RESULT.md` to learn the outcome, read this file before you change anything.
+
+Note that `run-summary.json` and `post-rename-drive-listing-raw.json` are deliberately both
+present — the claim and the independent check, kept side by side, so a future reader can compare
+them rather than take the run's word for it.
+
+---
+
+## The two findings most worth carrying forward
+
+Everything in **Seam risks** below is worth reading, but two entries are the real lessons of this
+run and should not be lost in a numbered list.
+
+### A feature can fail silently while every layer reports success (risk 16)
+
+`IMG_3651.MOV` was renamed to
+`1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw_multiple_hallway_issues.MOV`.
+
+Nothing errored. L1 produced a `suggested_filename`, `build_new_name` sanitized it correctly and
+preserved the extension, Drive accepted the rename, the catalogue recorded it, and the run reported
+`RENAMED`. **Full green status, and the output is a name nobody would ever want.**
+
+The gap is precise: sanitization proved the name was *legal*. Nothing asked whether it was *useful*
+— and usefulness is the entire point of the rename feature. A pipeline that validates safety at
+every step and meaning at none can pass all its checks while failing at its purpose. This is the
+most instructive thing in the run, and it generalizes well beyond filenames.
+
+### The report's bad arithmetic is a design error, not a prompt-quality problem (risk 17)
+
+The report claims "15 clips produced specific findings, while 2 clips require further human review"
+against 16 reviewed, then later says "One clip could not be assessed." The true figures are 14 and 2.
+
+The tempting fix is a better prompt. **That is the wrong fix.** The counts already exist in code —
+`status_counts` is computed from the catalogue records before the report is ever built. The actual
+design error is asking a language model to perform arithmetic over numbers it was never given.
+
+The remedy is one of two things, both cheap: pass the computed counts into the prompt as given
+facts, or post-check the generated text against `status_counts` before `insertText` writes it to
+the Doc. Until one of those exists, the report cannot be forwarded to a reader without a human
+reconciling its figures against the Sheet.
 
 ---
 
@@ -572,3 +630,16 @@ extended as this run surfaces more.
   different from the plan, correct the table and say so in the step's own section.
 - Never claim something was verified unless verification actually happened and is described.
   An admitted gap beats a silent one (LD-7).
+
+---
+
+## Where to start, if you are new to this
+
+Read `RESULT.md` first for what this run produced, then come back to this file and read it
+straight through — the `## Sx` sections are in execution order and the seams only make sense in
+sequence. Read **Seam risks** before you change any code, because most of what is fragile here is
+fragile in a way the source does not show: an ordering that only call order enforces, a prompt the
+image has to remember to ship, an output ID that is now produced by the run rather than given to
+it. Then go to the source itself — `cli.py` for the gate structure, `rename.py` and `report.py` for
+the two newest and least proven gates. If you only take two things from this document, take the two
+findings above.
