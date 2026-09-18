@@ -12,6 +12,10 @@ GOOGLE_SCOPES = (
     "https://www.googleapis.com/auth/devstorage.read_write",
     "https://www.googleapis.com/auth/cloud-platform",
     "https://www.googleapis.com/auth/spreadsheets",
+    # Gate 7 writes the narrative into a Google Doc. The Docs API also accepts
+    # the broad `drive` scope above; `documents` is listed explicitly so the
+    # intent is readable from the scope list alone.
+    "https://www.googleapis.com/auth/documents",
 )
 
 
@@ -655,4 +659,151 @@ def upsert_catalog_row(
         "tab_name": tab_name,
         "matched_row": match,
         "header_written": header_written,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Self-provisioned output files (catalog Spreadsheet, report Doc).
+#
+# Boundary: this section CREATES files and reads their metadata. It never
+# deletes, trashes, or moves an existing file, and it never touches a source
+# video. A configured ID is always reused as-is; creation happens only when no
+# ID was supplied.
+#
+# How to update this later: keep the "(id, web_view_link, created)" shape. The
+# created ID is an OUTPUT of the run and must stay discoverable in the run
+# summary - an operator who loses the log must still be able to find the file.
+# ---------------------------------------------------------------------------
+
+SPREADSHEET_MIME_TYPE = "application/vnd.google-apps.spreadsheet"
+DOCUMENT_MIME_TYPE = "application/vnd.google-apps.document"
+
+
+def _raw_drive_service(drive: Any) -> Any:
+    """Accept either a `DriveGateway` or a raw Drive service, and return the service.
+
+    The gateway deliberately exposes only folder-scoped reads, so output-file
+    provisioning reaches past it. Doing that through one named helper keeps it
+    obvious rather than scattering `drive._service` through the CLI.
+    """
+    return getattr(drive, "_service", drive)
+
+
+def _file_web_view_link(service: Any, file_id: str) -> str | None:
+    """Best-effort metadata read. A missing link is never fatal to a run."""
+    try:
+        from googleapiclient.errors import HttpError
+    except ImportError as error:
+        raise ExternalServiceError("Google Drive dependency is not installed.") from error
+    try:
+        return (
+            service.files()
+            .get(fileId=file_id, fields="id,name,webViewLink", supportsAllDrives=True)
+            .execute()
+            .get("webViewLink")
+        )
+    except HttpError:
+        return None
+
+
+def _ensure_drive_file(
+    settings: Settings, drive: Any, title: str, mime_type: str, configured_id: str
+) -> tuple[str, str | None, bool]:
+    try:
+        from googleapiclient.errors import HttpError
+    except ImportError as error:
+        raise ExternalServiceError("Google Drive dependency is not installed.") from error
+    service = _raw_drive_service(drive)
+    if configured_id.strip():
+        return configured_id.strip(), _file_web_view_link(service, configured_id.strip()), False
+    parent = settings.drive_output_parent_id.strip()
+    if not parent:
+        raise ValidationError(
+            "Cannot create a run output file: no DRIVE_OUTPUT_PARENT_ID is configured, and "
+            "creating it in the service account's own My Drive would make it unreachable."
+        )
+    if not title.strip():
+        raise ValidationError("A created output file requires a non-empty title.")
+    try:
+        created = (
+            service.files()
+            .create(
+                body={"name": title.strip(), "mimeType": mime_type, "parents": [parent]},
+                fields="id,name,webViewLink,parents,driveId",
+                supportsAllDrives=True,
+            )
+            .execute()
+        )
+    except HttpError as error:
+        raise ExternalServiceError(
+            f"Drive could not create the run output file {title!r} in {parent}: {error}"
+        ) from error
+    file_id = created.get("id")
+    if not file_id:
+        raise ExternalServiceError(f"Drive returned no file ID when creating {title!r}.")
+    return file_id, created.get("webViewLink"), True
+
+
+def ensure_catalog_spreadsheet(
+    settings: Settings, drive: Any, title: str
+) -> tuple[str, str | None, bool]:
+    """Resolve the catalog spreadsheet: reuse CATALOG_SHEET_ID, or create one.
+
+    Returns `(spreadsheet_id, web_view_link, created)`. When `created` is True
+    the ID is an OUTPUT of this run and the caller must surface it.
+    """
+    return _ensure_drive_file(
+        settings, drive, title, SPREADSHEET_MIME_TYPE, settings.catalog_sheet_id
+    )
+
+
+def ensure_report_document(
+    settings: Settings, drive: Any, title: str
+) -> tuple[str, str | None, bool]:
+    """Resolve the report document: reuse REPORT_DOC_ID, or create one."""
+    return _ensure_drive_file(
+        settings, drive, title, DOCUMENT_MIME_TYPE, settings.report_doc_id
+    )
+
+
+def docs_service(settings: Settings) -> Any:
+    try:
+        from googleapiclient.discovery import build
+    except ImportError as error:
+        raise ExternalServiceError("Google Docs dependency is not installed.") from error
+    return build("docs", "v1", credentials=runtime_credentials(settings), cache_discovery=False)
+
+
+def insert_document_text(service: Any, document_id: str, text: str) -> dict[str, Any]:
+    """Insert one block of text at index 1 of a Google Doc.
+
+    Boundary: `insertText` only. This function never issues `deleteContentRange`
+    or any other delete request, so running the report twice prepends a second
+    report rather than replacing the first. The Doc is an append-only log of
+    report runs, which is the documented behaviour in
+    `prompts/report-synthesis.md`.
+    """
+    try:
+        from googleapiclient.errors import HttpError
+    except ImportError as error:
+        raise ExternalServiceError("Google Docs dependency is not installed.") from error
+    if not document_id.strip():
+        raise ValidationError("A report write requires a non-empty document ID.")
+    if not text.strip():
+        raise ValidationError("Refusing to write an empty report into the document.")
+    try:
+        response = (
+            service.documents()
+            .batchUpdate(
+                documentId=document_id,
+                body={"requests": [{"insertText": {"location": {"index": 1}, "text": text}}]},
+            )
+            .execute()
+        )
+    except HttpError as error:
+        raise ExternalServiceError(f"Docs insert failed for {document_id}: {error}") from error
+    return {
+        "document_id": document_id,
+        "inserted_characters": len(text),
+        "revision_id": response.get("writeControl", {}).get("requiredRevisionId"),
     }

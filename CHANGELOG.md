@@ -10,6 +10,67 @@ this file is not rewritten.
 
 ## [Unreleased]
 
+Run of 2026-09-18: Gate 6 (approval-gated Drive rename) and Gate 7 (Google Docs
+report) added, and the run's output files become self-provisioned. Operator
+authorization: rename the Drive source videos in this run; create the Sheet and
+the Doc in the Shared Drive folder; **no deletions, anywhere, ever**.
+
+### Added
+
+- **`src/site_visit_workflow/rename.py` — Gate 6.** `build_new_name` sanitizes a
+  model-suggested filename while preserving the ORIGINAL file's extension and
+  its case; `execute_rename` renames only a CATALOGUED asset with a validated
+  L1 record, and only when BOTH `RENAME_APPROVED` and `--rename-approved` are
+  present. It reuses the existing `DriveGateway.rename`; no second Drive rename
+  path exists. Per-asset outcome is recorded as `RENAMED`,
+  `SKIPPED_NOT_APPROVED`, `SKIPPED_NO_SUGGESTION`,
+  `SKIPPED_ASSET_NOT_ELIGIBLE`, `SKIPPED_DRY_RUN` or `FAILED`.
+- **`src/site_visit_workflow/report.py` — Gate 7.** Builds a compact JSON
+  summary from the run's in-memory catalogue rows (never re-reading the Sheet),
+  calls Vertex once with `prompts/report-synthesis.md` read at runtime from
+  `--prompts-dir`, and inserts the plain-text narrative into a Google Doc with a
+  single `insertText` at index 1. No `response_schema`; no delete request of any
+  kind, so the Doc is an append-only log of report runs.
+- **Self-provisioned output files.** `google.ensure_catalog_spreadsheet` and
+  `google.ensure_report_document` reuse a configured ID or create the file in
+  `DRIVE_OUTPUT_PARENT_ID` via Drive `files.create` with `supportsAllDrives`.
+  Both IDs are resolved once, before the asset loop, emitted immediately as a
+  `"gate": "outputs"` log line, and repeated in the run summary - so a later
+  failure still leaves the created files discoverable.
+- **New settings:** `REPORT_DOC_ID`, `DRIVE_OUTPUT_PARENT_ID` (defaults to
+  `DRIVE_SHARED_FOLDER_ID`), `RENAME_APPROVED`.
+- **New `process-folder` flags:** `--rename-approved`, `--report`,
+  `--report-doc-id`, `--catalog-sheet-id`.
+- **Tests:** `tests/test_rename.py` and `tests/test_report.py` (50 new tests,
+  none of which contacts a Google API), covering extension preservation
+  including uppercase `.MOV`, sanitization, unusable suggestions, over-long
+  stems, the eligibility and double-approval rules, and the catalogue row key
+  being unaffected by a rename.
+
+### Changed
+
+- **`CATALOG_SHEET_ID` is no longer required by `process-folder`.** The sheet ID
+  is now an OUTPUT of that command when it is not supplied. The required-set
+  check was not dropped but replaced: `config.assert_output_targets_resolvable`
+  fails the run before any asset is processed unless either an explicit ID or a
+  creatable Drive parent exists, for the Sheet and (when `--report` is given)
+  the Doc. `CATALOG_SHEET_ID` remains required for `publish-catalog`.
+- **The per-asset `drive_rename` record is the ACTUAL outcome.** It was a
+  hardcoded `"NOT_ATTEMPTED; suggested names are proposals only."` string that
+  was archived to GCS as evidence; it now carries the real Gate 6 record. The
+  catalogue's `drive_rename_decision` column likewise carries
+  `RENAMED_TO:<name>` or the real skip reason, and keeps the historical
+  proposal wording only when no approval was given. `original_drive_name`
+  always remains the DISCOVERY-time name.
+- **The `process-folder` boundary comment corrected.** "Creates nothing,
+  renames nothing, deletes nothing" was two-thirds false as of this change. The
+  one clause that never changes - **deletes nothing, anywhere** - now stands on
+  its own, and the two clauses that became untrue are corrected in place rather
+  than removed.
+
+
+## [Unreleased] — earlier: overnight orchestrated run of 2026-09-17
+
 Overnight orchestrated run of 2026-09-17, continuing preflight run
 `20260917T055321Z-phase2-auth-preflight`. Operator authorization: create the
 Google Sheet; edits permitted; **no deletions**.

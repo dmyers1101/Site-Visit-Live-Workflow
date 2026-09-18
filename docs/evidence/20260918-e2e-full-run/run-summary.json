@@ -1,0 +1,536 @@
+{
+  "assets": [
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": true,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw_multiple_hallway_issues.MOV",
+        "original_drive_name": "IMG_3651.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw/transcription-record.json",
+      "index": 1,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3651.MOV",
+      "source_asset_identifier": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw/audio/attempt-0/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Alma_Apartments_Unclean_Grills_Dog_Feces_No_Bags_Dirty_Curbs.MOV",
+        "original_drive_name": "IMG_3650.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5/transcription-record.json",
+      "index": 2,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3650.MOV",
+      "source_asset_identifier": "1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5/audio/attempt-0/1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5.wav"
+    },
+    {
+      "asset_status": "NEEDS_REVIEW",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": null,
+        "original_drive_name": "IMG_3653.MOV",
+        "rename_status": "SKIPPED_ASSET_NOT_ELIGIBLE",
+        "source_asset_identifier": "19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km/transcription-record.json",
+      "index": 3,
+      "l3_skipped_reason": null,
+      "layer_errors": {
+        "L3": {
+          "error_type": "ValidationError",
+          "message": "L3 prior_layer_record_id does not match the validated L2 record."
+        }
+      },
+      "of": 16,
+      "original_drive_name": "IMG_3653.MOV",
+      "source_asset_identifier": "19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km/audio/attempt-0/19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Alma_Apartments_Floor_2_Hallways_Issues.MOV",
+        "original_drive_name": "IMG_3655.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD/transcription-record.json",
+      "index": 4,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3655.MOV",
+      "source_asset_identifier": "15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD/audio/attempt-0/15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Alma_Apartments_Floor3_AC_Leak_Violations.MOV",
+        "original_drive_name": "IMG_3656.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr/transcription-record.json",
+      "index": 5,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3656.MOV",
+      "source_asset_identifier": "1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr/audio/attempt-0/1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Alma_Apartments_Floor3_Hallways_Utility_Closet_Issues_Trash_Unsecured_Water_Stagnation.MOV",
+        "original_drive_name": "IMG_3657.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA/transcription-record.json",
+      "index": 6,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3657.MOV",
+      "source_asset_identifier": "1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA/audio/attempt-0/1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Alma_Apartments_Laundry_Room_AC_Machines_Lint_Issues.MOV",
+        "original_drive_name": "IMG_3667.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ/transcription-record.json",
+      "index": 7,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3667.MOV",
+      "source_asset_identifier": "1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ/audio/attempt-0/1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "138LpQaFUhXYyisEDCvryac4Ux7-QWXnt",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Alma_Apartments_Floor2_Maintenance_Issues.MOV",
+        "original_drive_name": "IMG_3654.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "138LpQaFUhXYyisEDCvryac4Ux7-QWXnt"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/138LpQaFUhXYyisEDCvryac4Ux7-QWXnt",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/138LpQaFUhXYyisEDCvryac4Ux7-QWXnt/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/138LpQaFUhXYyisEDCvryac4Ux7-QWXnt/transcription-record.json",
+      "index": 8,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3654.MOV",
+      "source_asset_identifier": "138LpQaFUhXYyisEDCvryac4Ux7-QWXnt",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/138LpQaFUhXYyisEDCvryac4Ux7-QWXnt/audio/attempt-0/138LpQaFUhXYyisEDCvryac4Ux7-QWXnt.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "roof_bad_shape.MOV",
+        "original_drive_name": "IMG_3668.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj/transcription-record.json",
+      "index": 9,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3668.MOV",
+      "source_asset_identifier": "10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj/audio/attempt-0/10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Unit_1129_threshold_coming_off_safety_hazard.MOV",
+        "original_drive_name": "IMG_3652.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E/transcription-record.json",
+      "index": 10,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3652.MOV",
+      "source_asset_identifier": "1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E/audio/attempt-0/1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Stagnant_Water_Lower_Roof_Unit_1331.MOV",
+        "original_drive_name": "IMG_3658.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo/transcription-record.json",
+      "index": 11,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3658.MOV",
+      "source_asset_identifier": "1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo/audio/attempt-0/1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Roof_Ponding_TPO_Degradation_Drainage_Issue.MOV",
+        "original_drive_name": "IMG_3664.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt/transcription-record.json",
+      "index": 12,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3664.MOV",
+      "source_asset_identifier": "1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt/audio/attempt-0/1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Hallway_One_Dirty_Not_Looking_Good.MOV",
+        "original_drive_name": "IMG_3666.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb/transcription-record.json",
+      "index": 13,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3666.MOV",
+      "source_asset_identifier": "1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb/audio/attempt-0/1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Alma_Roof_Electrical_Room_Ponding_Issue.MOV",
+        "original_drive_name": "IMG_3661.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT/transcription-record.json",
+      "index": 14,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3661.MOV",
+      "source_asset_identifier": "1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT/audio/attempt-0/1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT.wav"
+    },
+    {
+      "asset_status": "CATALOGUED",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": "Gym_Door_Locked_Out.MOV",
+        "original_drive_name": "IMG_3665.MOV",
+        "rename_status": "RENAMED",
+        "source_asset_identifier": "1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8/transcription-record.json",
+      "index": 15,
+      "l3_skipped_reason": null,
+      "layer_errors": {},
+      "of": 16,
+      "original_drive_name": "IMG_3665.MOV",
+      "source_asset_identifier": "1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8",
+      "transcription_status": "COMPLETED",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8/audio/attempt-0/1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8.wav"
+    },
+    {
+      "asset_status": "NEEDS_REVIEW",
+      "catalog_upsert": {
+        "header_written": false,
+        "matched_row": null,
+        "outcome": "APPENDED",
+        "row_key": "1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK",
+        "tab_name": "Catalog"
+      },
+      "drive_rename": {
+        "error": null,
+        "new_drive_name": null,
+        "original_drive_name": "IMG_3662.MOV",
+        "rename_status": "SKIPPED_ASSET_NOT_ELIGIBLE",
+        "source_asset_identifier": "1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK"
+      },
+      "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK",
+      "gate2": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK/media-preparation.json",
+      "gate3": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK/transcription-record.json",
+      "index": 16,
+      "note": "Transcript was empty after one retry; extraction stopped and the row is recorded as NEEDS_REVIEW with no findings.",
+      "of": 16,
+      "original_drive_name": "IMG_3662.MOV",
+      "source_asset_identifier": "1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK",
+      "transcription_status": "NEEDS_REVIEW",
+      "wav_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK/audio/attempt-0/1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK.wav"
+    }
+  ],
+  "catalog_sheet_created": true,
+  "catalog_sheet_id": "1GW3fg8IeobZn9uhs_4W5yOUUURISI0Ll0xRYhpOu22U",
+  "catalog_sheet_web_link": "https://docs.google.com/spreadsheets/d/1GW3fg8IeobZn9uhs_4W5yOUUURISI0Ll0xRYhpOu22U/edit?usp=drivesdk",
+  "catalog_tab_name": "Catalog",
+  "drive_folder_id": "1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF",
+  "dry_run": false,
+  "evidence_gcs_prefix": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z",
+  "excluded_items": [
+    {
+      "drive_id": "1La2hU5Q5a1umoJ6IipQR8DM1k992aBl6",
+      "mime_type": "image/heif",
+      "name": "IMG_3663.HEIC",
+      "reason": "EXCLUDED_UNSUPPORTED_MIME_TYPE: only video/* sources can be transcribed.",
+      "web_view_link": "https://drive.google.com/file/d/1La2hU5Q5a1umoJ6IipQR8DM1k992aBl6/view?usp=drivesdk"
+    },
+    {
+      "drive_id": "1AS9KnGN1JojU2WN0IUfV4Uf1maWm4ILU",
+      "mime_type": "image/heif",
+      "name": "IMG_3660.HEIC",
+      "reason": "EXCLUDED_UNSUPPORTED_MIME_TYPE: only video/* sources can be transcribed.",
+      "web_view_link": "https://drive.google.com/file/d/1AS9KnGN1JojU2WN0IUfV4Uf1maWm4ILU/view?usp=drivesdk"
+    },
+    {
+      "drive_id": "1w7OBl4e5eiyQ4yBqRihISFTppzfO4fN9",
+      "mime_type": "image/heif",
+      "name": "IMG_3659.HEIC",
+      "reason": "EXCLUDED_UNSUPPORTED_MIME_TYPE: only video/* sources can be transcribed.",
+      "web_view_link": "https://drive.google.com/file/d/1w7OBl4e5eiyQ4yBqRihISFTppzfO4fN9/view?usp=drivesdk"
+    }
+  ],
+  "gate": "run-summary",
+  "manifest_gcs_uri": "gs://shir-sitevisit-staging/site-visit-staging/20260918T100802Z/manifest.json",
+  "processing_boundary": "DIRECT_MEDIA_CHILDREN",
+  "rename_authorized": true,
+  "rename_summary": {
+    "RENAMED": 14,
+    "SKIPPED_ASSET_NOT_ELIGIBLE": 2
+  },
+  "report": {
+    "character_count": 2588,
+    "document_created": true,
+    "document_id": "1l2htL4V3Lyy8nI1jiw00nr-pCM-qEWH6Eh9eN4W4ZTU",
+    "document_web_link": "https://docs.google.com/document/d/1l2htL4V3Lyy8nI1jiw00nr-pCM-qEWH6Eh9eN4W4ZTU/edit?usp=drivesdk",
+    "error": null,
+    "generated_at": "2026-09-18T10:21:29.534697+00:00",
+    "model_id": "gemini-2.5-flash",
+    "prompt_file": "prompts/report-synthesis.md",
+    "prompt_sha256": "2f03efa743856ca749264b036373a91a3ead4503e87e1c18455e39a7ab6beb27",
+    "prompt_version": "0.1.0",
+    "run_id": "20260918T100802Z",
+    "sdk_version": "2.24.0",
+    "status": "WRITTEN",
+    "summary_counts": {
+      "catalogued": 14,
+      "failed": 0,
+      "needs_review": 2,
+      "other": 0,
+      "total": 16
+    },
+    "usage": {
+      "candidates_token_count": 582,
+      "prompt_token_count": 2387,
+      "total_token_count": 6673
+    },
+    "written_at": "2026-09-18T10:21:50.761431+00:00"
+  },
+  "report_doc_created": true,
+  "report_doc_id": "1l2htL4V3Lyy8nI1jiw00nr-pCM-qEWH6Eh9eN4W4ZTU",
+  "report_doc_web_link": "https://docs.google.com/document/d/1l2htL4V3Lyy8nI1jiw00nr-pCM-qEWH6Eh9eN4W4ZTU/edit?usp=drivesdk",
+  "report_status": "WRITTEN",
+  "run_id": "20260918T100802Z",
+  "runtime_service_account": "site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com",
+  "selected_asset_count": 16,
+  "speech_location": "us",
+  "status_counts": {
+    "CATALOGUED": 14,
+    "NEEDS_REVIEW": 2
+  },
+  "vertex_location": "us-central1",
+  "vertex_model": "gemini-2.5-flash"
+}

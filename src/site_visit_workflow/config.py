@@ -7,11 +7,26 @@ from datetime import datetime, timezone
 from .errors import ValidationError
 
 DEPLOYED_SERVICE_ACCOUNT = "site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com"
+# The historical "everything is an input" set. `CATALOG_SHEET_ID` is listed here
+# for the commands that genuinely consume a pre-existing sheet
+# (`publish-catalog`, `auth-preflight`). It is NO LONGER required by
+# `process-folder`: that command can create its own catalog spreadsheet, so the
+# sheet ID is an OUTPUT of the run there. See PROCESS_FOLDER_REQUIRED_SETTINGS
+# and `assert_output_targets_resolvable` below.
 ALL_REQUIRED_SETTINGS = (
     "GOOGLE_CLOUD_PROJECT",
     "DRIVE_SHARED_FOLDER_ID",
     "GCS_STAGING_BUCKET",
     "CATALOG_SHEET_ID",
+)
+
+# What `process-folder` actually needs before it may contact anything. The
+# output files are resolved separately, because either a pre-known ID or a
+# writable parent folder is a viable configuration.
+PROCESS_FOLDER_REQUIRED_SETTINGS = (
+    "GOOGLE_CLOUD_PROJECT",
+    "DRIVE_SHARED_FOLDER_ID",
+    "GCS_STAGING_BUCKET",
 )
 
 
@@ -34,6 +49,19 @@ def _speech_model() -> str:
             "and is not read by this package."
         )
     return value
+
+
+TRUTHY_ENVIRONMENT_VALUES = frozenset({"1", "true", "yes", "on"})
+
+
+def _flag(name: str) -> bool:
+    """Read one boolean env flag. Anything not explicitly truthy stays False.
+
+    Boundary: this is deliberately strict rather than "anything non-empty is
+    true". `RENAME_APPROVED=no` must not authorize a rename of the operator's
+    source library.
+    """
+    return os.environ.get(name, "").strip().lower() in TRUTHY_ENVIRONMENT_VALUES
 
 
 def default_run_id() -> str:
@@ -60,6 +88,15 @@ class Settings:
     vertex_model: str = "gemini-2.5-flash"
     catalog_tab_name: str = DEFAULT_CATALOG_TAB_NAME
     run_id: str = ""
+    # Self-provisioned outputs. `catalog_sheet_id` and `report_doc_id` are now
+    # OPTIONAL inputs: when either is empty the run creates that file in
+    # `drive_output_parent_id` and the resulting id becomes an OUTPUT of the
+    # run, surfaced in the run summary. See `google.ensure_catalog_spreadsheet`.
+    report_doc_id: str = ""
+    drive_output_parent_id: str = ""
+    # Gate 6 belt and braces: the env flag alone never authorizes a rename; the
+    # CLI must also be given --rename-approved.
+    rename_approved: bool = False
 
     @classmethod
     def from_environment(
@@ -86,6 +123,12 @@ class Settings:
             catalog_tab_name=os.environ.get("CATALOG_TAB_NAME", DEFAULT_CATALOG_TAB_NAME).strip()
             or DEFAULT_CATALOG_TAB_NAME,
             run_id=os.environ.get("RUN_ID", "").strip() or default_run_id(),
+            report_doc_id=os.environ.get("REPORT_DOC_ID", "").strip(),
+            drive_output_parent_id=(
+                os.environ.get("DRIVE_OUTPUT_PARENT_ID", "").strip()
+                or os.environ.get("DRIVE_SHARED_FOLDER_ID", "").strip()
+            ),
+            rename_approved=_flag("RENAME_APPROVED"),
         )
         if settings.environment == "deployed" and settings.runtime_service_account != DEPLOYED_SERVICE_ACCOUNT:
             raise ValidationError(
@@ -100,3 +143,24 @@ def gcs_uri(bucket: str, object_name: str) -> str:
     if not object_name.strip() or object_name.startswith("/"):
         raise ValidationError("GCS object name must be a non-empty relative path.")
     return f"gs://{bucket}/{object_name}"
+
+
+def assert_output_targets_resolvable(settings: Settings, report_requested: bool) -> None:
+    """Fail loudly when neither a pre-known output ID nor a creatable parent exists.
+
+    Dropping `CATALOG_SHEET_ID` from the required set must not weaken the run
+    into silently writing nowhere. Exactly one of two configurations is valid
+    per output file: an explicit ID, or a Drive parent folder the run can
+    create the file in. Anything else is a misconfiguration and stops the run
+    before a single asset is processed.
+    """
+    if not settings.catalog_sheet_id and not settings.drive_output_parent_id:
+        raise ValidationError(
+            "No catalog target: set CATALOG_SHEET_ID, or set DRIVE_OUTPUT_PARENT_ID "
+            "(or DRIVE_SHARED_FOLDER_ID) so the run can create its own catalog spreadsheet."
+        )
+    if report_requested and not settings.report_doc_id and not settings.drive_output_parent_id:
+        raise ValidationError(
+            "No report target: set REPORT_DOC_ID, or set DRIVE_OUTPUT_PARENT_ID "
+            "(or DRIVE_SHARED_FOLDER_ID) so the run can create its own report document."
+        )

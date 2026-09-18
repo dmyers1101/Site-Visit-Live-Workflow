@@ -1,0 +1,2972 @@
+[
+  {
+    "insertId": "6aad11d30003e0f7ab0cc318",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "{",
+    "timestamp": "2026-09-18T10:26:27.254199Z"
+  },
+  {
+    "insertId": "6aad11d30003e11716a22d7f",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"folder_id\": \"1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF\",",
+    "timestamp": "2026-09-18T10:26:27.254231Z"
+  },
+  {
+    "insertId": "6aad11d30003e11fa7618044",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"runtime_service_account\": \"site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com\",",
+    "timestamp": "2026-09-18T10:26:27.254239Z"
+  },
+  {
+    "insertId": "6aad11d30003e125b633f172",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"immediate_child_count\": 21,",
+    "timestamp": "2026-09-18T10:26:27.254245Z"
+  },
+  {
+    "insertId": "6aad11d30003e12b8e96cf47",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"immediate_children\": [",
+    "timestamp": "2026-09-18T10:26:27.254251Z"
+  },
+  {
+    "insertId": "6aad11d30003e12f3207d430",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254255Z"
+  },
+  {
+    "insertId": "6aad11d30003e13ad8d6bdb3",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Site Visit Report - 2026-08 Executive - Parth Vaidya - 20260918T100802Z\",",
+    "timestamp": "2026-09-18T10:26:27.254266Z"
+  },
+  {
+    "insertId": "6aad11d30003e13f3b1407f0",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1l2htL4V3Lyy8nI1jiw00nr-pCM-qEWH6Eh9eN4W4ZTU\",",
+    "timestamp": "2026-09-18T10:26:27.254271Z"
+  },
+  {
+    "insertId": "6aad11d30003e144f759f99a",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"application/vnd.google-apps.document\",",
+    "timestamp": "2026-09-18T10:26:27.254276Z"
+  },
+  {
+    "insertId": "6aad11d30003e148c0207f2c",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://docs.google.com/document/d/1l2htL4V3Lyy8nI1jiw00nr-pCM-qEWH6Eh9eN4W4ZTU/edit?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254280Z"
+  },
+  {
+    "insertId": "6aad11d30003e14c470ec21a",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254284Z"
+  },
+  {
+    "insertId": "6aad11d30003e15068294a17",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254288Z"
+  },
+  {
+    "insertId": "6aad11d30003e155d0bd989e",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Site Visit Catalog - 2026-08 Executive - Parth Vaidya\",",
+    "timestamp": "2026-09-18T10:26:27.254293Z"
+  },
+  {
+    "insertId": "6aad11d30003e15928e4302a",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1GW3fg8IeobZn9uhs_4W5yOUUURISI0Ll0xRYhpOu22U\",",
+    "timestamp": "2026-09-18T10:26:27.254297Z"
+  },
+  {
+    "insertId": "6aad11d30003e15de6e1be20",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"application/vnd.google-apps.spreadsheet\",",
+    "timestamp": "2026-09-18T10:26:27.254301Z"
+  },
+  {
+    "insertId": "6aad11d30003e16350024802",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://docs.google.com/spreadsheets/d/1GW3fg8IeobZn9uhs_4W5yOUUURISI0Ll0xRYhpOu22U/edit?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254307Z"
+  },
+  {
+    "insertId": "6aad11d30003e167650ad5da",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254311Z"
+  },
+  {
+    "insertId": "6aad11d30003e16bb8cee8bc",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254315Z"
+  },
+  {
+    "insertId": "6aad11d30003e1708e629bf3",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Gym_Door_Locked_Out.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254320Z"
+  },
+  {
+    "insertId": "6aad11d30003e17556fe9053",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8\",",
+    "timestamp": "2026-09-18T10:26:27.254325Z"
+  },
+  {
+    "insertId": "6aad11d30003e179c5bb1f2b",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254329Z"
+  },
+  {
+    "insertId": "6aad11d30003e1801f4c7b82",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254336Z"
+  },
+  {
+    "insertId": "6aad11d30003e18434c6a9c0",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254340Z"
+  },
+  {
+    "insertId": "6aad11d30003e188b0be489b",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254344Z"
+  },
+  {
+    "insertId": "6aad11d30003e18d1f2c0d8c",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Alma_Roof_Electrical_Room_Ponding_Issue.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254349Z"
+  },
+  {
+    "insertId": "6aad11d30003e1921c900c13",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.263622599Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT\",",
+    "timestamp": "2026-09-18T10:26:27.254354Z"
+  },
+  {
+    "insertId": "6aad11d30003e19698d1d168",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254358Z"
+  },
+  {
+    "insertId": "6aad11d30003e19be0299e34",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254363Z"
+  },
+  {
+    "insertId": "6aad11d30003e19f4bc9f107",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254367Z"
+  },
+  {
+    "insertId": "6aad11d30003e1a3a2f5a092",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254371Z"
+  },
+  {
+    "insertId": "6aad11d30003e1a8d920e4e4",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Hallway_One_Dirty_Not_Looking_Good.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254376Z"
+  },
+  {
+    "insertId": "6aad11d30003e1adbec83efb",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb\",",
+    "timestamp": "2026-09-18T10:26:27.254381Z"
+  },
+  {
+    "insertId": "6aad11d30003e1b194cfe5a9",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254385Z"
+  },
+  {
+    "insertId": "6aad11d30003e1b51b7d104b",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254389Z"
+  },
+  {
+    "insertId": "6aad11d30003e1ba3ff02696",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254394Z"
+  },
+  {
+    "insertId": "6aad11d30003e1beb27538b3",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254398Z"
+  },
+  {
+    "insertId": "6aad11d30003e1c2437b8f14",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Roof_Ponding_TPO_Degradation_Drainage_Issue.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254402Z"
+  },
+  {
+    "insertId": "6aad11d30003e1c62199672e",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt\",",
+    "timestamp": "2026-09-18T10:26:27.254406Z"
+  },
+  {
+    "insertId": "6aad11d30003e1cb366064e4",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254411Z"
+  },
+  {
+    "insertId": "6aad11d30003e1cfa40df886",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254415Z"
+  },
+  {
+    "insertId": "6aad11d30003e1d2e5c6b20b",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254418Z"
+  },
+  {
+    "insertId": "6aad11d30003e1d6fffcc1f5",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254422Z"
+  },
+  {
+    "insertId": "6aad11d30003e1dbee159fac",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Stagnant_Water_Lower_Roof_Unit_1331.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254427Z"
+  },
+  {
+    "insertId": "6aad11d30003e1df0fb3a835",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo\",",
+    "timestamp": "2026-09-18T10:26:27.254431Z"
+  },
+  {
+    "insertId": "6aad11d30003e1e3f95ef7be",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254435Z"
+  },
+  {
+    "insertId": "6aad11d30003e1e802dc52a7",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254440Z"
+  },
+  {
+    "insertId": "6aad11d30003e1eca959f638",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254444Z"
+  },
+  {
+    "insertId": "6aad11d30003e1ef1ecdf3de",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254447Z"
+  },
+  {
+    "insertId": "6aad11d30003e1f42010e626",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Unit_1129_threshold_coming_off_safety_hazard.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254452Z"
+  },
+  {
+    "insertId": "6aad11d30003e1f839ad8dc0",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E\",",
+    "timestamp": "2026-09-18T10:26:27.254456Z"
+  },
+  {
+    "insertId": "6aad11d30003e1fca232e380",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254460Z"
+  },
+  {
+    "insertId": "6aad11d30003e201c21755c8",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254465Z"
+  },
+  {
+    "insertId": "6aad11d30003e205fce3355d",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254469Z"
+  },
+  {
+    "insertId": "6aad11d30003e2092a355c77",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254473Z"
+  },
+  {
+    "insertId": "6aad11d30003e20ec6061a0a",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"roof_bad_shape.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254478Z"
+  },
+  {
+    "insertId": "6aad11d30003e2129c494dde",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj\",",
+    "timestamp": "2026-09-18T10:26:27.254482Z"
+  },
+  {
+    "insertId": "6aad11d30003e216c3be5bf6",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254486Z"
+  },
+  {
+    "insertId": "6aad11d30003e21e89f83bf4",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254494Z"
+  },
+  {
+    "insertId": "6aad11d30003e22223a0aa1d",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254498Z"
+  },
+  {
+    "insertId": "6aad11d30003e226d57e5d6e",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254502Z"
+  },
+  {
+    "insertId": "6aad11d30003e22bef965bf0",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Alma_Apartments_Floor2_Maintenance_Issues.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254507Z"
+  },
+  {
+    "insertId": "6aad11d30003e22f52253902",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"138LpQaFUhXYyisEDCvryac4Ux7-QWXnt\",",
+    "timestamp": "2026-09-18T10:26:27.254511Z"
+  },
+  {
+    "insertId": "6aad11d30003e233a805f67b",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254515Z"
+  },
+  {
+    "insertId": "6aad11d30003e238a21211dc",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/138LpQaFUhXYyisEDCvryac4Ux7-QWXnt/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254520Z"
+  },
+  {
+    "insertId": "6aad11d30003e23b25e1b94a",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254523Z"
+  },
+  {
+    "insertId": "6aad11d30003e23febfd735b",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254527Z"
+  },
+  {
+    "insertId": "6aad11d30003e24396157c06",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Alma_Apartments_Laundry_Room_AC_Machines_Lint_Issues.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254531Z"
+  },
+  {
+    "insertId": "6aad11d30003e2482cbcc9d3",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ\",",
+    "timestamp": "2026-09-18T10:26:27.254536Z"
+  },
+  {
+    "insertId": "6aad11d30003e24c13f19369",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254540Z"
+  },
+  {
+    "insertId": "6aad11d30003e251c751cef4",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254545Z"
+  },
+  {
+    "insertId": "6aad11d30003e254192662f3",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254548Z"
+  },
+  {
+    "insertId": "6aad11d30003e258af0ba5ea",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254552Z"
+  },
+  {
+    "insertId": "6aad11d30003e25d3cd13e98",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Alma_Apartments_Floor3_Hallways_Utility_Closet_Issues_Trash_Unsecured_Water_Stagnation.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254557Z"
+  },
+  {
+    "insertId": "6aad11d30003e26065b2cb05",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA\",",
+    "timestamp": "2026-09-18T10:26:27.254560Z"
+  },
+  {
+    "insertId": "6aad11d30003e2646ccd5d43",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254564Z"
+  },
+  {
+    "insertId": "6aad11d30003e268737eb9a1",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254568Z"
+  },
+  {
+    "insertId": "6aad11d30003e26c9471cabe",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254572Z"
+  },
+  {
+    "insertId": "6aad11d30003e26f29839124",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254575Z"
+  },
+  {
+    "insertId": "6aad11d30003e2738a45540f",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Alma_Apartments_Floor3_AC_Leak_Violations.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254579Z"
+  },
+  {
+    "insertId": "6aad11d30003e27885c11f07",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr\",",
+    "timestamp": "2026-09-18T10:26:27.254584Z"
+  },
+  {
+    "insertId": "6aad11d30003e27c291a974a",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254588Z"
+  },
+  {
+    "insertId": "6aad11d30003e28009668bb6",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254592Z"
+  },
+  {
+    "insertId": "6aad11d30003e284ff0271d3",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254596Z"
+  },
+  {
+    "insertId": "6aad11d30003e287ee26e2b0",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254599Z"
+  },
+  {
+    "insertId": "6aad11d30003e28b2361a51c",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Alma_Apartments_Floor_2_Hallways_Issues.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254603Z"
+  },
+  {
+    "insertId": "6aad11d30003e28f687a71d9",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD\",",
+    "timestamp": "2026-09-18T10:26:27.254607Z"
+  },
+  {
+    "insertId": "6aad11d30003e2931e3f1272",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254611Z"
+  },
+  {
+    "insertId": "6aad11d30003e298f37886b2",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254616Z"
+  },
+  {
+    "insertId": "6aad11d30003e29ba801f8e6",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254619Z"
+  },
+  {
+    "insertId": "6aad11d30003e2aa345b1e94",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254634Z"
+  },
+  {
+    "insertId": "6aad11d30003e2ae016443a4",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"Alma_Apartments_Unclean_Grills_Dog_Feces_No_Bags_Dirty_Curbs.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254638Z"
+  },
+  {
+    "insertId": "6aad11d30003e2b3fc4fe6ff",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5\",",
+    "timestamp": "2026-09-18T10:26:27.254643Z"
+  },
+  {
+    "insertId": "6aad11d30003e2b7031983a1",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254647Z"
+  },
+  {
+    "insertId": "6aad11d30003e2bbdac8c466",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254651Z"
+  },
+  {
+    "insertId": "6aad11d30003e2bf5304a15e",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254655Z"
+  },
+  {
+    "insertId": "6aad11d30003e2c3be464540",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254659Z"
+  },
+  {
+    "insertId": "6aad11d30003e2c71e64f6bc",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw_multiple_hallway_issues.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254663Z"
+  },
+  {
+    "insertId": "6aad11d30003e2cb08c6cbca",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw\",",
+    "timestamp": "2026-09-18T10:26:27.254667Z"
+  },
+  {
+    "insertId": "6aad11d30003e2d088ba3179",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254672Z"
+  },
+  {
+    "insertId": "6aad11d30003e2d4b88ba5ef",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254676Z"
+  },
+  {
+    "insertId": "6aad11d30003e2d8ff99047a",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254680Z"
+  },
+  {
+    "insertId": "6aad11d30003e2dbbdfd2e75",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254683Z"
+  },
+  {
+    "insertId": "6aad11d30003e2df4a2256e8",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"IMG_3653.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254687Z"
+  },
+  {
+    "insertId": "6aad11d30003e2e406970e44",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km\",",
+    "timestamp": "2026-09-18T10:26:27.254692Z"
+  },
+  {
+    "insertId": "6aad11d30003e2e88d8ad664",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254696Z"
+  },
+  {
+    "insertId": "6aad11d30003e2ec59aa0678",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254700Z"
+  },
+  {
+    "insertId": "6aad11d30003e2f04fcfe006",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254704Z"
+  },
+  {
+    "insertId": "6aad11d30003e2f4cecea410",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254708Z"
+  },
+  {
+    "insertId": "6aad11d30003e2f8c477b18a",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"IMG_3662.MOV\",",
+    "timestamp": "2026-09-18T10:26:27.254712Z"
+  },
+  {
+    "insertId": "6aad11d30003e2fcbec6c0b0",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK\",",
+    "timestamp": "2026-09-18T10:26:27.254716Z"
+  },
+  {
+    "insertId": "6aad11d30003e30096124ce5",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"video/quicktime\",",
+    "timestamp": "2026-09-18T10:26:27.254720Z"
+  },
+  {
+    "insertId": "6aad11d30003e3068025f6c4",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254726Z"
+  },
+  {
+    "insertId": "6aad11d30003e3091f7c0b83",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254729Z"
+  },
+  {
+    "insertId": "6aad11d30003e30c46371371",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254732Z"
+  },
+  {
+    "insertId": "6aad11d30003e310acdf580f",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"IMG_3663.HEIC\",",
+    "timestamp": "2026-09-18T10:26:27.254736Z"
+  },
+  {
+    "insertId": "6aad11d30003e3157e2ae24a",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1La2hU5Q5a1umoJ6IipQR8DM1k992aBl6\",",
+    "timestamp": "2026-09-18T10:26:27.254741Z"
+  },
+  {
+    "insertId": "6aad11d30003e31916172b17",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"image/heif\",",
+    "timestamp": "2026-09-18T10:26:27.254745Z"
+  },
+  {
+    "insertId": "6aad11d30003e31d8681cbb9",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1La2hU5Q5a1umoJ6IipQR8DM1k992aBl6/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254749Z"
+  },
+  {
+    "insertId": "6aad11d30003e3219aa28497",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254753Z"
+  },
+  {
+    "insertId": "6aad11d30003e3258065e3e3",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254757Z"
+  },
+  {
+    "insertId": "6aad11d30003e329e9b7bd20",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"IMG_3660.HEIC\",",
+    "timestamp": "2026-09-18T10:26:27.254761Z"
+  },
+  {
+    "insertId": "6aad11d30003e32d698bb0be",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1AS9KnGN1JojU2WN0IUfV4Uf1maWm4ILU\",",
+    "timestamp": "2026-09-18T10:26:27.254765Z"
+  },
+  {
+    "insertId": "6aad11d30003e33002293bd0",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"image/heif\",",
+    "timestamp": "2026-09-18T10:26:27.254768Z"
+  },
+  {
+    "insertId": "6aad11d30003e335da15614a",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1AS9KnGN1JojU2WN0IUfV4Uf1maWm4ILU/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254773Z"
+  },
+  {
+    "insertId": "6aad11d30003e338f208859d",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-09-18T10:26:27.254776Z"
+  },
+  {
+    "insertId": "6aad11d30003e33d3d2e2754",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-09-18T10:26:27.254781Z"
+  },
+  {
+    "insertId": "6aad11d30003e341cc63422e",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"name\": \"IMG_3659.HEIC\",",
+    "timestamp": "2026-09-18T10:26:27.254785Z"
+  },
+  {
+    "insertId": "6aad11d30003e345e0264675",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"drive_id\": \"1w7OBl4e5eiyQ4yBqRihISFTppzfO4fN9\",",
+    "timestamp": "2026-09-18T10:26:27.254789Z"
+  },
+  {
+    "insertId": "6aad11d30003e3498fe67687",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"mime_type\": \"image/heif\",",
+    "timestamp": "2026-09-18T10:26:27.254793Z"
+  },
+  {
+    "insertId": "6aad11d30003e34d9a560e61",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"web_view_link\": \"https://drive.google.com/file/d/1w7OBl4e5eiyQ4yBqRihISFTppzfO4fN9/view?usp=drivesdk\"",
+    "timestamp": "2026-09-18T10:26:27.254797Z"
+  },
+  {
+    "insertId": "6aad11d30003e351f15d8027",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    }",
+    "timestamp": "2026-09-18T10:26:27.254801Z"
+  },
+  {
+    "insertId": "6aad11d30003e3554458b229",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  ]",
+    "timestamp": "2026-09-18T10:26:27.254805Z"
+  },
+  {
+    "insertId": "6aad11d30003e358ab6a5492",
+    "labels": {
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-09-18T10:26:27.593200287Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "}",
+    "timestamp": "2026-09-18T10:26:27.254808Z"
+  },
+  {
+    "insertId": "6aad11d300051edbea074c43",
+    "labels": {
+      "container_name": "worker",
+      "instanceId": "00a41e8c1d43cbbb71b21790fb87c75e2415656f55be5efb2b35faa26b444bc3588b84dfee0d45b6bc6606dc976af034b2913fa61daf7f61946d53cdd1f166fc89224fe6f1c3550f42683ba8d4111943923cc4922bc3e16265e0ea",
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/shir-sitevisit/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-09-18T10:26:27.344035257Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Container called exit(0).",
+    "timestamp": "2026-09-18T10:26:27.335532Z"
+  },
+  {
+    "insertId": "b5kjm7dve8y",
+    "labels": {
+      "run.googleapis.com/execution_name": "site-visit-workflow-verify-b9dqv"
+    },
+    "logName": "projects/shir-sitevisit/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Jobs.RunJob",
+      "resourceName": "namespaces/shir-sitevisit/executions/site-visit-workflow-verify-b9dqv",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Execution",
+        "apiVersion": "run.googleapis.com/v1",
+        "kind": "Execution",
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "578.0.0",
+            "run.googleapis.com/creator": "dmyers@shircapital.com",
+            "run.googleapis.com/execution-environment": "gen2",
+            "run.googleapis.com/lastModifier": "dmyers@shircapital.com",
+            "run.googleapis.com/operation-id": "ebd100f4-3c9b-4d9d-b18c-1b0dcc08bec5"
+          },
+          "creationTimestamp": "2026-09-18T10:23:53.053003Z",
+          "generation": 1,
+          "labels": {
+            "client.knative.dev/nonce": "jul_sig_nac",
+            "cloud.googleapis.com/location": "us-central1",
+            "run.googleapis.com/job": "site-visit-workflow-verify",
+            "run.googleapis.com/jobGeneration": "1",
+            "run.googleapis.com/jobResourceVersion": "1789727029471894",
+            "run.googleapis.com/jobUid": "65b8e7d7-a645-44ff-97ec-80e8c85c7906"
+          },
+          "name": "site-visit-workflow-verify-b9dqv",
+          "namespace": "847827326811",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Job",
+              "name": "site-visit-workflow-verify",
+              "uid": "65b8e7d7-a645-44ff-97ec-80e8c85c7906"
+            }
+          ],
+          "resourceVersion": "AAZbv1W43Vo",
+          "selfLink": "/apis/run.googleapis.com/v1/namespaces/847827326811/executions/site-visit-workflow-verify-b9dqv",
+          "uid": "054628b8-7e35-461b-9343-431dba3fab16"
+        },
+        "spec": {
+          "parallelism": 1,
+          "taskCount": 1,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "args": [
+                    "list-folder-children"
+                  ],
+                  "command": [
+                    "site-visit"
+                  ],
+                  "env": [
+                    {
+                      "name": "SITE_VISIT_ENVIRONMENT",
+                      "value": "deployed"
+                    },
+                    {
+                      "name": "GOOGLE_CLOUD_PROJECT",
+                      "value": "shir-sitevisit"
+                    },
+                    {
+                      "name": "DRIVE_SHARED_FOLDER_ID",
+                      "value": "1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF"
+                    },
+                    {
+                      "name": "SITE_VISIT_RUNTIME_SERVICE_ACCOUNT",
+                      "value": "site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com"
+                    }
+                  ],
+                  "image": "us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit@sha256:5397efe25a305e8ff323d560943cfc181991503097aa66e6ba140f0e538e6985",
+                  "resources": {
+                    "limits": {
+                      "cpu": "1000m",
+                      "memory": "1Gi"
+                    }
+                  }
+                }
+              ],
+              "maxRetries": 0,
+              "serviceAccountName": "site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com",
+              "timeoutSeconds": "300"
+            }
+          }
+        },
+        "status": {
+          "completionTime": "2026-09-18T10:26:34.110271Z",
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-18T10:26:34.110271Z",
+              "message": "Execution completed successfully in 2m25.03s.",
+              "status": "True",
+              "type": "Completed"
+            },
+            {
+              "lastTransitionTime": "2026-09-18T10:23:54.023997Z",
+              "message": "Provisioned imported containers.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            },
+            {
+              "lastTransitionTime": "2026-09-18T10:26:24.961102Z",
+              "message": "Started deployed execution in 2m30.93s.",
+              "status": "True",
+              "type": "Started"
+            },
+            {
+              "lastTransitionTime": "2026-09-18T10:23:53.916284Z",
+              "message": "Imported container image.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-09-18T10:26:35.323738Z",
+              "message": "System will retry after 00:00 from lastTransitionTime for attempt 0.",
+              "reason": "ImmediateRetry",
+              "severity": "Info",
+              "status": "True",
+              "type": "Retry"
+            }
+          ],
+          "logUri": "https://console.cloud.google.com/logs/viewer?project=shir-sitevisit&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22site-visit-workflow-verify%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22site-visit-workflow-verify-b9dqv%22",
+          "observedGeneration": 1,
+          "startTime": "2026-09-18T10:24:09.077868Z",
+          "succeededCount": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Execution site-visit-workflow-verify-b9dqv has completed successfully."
+      }
+    },
+    "receiveTimestamp": "2026-09-18T10:26:36.091373356Z",
+    "resource": {
+      "labels": {
+        "job_name": "site-visit-workflow-verify",
+        "location": "us-central1",
+        "project_id": "shir-sitevisit"
+      },
+      "type": "cloud_run_job"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-09-18T10:26:35.334213Z"
+  }
+]

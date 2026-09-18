@@ -22,6 +22,13 @@ operator workstation.
    do not grant delete to make it pass.
 2. **Never rename a Drive source video automatically.** Suggested filenames are
    proposals. A rename requires an explicit human approval record.
+   **Amended 2026-09-18 (wording corrected, rule intact):** `process-folder`
+   can now rename, in Gate 6, but only when BOTH the `RENAME_APPROVED`
+   environment flag and the `--rename-approved` CLI flag are present, and only
+   for an asset that reached CATALOGUED with a validated L1 record. Without
+   both, every suggested name stays a proposal exactly as before. The
+   catalogue keeps the discovery-time `original_drive_name`, and the row key is
+   the immutable Drive file ID, so a rename cannot break idempotency.
 3. **The only runtime identity is**
    `site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com`, attached
    directly to the Cloud Run Job. No service-account key file, no impersonation,
@@ -72,9 +79,22 @@ continuing past a single asset's failure:
 | 3 transcription | One Chirp `BatchRecognize` per WAV; empty transcript retries once then `NEEDS_REVIEW` | transcript + transcription record |
 | 4 extraction | Vertex L1 → L2 → L3, each gated on the previous validating | per-layer prompt/response evidence |
 | 5 catalog | Upserts one Sheet row per asset, keyed on the immutable Drive asset ID | catalog row |
+| 6 rename (2026-09-18) | Renames each CATALOGUED asset to its suggested filename — ONLY with both approvals | per-asset rename record |
+| 7 report (2026-09-18) | One Vertex call over the run's in-memory catalogue rows; inserts the narrative into a Google Doc | report record, Doc text |
+
+Gate 7 runs after Gate 6 so the report can name the new filenames. A failure in
+Gate 6 or Gate 7 is recorded and the run continues; neither can fail the run.
 
 Useful flags: `--limit N`, `--asset-id ID`, `--dry-run` (skips Chirp/Vertex/
-Sheets but still exercises Drive, ffmpeg and GCS), `--run-id`, `--prompts-dir`.
+Sheets but still exercises Drive, ffmpeg and GCS), `--run-id`, `--prompts-dir`,
+`--rename-approved`, `--report`, `--catalog-sheet-id`, `--report-doc-id`.
+
+**Output files are self-provisioned (2026-09-18).** `CATALOG_SHEET_ID` and
+`REPORT_DOC_ID` are OPTIONAL for `process-folder`: when either is empty the run
+creates that file in `DRIVE_OUTPUT_PARENT_ID` (default: the configured Drive
+folder) and reports the new ID in the `"gate": "outputs"` log line and in the
+run summary. The Sheet ID is therefore an OUTPUT of a run, not only an input.
+`publish-catalog` still requires a pre-existing `CATALOG_SHEET_ID`.
 
 ## Running it
 

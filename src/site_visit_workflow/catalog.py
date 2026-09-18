@@ -65,7 +65,10 @@ FULL_CATALOG_HEADERS: tuple[str, ...] = (
     "updated_at",
 )
 
-# Every suggested name is a proposal. This workflow never renames Drive media.
+# The DEFAULT decision: a suggested name stays a proposal unless Gate 6 ran
+# with both approvals present. A run that renames passes its actual per-asset
+# rename status in through `drive_rename_decision` instead, so the catalogue
+# never claims a rename was only proposed when it in fact happened.
 RENAME_DECISION = "PROPOSED_ONLY_AWAITING_HUMAN_APPROVAL"
 
 
@@ -84,6 +87,7 @@ def build_catalog_row(
     l1: L1Extraction | None = None,
     l2: L2Enrichment | None = None,
     l3: L3Refinement | None = None,
+    drive_rename_decision: str | None = None,
 ) -> dict[str, Any]:
     """Build the full, ordered catalog record for one asset.
 
@@ -134,7 +138,7 @@ def build_catalog_row(
         "l3_refinement_note": _blank(l3.refinement_note if l3 else None),
         "transcript_gcs_uri": _blank(transcription.get("transcript_gcs_uri")),
         "evidence_gcs_prefix": evidence_gcs_prefix,
-        "drive_rename_decision": RENAME_DECISION,
+        "drive_rename_decision": drive_rename_decision or RENAME_DECISION,
         "updated_at": updated_at,
     }
     if tuple(row) != FULL_CATALOG_HEADERS:

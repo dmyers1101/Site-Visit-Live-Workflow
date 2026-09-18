@@ -7,13 +7,21 @@ from dataclasses import asdict, replace
 from pathlib import Path
 from typing import Any
 
-from .config import Settings, gcs_uri
+from .config import (
+    PROCESS_FOLDER_REQUIRED_SETTINGS,
+    Settings,
+    assert_output_targets_resolvable,
+    gcs_uri,
+)
 from .errors import ExternalServiceError, ValidationError, WorkflowError
 from .google import (
     DriveGateway,
     StorageGateway,
     asset_prefix,
     await_transcription,
+    docs_service,
+    ensure_catalog_spreadsheet,
+    ensure_report_document,
     ensure_sheet_tab,
     read_batch_transcript,
     run_prefix,
@@ -291,13 +299,25 @@ def cmd_publish_catalog(args: argparse.Namespace) -> None:
 
 
 # ---------------------------------------------------------------------------
-# process-folder: the cloud-native, end-to-end Gate 1..5 run.
+# process-folder: the cloud-native, end-to-end Gate 1..7 run.
 #
-# Boundary: media bytes flow Drive -> this container's ephemeral filesystem ->
-# GCS. No operator workstation is involved at any point. The command creates
-# Drive nothing, renames Drive nothing, and deletes nothing anywhere - not a
-# Drive file, not a GCS object, not a Sheets row or tab. Suggested filenames
-# are proposals recorded in the catalog for human review.
+# THE RULE THAT NEVER CHANGES: this command deletes nothing, anywhere - not a
+# Drive file, not a GCS object, not a Sheets row or tab, not a paragraph of a
+# Doc. The runtime identity holds no delete permission anywhere by design
+# (ADR 0005), and no future gate may assume otherwise.
+#
+# Two statements that used to sit beside that rule are no longer true, and are
+# corrected rather than removed:
+#   * The command DOES now create Drive files - the catalog Spreadsheet and the
+#     report Doc, in the configured Drive output folder, when no ID was given.
+#     Source videos are never created, copied, or moved.
+#   * The command DOES now rename Drive source videos, in Gate 6, and ONLY when
+#     both the RENAME_APPROVED environment flag and the --rename-approved CLI
+#     flag are present. Without both approvals a suggested filename remains a
+#     proposal recorded in the catalog for human review, exactly as before.
+#
+# Media bytes still flow Drive -> this container's ephemeral filesystem -> GCS.
+# No operator workstation is involved at any point.
 #
 # How to update this later: each gate is one private helper below. Add a gate
 # by adding a helper and one entry in the per-asset record; do not inline
@@ -469,19 +489,46 @@ def _gate4_extract(
 
 
 def cmd_process_folder(args: argparse.Namespace) -> None:
-    """Run Gates 1 to 5 over the configured Drive folder, one asset at a time."""
+    """Run Gates 1 to 7 over the configured Drive folder, one asset at a time.
+
+    Gates 1-5 are discovery, media, transcription, extraction, and the catalog
+    upsert. Gate 6 is the approval-gated Drive rename, and Gate 7 writes the
+    narrative report into a Google Doc - deliberately after Gate 6, so the
+    report can refer to the new filenames. A failure in Gate 6 or Gate 7 is
+    recorded and the run continues, exactly like a per-asset failure.
+
+    CATALOG_SHEET_ID and REPORT_DOC_ID are OPTIONAL inputs. When either is
+    empty the run creates that file in the Drive output folder and the
+    resulting ID becomes an OUTPUT, emitted early and repeated in the run
+    summary so a later failure still leaves the file discoverable.
+    """
     import tempfile
 
     from .catalog import FULL_CATALOG_HEADERS, build_catalog_row, row_values
     from .discovery import select_assets
+    from . import rename as rn
+    from . import report as rp
 
     dry_run = bool(args.dry_run)
-    required = ("GOOGLE_CLOUD_PROJECT", "DRIVE_SHARED_FOLDER_ID", "GCS_STAGING_BUCKET")
-    if not dry_run:
-        required = required + ("CATALOG_SHEET_ID",)
-    settings = Settings.from_environment(required=required)
+    # CATALOG_SHEET_ID is no longer required here: the sheet ID is an output of
+    # this command when it is not supplied. The "is there a viable target at
+    # all" check moved to `assert_output_targets_resolvable`, below, so a
+    # genuine misconfiguration still fails before any asset is processed.
+    settings = Settings.from_environment(required=PROCESS_FOLDER_REQUIRED_SETTINGS)
     if args.run_id:
         settings = replace(settings, run_id=args.run_id.strip())
+    if getattr(args, "catalog_sheet_id", None):
+        settings = replace(settings, catalog_sheet_id=args.catalog_sheet_id.strip())
+    if getattr(args, "report_doc_id", None):
+        settings = replace(settings, report_doc_id=args.report_doc_id.strip())
+    report_requested = bool(getattr(args, "report", False))
+    # Belt and braces: the environment flag alone authorizes nothing, and the
+    # CLI flag alone authorizes nothing. Gate 6 needs both.
+    rename_authorized = rn.rename_is_authorized(
+        settings.rename_approved, bool(getattr(args, "rename_approved", False))
+    )
+    if not dry_run:
+        assert_output_targets_resolvable(settings, report_requested)
     tab_name = args.sheet_name or settings.catalog_tab_name
     prompts_dir = args.prompts_dir
 
@@ -511,14 +558,48 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
     assets = select_assets(manifest, asset_id=args.asset_id, limit=args.limit)
     client = None
     sheets = None
+    # Resolved ONCE, here, before the asset loop. Everything downstream uses
+    # these two variables and never `settings.catalog_sheet_id` /
+    # `settings.report_doc_id` directly: a second code path reading the raw
+    # setting is exactly the class of bug that produced the double-WAV-upload.
+    catalog_sheet_id = settings.catalog_sheet_id
+    catalog_sheet_link: str | None = None
+    catalog_sheet_created = False
+    report_doc_id = settings.report_doc_id
+    report_doc_link: str | None = None
+    report_doc_created = False
     if not dry_run:
         from .extraction import build_client
 
+        catalog_sheet_id, catalog_sheet_link, catalog_sheet_created = ensure_catalog_spreadsheet(
+            settings, drive, f"Site Visit Catalog - {manifest.visit.name}"
+        )
+        if report_requested:
+            report_doc_id, report_doc_link, report_doc_created = ensure_report_document(
+                settings, drive, f"Site Visit Report - {manifest.visit.name} - {settings.run_id}"
+            )
+        # Emitted immediately: if a later gate fails, the operator can still
+        # find the files this run created.
+        _emit({
+            "gate": "outputs",
+            "run_id": settings.run_id,
+            "catalog_sheet_id": catalog_sheet_id,
+            "catalog_sheet_web_link": catalog_sheet_link,
+            "catalog_sheet_created": catalog_sheet_created,
+            "report_doc_id": report_doc_id or None,
+            "report_doc_web_link": report_doc_link,
+            "report_doc_created": report_doc_created,
+            "drive_output_parent_id": settings.drive_output_parent_id,
+            "rename_authorized": rename_authorized,
+        })
         client = build_client(settings)
         sheets = sheets_service(settings)
-        ensure_sheet_tab(sheets, settings.catalog_sheet_id, tab_name)
+        ensure_sheet_tab(sheets, catalog_sheet_id, tab_name)
 
     summaries: list[dict[str, Any]] = []
+    catalog_rows: list[dict[str, Any]] = []
+    rename_outcomes: list[rn.RenameOutcome] = []
+    new_drive_names: dict[str, str | None] = {}
     for index, asset in enumerate(assets, start=1):
         # Sequential by design: conservative, documented concurrency of one.
         evidence_prefix = asset_prefix(settings, asset.drive_id)
@@ -528,7 +609,19 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
             "source_asset_identifier": asset.drive_id,
             "original_drive_name": asset.original_name,
             "evidence_gcs_prefix": gcs_uri(storage.bucket_name, evidence_prefix),
-            "drive_rename": "NOT_ATTEMPTED; suggested names are proposals only.",
+            # The ACTUAL rename outcome, not a hardcoded claim. This record is
+            # archived to GCS as evidence, so it starts at the honest default
+            # for an asset that has not yet become eligible and is replaced by
+            # the real Gate 6 outcome below.
+            "drive_rename": rn.plan_rename(
+                asset.drive_id,
+                asset.original_name,
+                None,
+                "NOT_YET_PROCESSED",
+                False,
+                rename_authorized,
+                dry_run=dry_run,
+            ).to_dict(),
         }
         try:
             wav_path, media_record = _gate2_media(drive, asset, work_dir)
@@ -591,6 +684,36 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
                     "is recorded as NEEDS_REVIEW with no findings."
                 )
 
+            # Gate 6: the approval-gated rename, before the row is built so the
+            # catalogue records what actually happened rather than a proposal.
+            l1_parsed = layers.get("l1_parsed")
+            rename_outcome = rn.execute_rename(
+                drive,
+                asset.drive_id,
+                asset.original_name,
+                getattr(l1_parsed, "suggested_filename", None),
+                asset_status,
+                l1_parsed is not None,
+                rename_authorized,
+                dry_run=dry_run,
+            )
+            rename_outcomes.append(rename_outcome)
+            summary["drive_rename"] = rename_outcome.to_dict()
+            new_drive_names[asset.drive_id] = (
+                rename_outcome.new_drive_name
+                if rename_outcome.rename_status == rn.RENAME_RENAMED
+                else None
+            )
+            storage.write_json(f"{evidence_prefix}/drive-rename.json", rename_outcome.to_dict())
+            if rename_outcome.rename_status == rn.RENAME_RENAMED:
+                rename_decision = f"RENAMED_TO:{rename_outcome.new_drive_name}"
+            elif rename_outcome.rename_status == rn.RENAME_SKIPPED_NOT_APPROVED:
+                # No approval was given, so the historical wording is the true
+                # one: the suggested name remains a proposal.
+                rename_decision = None
+            else:
+                rename_decision = rename_outcome.rename_status
+
             row = build_catalog_row(
                 asset=asset,
                 visit_drive_id=manifest.visit.drive_id,
@@ -602,11 +725,13 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
                 l1=layers.get("l1_parsed"),
                 l2=layers.get("l2_parsed"),
                 l3=layers.get("l3_parsed"),
+                drive_rename_decision=rename_decision,
             )
+            catalog_rows.append(row)
             storage.write_json(f"{evidence_prefix}/catalog-row.json", row)
             upsert = upsert_catalog_row(
                 sheets,
-                settings.catalog_sheet_id,
+                catalog_sheet_id,
                 tab_name,
                 FULL_CATALOG_HEADERS,
                 row_values(row),
@@ -628,6 +753,47 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
     for item in summaries:
         status = item.get("asset_status", ASSET_STATUS_FAILED)
         counts[status] = counts.get(status, 0) + 1
+
+    # Gate 7: one narrative report per run, written into the Google Doc. It runs
+    # AFTER Gate 6 so it can name the new filenames, and its failure is recorded
+    # rather than fatal - the catalogue is already written by this point.
+    report_record: dict[str, Any] | None = None
+    report_status = rp.REPORT_STATUS_NOT_REQUESTED
+    if report_requested and dry_run:
+        report_status = rp.REPORT_STATUS_SKIPPED_DRY_RUN
+    elif report_requested:
+        try:
+            record = rp.run_report(
+                client,
+                settings,
+                docs_service(settings),
+                prompts_dir,
+                report_doc_id,
+                report_doc_link,
+                report_doc_created,
+                manifest.visit.name,
+                catalog_rows,
+                new_names=new_drive_names,
+            )
+            report_record = record.to_dict()
+            report_status = record.status
+        except Exception as error:  # noqa: BLE001 - Gate 7 must not fail the run
+            report_status = rp.REPORT_STATUS_FAILED
+            report_record = {
+                "run_id": settings.run_id,
+                "status": rp.REPORT_STATUS_FAILED,
+                "document_id": report_doc_id or None,
+                "document_web_link": report_doc_link,
+                "document_created": report_doc_created,
+                "error": _sanitized(error),
+            }
+        if report_record is not None:
+            try:
+                storage.write_json(f"{prefix}/report-record.json", report_record)
+            except WorkflowError as error:
+                report_record["evidence_write_error"] = _sanitized(error)
+        _emit({"gate": 7, "run_id": settings.run_id, "report": report_record})
+
     run_summary = {
         "gate": "run-summary",
         "run_id": settings.run_id,
@@ -636,7 +802,16 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
         "processing_boundary": "DIRECT_MEDIA_CHILDREN",
         "manifest_gcs_uri": manifest_uri,
         "evidence_gcs_prefix": gcs_uri(storage.bucket_name, prefix),
-        "catalog_sheet_id": settings.catalog_sheet_id or None,
+        "catalog_sheet_id": catalog_sheet_id or None,
+        "catalog_sheet_web_link": catalog_sheet_link,
+        "catalog_sheet_created": catalog_sheet_created,
+        "report_doc_id": report_doc_id or None,
+        "report_doc_web_link": report_doc_link,
+        "report_doc_created": report_doc_created,
+        "report_status": report_status,
+        "report": report_record,
+        "rename_authorized": rename_authorized,
+        "rename_summary": rn.summarize_renames(rename_outcomes),
         "catalog_tab_name": tab_name if not dry_run else None,
         "speech_location": settings.speech_location,
         "vertex_location": settings.vertex_location,
@@ -682,7 +857,8 @@ def parser() -> argparse.ArgumentParser:
         "process-folder",
         help=(
             "Cloud-native end-to-end run over the configured Drive folder: manifest, media, "
-            "Chirp, L1-L3, and one idempotent Sheets row per asset."
+            "Chirp, L1-L3, one idempotent Sheets row per asset, the approval-gated Drive "
+            "rename, and the narrative Google Docs report."
         ),
     )
     process.add_argument("--limit", type=int, default=None, help="Process at most N manifest assets.")
@@ -707,6 +883,31 @@ def parser() -> argparse.ArgumentParser:
         type=_path,
         default=None,
         help="Container-local staging directory; a fresh temp directory by default.",
+    )
+    process.add_argument(
+        "--rename-approved",
+        action="store_true",
+        help=(
+            "Gate 6: rename each CATALOGUED asset to its suggested filename. Requires "
+            "RENAME_APPROVED to be set in the environment as well - both are needed."
+        ),
+    )
+    process.add_argument(
+        "--report",
+        action="store_true",
+        help="Gate 7: write the narrative run report into the Google Doc.",
+    )
+    process.add_argument(
+        "--report-doc-id",
+        default=None,
+        help="Existing Google Doc to append the report to; overrides REPORT_DOC_ID. "
+        "Omit both and the run creates its own Doc in the Drive output folder.",
+    )
+    process.add_argument(
+        "--catalog-sheet-id",
+        default=None,
+        help="Existing catalog spreadsheet; overrides CATALOG_SHEET_ID. Omit both and the "
+        "run creates its own spreadsheet and reports the new ID in the run summary.",
     )
     process.add_argument("--poll-timeout-seconds", type=int, default=1800)
     process.add_argument(

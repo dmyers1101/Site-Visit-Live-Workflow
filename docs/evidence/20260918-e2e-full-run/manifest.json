@@ -1,0 +1,174 @@
+{
+  "excluded_count": 3,
+  "excluded_items": [
+    {
+      "drive_id": "1La2hU5Q5a1umoJ6IipQR8DM1k992aBl6",
+      "mime_type": "image/heif",
+      "name": "IMG_3663.HEIC",
+      "reason": "EXCLUDED_UNSUPPORTED_MIME_TYPE: only video/* sources can be transcribed.",
+      "web_view_link": "https://drive.google.com/file/d/1La2hU5Q5a1umoJ6IipQR8DM1k992aBl6/view?usp=drivesdk"
+    },
+    {
+      "drive_id": "1AS9KnGN1JojU2WN0IUfV4Uf1maWm4ILU",
+      "mime_type": "image/heif",
+      "name": "IMG_3660.HEIC",
+      "reason": "EXCLUDED_UNSUPPORTED_MIME_TYPE: only video/* sources can be transcribed.",
+      "web_view_link": "https://drive.google.com/file/d/1AS9KnGN1JojU2WN0IUfV4Uf1maWm4ILU/view?usp=drivesdk"
+    },
+    {
+      "drive_id": "1w7OBl4e5eiyQ4yBqRihISFTppzfO4fN9",
+      "mime_type": "image/heif",
+      "name": "IMG_3659.HEIC",
+      "reason": "EXCLUDED_UNSUPPORTED_MIME_TYPE: only video/* sources can be transcribed.",
+      "web_view_link": "https://drive.google.com/file/d/1w7OBl4e5eiyQ4yBqRihISFTppzfO4fN9/view?usp=drivesdk"
+    }
+  ],
+  "manifest": {
+    "created_at": "2026-09-18T10:11:20.436232+00:00",
+    "media_files": [
+      {
+        "drive_id": "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:49:49.392Z",
+        "original_name": "IMG_3651.MOV",
+        "size_bytes": 255516574,
+        "web_view_link": "https://drive.google.com/file/d/1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:49:04.883Z",
+        "original_name": "IMG_3650.MOV",
+        "size_bytes": 246619179,
+        "web_view_link": "https://drive.google.com/file/d/1xAsMvY129zKNHEJkSkekbyIT1HwTjZ-5/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:47:46.906Z",
+        "original_name": "IMG_3653.MOV",
+        "size_bytes": 237079385,
+        "web_view_link": "https://drive.google.com/file/d/19APrhXj5hKEd0FMiAXfJxvLwtAksE_Km/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:45:24.913Z",
+        "original_name": "IMG_3655.MOV",
+        "size_bytes": 183565521,
+        "web_view_link": "https://drive.google.com/file/d/15MSI4CAuiWRGBxoiYnyW7l5tyo2DEaAD/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:41:46.711Z",
+        "original_name": "IMG_3656.MOV",
+        "size_bytes": 168741018,
+        "web_view_link": "https://drive.google.com/file/d/1G0PFnVar7X7mAFAB3CrlB6pS29VgKjZr/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:40:42.195Z",
+        "original_name": "IMG_3657.MOV",
+        "size_bytes": 117155740,
+        "web_view_link": "https://drive.google.com/file/d/1YvJ0kftlgbMoi2yzcXGmCG1LFNryu4KA/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:39:49.815Z",
+        "original_name": "IMG_3667.MOV",
+        "size_bytes": 78188562,
+        "web_view_link": "https://drive.google.com/file/d/1bdvj5-sPHWIes1N2EpXHc_a9fSW9YDeJ/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "138LpQaFUhXYyisEDCvryac4Ux7-QWXnt",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:39:31.873Z",
+        "original_name": "IMG_3654.MOV",
+        "size_bytes": 77271159,
+        "web_view_link": "https://drive.google.com/file/d/138LpQaFUhXYyisEDCvryac4Ux7-QWXnt/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:39:05.876Z",
+        "original_name": "IMG_3668.MOV",
+        "size_bytes": 69351955,
+        "web_view_link": "https://drive.google.com/file/d/10NV-GdosSRy-ImsM_Pfl4SJjQoIDvJrj/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:38:51.181Z",
+        "original_name": "IMG_3652.MOV",
+        "size_bytes": 54257741,
+        "web_view_link": "https://drive.google.com/file/d/1DePF0BQnVFWsZlaPbYRLCvIfSjNPZJ3E/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:38:35.792Z",
+        "original_name": "IMG_3658.MOV",
+        "size_bytes": 52270055,
+        "web_view_link": "https://drive.google.com/file/d/1WKVsHTQS8T8SwcmEl0Awn2WQiktfDcXo/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:36:54.762Z",
+        "original_name": "IMG_3664.MOV",
+        "size_bytes": 35525325,
+        "web_view_link": "https://drive.google.com/file/d/1P3n_Mf3ozlrzn8I96adf2z7f1U9wI3Yt/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:36:39.862Z",
+        "original_name": "IMG_3666.MOV",
+        "size_bytes": 21042975,
+        "web_view_link": "https://drive.google.com/file/d/1UsWhVbxTZCErBr8BCyuD4w-eAc9Qz5pb/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:36:25.010Z",
+        "original_name": "IMG_3661.MOV",
+        "size_bytes": 14134716,
+        "web_view_link": "https://drive.google.com/file/d/1EaaGxce15IJmtKU-9paYkAyiJKdTyPTT/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:36:19.528Z",
+        "original_name": "IMG_3665.MOV",
+        "size_bytes": 13093921,
+        "web_view_link": "https://drive.google.com/file/d/1SkUMgeXIXHMvciQ5gc9iwj868OtoEzM8/view?usp=drivesdk"
+      },
+      {
+        "drive_id": "1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK",
+        "mime_type": "video/quicktime",
+        "modified_time": "2026-09-15T21:36:14.847Z",
+        "original_name": "IMG_3662.MOV",
+        "size_bytes": 3625191,
+        "web_view_link": "https://drive.google.com/file/d/1pGXzxmWLKCryutoH6-IZcBQONWMFuOGK/view?usp=drivesdk"
+      }
+    ],
+    "schema_version": "1.0",
+    "shared_folder_id": "1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF",
+    "visit": {
+      "drive_id": "1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF",
+      "name": "2026-08 Executive - Parth Vaidya",
+      "web_view_link": "https://drive.google.com/drive/folders/1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF"
+    }
+  },
+  "manifest_id": "20260918T100802Z-1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF",
+  "mime_type_counts": {
+    "image/heif": 3,
+    "video/quicktime": 16
+  },
+  "processing_boundary": "DIRECT_MEDIA_CHILDREN",
+  "run_id": "20260918T100802Z",
+  "supported_count": 16
+}
