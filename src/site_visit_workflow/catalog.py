@@ -63,7 +63,19 @@ FULL_CATALOG_HEADERS: tuple[str, ...] = (
     "evidence_gcs_prefix",
     "drive_rename_decision",
     "updated_at",
+    # Appended 2026-09-29 for the portfolio rollout (ADR 0010). Blank for a
+    # single-folder run. Never reorder: existing sheets keep the old prefix.
+    "state",
+    "property",
+    "property_group",
+    "visit_name",
+    "uploader_email",
+    "uploader_name",
+    "uploaded_at",
+    "attempt_count",
 )
+
+PORTFOLIO_COLUMNS: tuple[str, ...] = FULL_CATALOG_HEADERS[FULL_CATALOG_HEADERS.index("state"):]
 
 # The DEFAULT decision: a suggested name stays a proposal unless Gate 6 ran
 # with both approvals present. A run that renames passes its actual per-asset
@@ -88,6 +100,7 @@ def build_catalog_row(
     l2: L2Enrichment | None = None,
     l3: L3Refinement | None = None,
     drive_rename_decision: str | None = None,
+    extras: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build the full, ordered catalog record for one asset.
 
@@ -141,6 +154,11 @@ def build_catalog_row(
         "drive_rename_decision": drive_rename_decision or RENAME_DECISION,
         "updated_at": updated_at,
     }
+    unknown = set(extras or {}) - set(PORTFOLIO_COLUMNS)
+    if unknown:
+        raise ValidationError("Unknown catalog extras: " + ", ".join(sorted(unknown)))
+    for name in PORTFOLIO_COLUMNS:
+        row[name] = _blank((extras or {}).get(name))
     if tuple(row) != FULL_CATALOG_HEADERS:
         raise ValidationError("Catalog row keys drifted from FULL_CATALOG_HEADERS.")
     return row

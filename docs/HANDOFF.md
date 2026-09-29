@@ -6,6 +6,26 @@ context from the build.
 
 This document is the single starting point. Read it before running anything.
 
+## Portfolio + nightly (2026-09-29) — read this first
+
+Production scope is now the **whole master folder**, processed **nightly**.
+ADRs 0009–0012; runbooks `RUNBOOKS/nightly-operations.md`, `backfill.md`, `change-guide.md`.
+
+| Thing | Value |
+| --- | --- |
+| Master video folder | `1UkjYIHnSs-igeOy9k-Iw_d1-bEnH-mwN` (State / Property / [Group] / Visit) |
+| Master catalog Sheet | `1oFq1rzag23706HYXSGoBseuLj5ouFyQ0BHuIAaLtj-o` — tabs `Catalog`, `Reports` |
+| Report Docs | "<Property> Site Visit Reports" in each Property folder; one tab per visit |
+| Nightly job | Cloud Run `site-visit-nightly` — `process-portfolio --max-clips 60 --rename-approved --report` |
+| Manual job | Cloud Run `site-visit-workflow` — safe default `list-portfolio`; pass `--args` per run |
+| Schedule | Cloud Scheduler `site-visit-nightly-trigger`, `us-central1`, `0 2 * * *` America/New_York |
+| Runs as | `site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com` |
+| Triggered as | `site-visit-scheduler@shir-sitevisit.iam.gserviceaccount.com` (`run.invoker` on the nightly job only) |
+| Output | master Sheet + property Docs in Drive; renames CATALOGUED clips in place; evidence in `gs://shir-sitevisit-staging` |
+
+Safety rule 2 is amended by ADR 0012: the nightly job's configuration is the standing
+rename approval. Nothing runs on a workstation.
+
 ## What this is
 
 A cloud-native pipeline that turns narrated site-visit videos in a Google Drive

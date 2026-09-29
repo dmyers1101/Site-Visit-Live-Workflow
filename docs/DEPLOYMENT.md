@@ -276,3 +276,43 @@ definition and amend the service-account runbook and ADR in the same review. If 
 change the sizing guidance, say what run size it was measured against. Keep both the
 real-value commands and the placeholder variants in this file — the real values are what
 make the repo runnable, the placeholders are what make it portable.
+
+## Portfolio + nightly deployment (2026-09-29, ADRs 0009–0012)
+
+**Where it runs (org rule 5):** Cloud Run jobs in `shir-sitevisit` / `us-central1`, as
+`site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com`; scheduled by Cloud Scheduler
+`site-visit-nightly-trigger` (`us-central1`, 02:00 America/New_York) authenticating as
+`site-visit-scheduler@shir-sitevisit.iam.gserviceaccount.com`; output to the master Sheet
+`1oFq1rzag23706HYXSGoBseuLj5ouFyQ0BHuIAaLtj-o`, per-property report Docs in Drive, and
+`gs://shir-sitevisit-staging`. Nothing runs on a workstation.
+
+One-time setup, as executed 2026-09-29 (PowerShell; re-runnable for a new project):
+
+```powershell
+gcloud services enable cloudscheduler.googleapis.com --project=shir-sitevisit
+gcloud iam service-accounts create site-visit-scheduler --project=shir-sitevisit `
+  --display-name="Site Visit nightly trigger (invokes site-visit-nightly only)"
+
+$IMG = "us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit:TAG"
+gcloud run jobs create site-visit-nightly --region=us-central1 --image=$IMG `
+  --service-account=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com `
+  --memory=8Gi --cpu=2 --task-timeout=7200s --max-retries=0 --tasks=1 `
+  --set-env-vars=SITE_VISIT_ENVIRONMENT=deployed,GOOGLE_CLOUD_PROJECT=shir-sitevisit,SITE_VISIT_RUNTIME_SERVICE_ACCOUNT=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com,GCS_STAGING_BUCKET=shir-sitevisit-staging,GCS_STAGING_PREFIX=site-visit-staging,CATALOG_TAB_NAME=Catalog,SPEECH_LOCATION=us,SPEECH_MODEL=chirp_3,VERTEX_LOCATION=us-central1,VERTEX_MODEL=gemini-2.5-flash,RENAME_APPROVED=true,PORTFOLIO_ROOT_ID=1UkjYIHnSs-igeOy9k-Iw_d1-bEnH-mwN,CATALOG_SHEET_ID=1oFq1rzag23706HYXSGoBseuLj5ouFyQ0BHuIAaLtj-o `
+  --args=process-portfolio,--max-clips,60,--rename-approved,--report
+
+gcloud run jobs add-iam-policy-binding site-visit-nightly --region=us-central1 `
+  --member=serviceAccount:site-visit-scheduler@shir-sitevisit.iam.gserviceaccount.com --role=roles/run.invoker
+
+gcloud scheduler jobs create http site-visit-nightly-trigger --location=us-central1 `
+  --schedule="0 2 * * *" --time-zone="America/New_York" `
+  --uri="https://run.googleapis.com/v2/projects/shir-sitevisit/locations/us-central1/jobs/site-visit-nightly:run" `
+  --http-method=POST --oauth-service-account-email=site-visit-scheduler@shir-sitevisit.iam.gserviceaccount.com
+
+# Manual job: safe defaults (read-only; can never rename)
+gcloud run jobs update site-visit-workflow --region=us-central1 `
+  --remove-env-vars=RENAME_APPROVED,RUN_ID --update-env-vars=PORTFOLIO_ROOT_ID=1UkjYIHnSs-igeOy9k-Iw_d1-bEnH-mwN --args=list-portfolio
+```
+
+Test the trigger end to end: `gcloud scheduler jobs run site-visit-nightly-trigger --location=us-central1`,
+then `gcloud run jobs executions list --job=site-visit-nightly --region=us-central1 --limit=1`.
+Day-to-day operation: `RUNBOOKS/nightly-operations.md`. Changes: `RUNBOOKS/change-guide.md`.

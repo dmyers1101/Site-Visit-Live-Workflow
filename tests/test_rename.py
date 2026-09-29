@@ -299,3 +299,13 @@ def test_a_colliding_rename_gets_a_suffix_not_a_duplicate() -> None:
     assert outcome.rename_status == RENAME_RENAMED
     assert outcome.new_drive_name == "kitchen-leak_2.MOV"
     assert drive.calls == [("id-2", "kitchen-leak_2.MOV")]
+
+
+def test_an_l1_with_no_location_and_no_issue_is_not_a_finding() -> None:
+    from types import SimpleNamespace
+
+    from site_visit_workflow.rename import l1_has_finding
+
+    assert l1_has_finding(None) is False
+    assert l1_has_finding(SimpleNamespace(location=None, issue_description=None)) is False
+    assert l1_has_finding(SimpleNamespace(location="Unit 2107", issue_description=None)) is True

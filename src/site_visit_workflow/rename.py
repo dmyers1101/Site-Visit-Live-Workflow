@@ -121,6 +121,19 @@ def build_new_name(
     return f"{stem}{extension}"
 
 
+def l1_has_finding(l1: Any) -> bool:
+    """True only for a validated L1 record that states a location or an issue.
+
+    Added 2026-09-29: run 20260929-portfolio-venue-01 renamed three clips whose
+    L1 had location=null AND issue_description=null to names like
+    "no_location_no_issue.MOV". A name derived from no finding is not a
+    descriptive name, so such clips keep their original name.
+    """
+    if l1 is None:
+        return False
+    return bool((getattr(l1, "location", None) or "").strip() or (getattr(l1, "issue_description", None) or "").strip())
+
+
 def asset_is_eligible(asset_status: str, l1_validated: bool) -> bool:
     """Only a CATALOGUED asset whose L1 validated may be renamed."""
     return asset_status == "CATALOGUED" and bool(l1_validated)

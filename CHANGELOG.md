@@ -10,6 +10,31 @@ this file is not rewritten.
 
 ## [Unreleased]
 
+### Added (2026-09-29) — portfolio rollout + nightly trigger (ADRs 0009–0012)
+
+- `portfolio.py`: read-only recursive walk of the master folder (visit = folder
+  with videos, any depth), uploader resolution (SA never the uploader; first-revision
+  fallback), incremental selection, tab naming, report-due rule.
+- Commands: `list-portfolio` (read-only coverage), `process-portfolio`
+  (`--max-clips`, `--visit-id`, `--dry-run`, `--rename-approved`, `--report`),
+  `migrate-catalog` (copy-only).
+- Master catalog Sheet with 8 appended columns (`state` … `attempt_count`) and a
+  `Reports` registry tab; FAILED clips now get a row in portfolio runs.
+- Per-property report Docs with one tab per visit (Docs `addDocumentTab`,
+  `updateDocumentTabProperties`, tab-scoped `insertText`); newest report on top.
+- `extraction.generate_with_backoff`: exponential backoff on Vertex 429/503 for
+  L1–L3 and the report.
+- Runbooks `nightly-operations.md`, `backfill.md`, `change-guide.md`; research
+  notes `docs-api-tabs.md`, `cloud-scheduler-run-jobs.md`.
+
+### Fixed (2026-09-29)
+
+- Rename gate: a clip whose L1 has neither location nor issue is not renamed
+  (`rename.l1_has_finding`). Three Venue clips renamed this way by run
+  `20260929-portfolio-venue-01` were restored to their `IMG_` names by hand.
+- Drive child listing paginates; the 100-child guard rejected the Alta visit.
+- A failed report is retried automatically on the next run (report-due rule).
+
 ### Fixed (2026-09-29) — defects recorded by run 20260918T100802Z
 
 - **Asset ID in filenames.** `rename.build_new_name` now takes the asset ID and

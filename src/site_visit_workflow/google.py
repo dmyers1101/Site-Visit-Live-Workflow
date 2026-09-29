@@ -71,23 +71,79 @@ class DriveGateway:
         query = f"'{parent_id}' in parents and trashed = false"
         if folder_only:
             query += " and mimeType = 'application/vnd.google-apps.folder'"
+        # Paginated (2026-09-29): the Alta visit folder holds >100 children (videos
+        # plus photos), which the former 100-child guard rejected outright.
+        files: list[dict[str, Any]] = []
+        token: str | None = None
+        while True:
+            try:
+                response = self._service.files().list(
+                    q=query,
+                    spaces="drive",
+                    fields=(
+                        "nextPageToken,files(id,name,mimeType,webViewLink,size,modifiedTime,"
+                        "trashed,capabilities(canDownload,canRename,canDelete))"
+                    ),
+                    supportsAllDrives=True,
+                    includeItemsFromAllDrives=True,
+                    pageSize=1000,
+                    pageToken=token,
+                ).execute()
+            except HttpError as error:
+                raise ExternalServiceError(f"Drive immediate-child listing failed for {parent_id}: {error}") from error
+            files.extend(response.get("files", []))
+            token = response.get("nextPageToken")
+            if not token:
+                return files
+
+    def list_children_paged(self, parent_id: str) -> list[dict[str, Any]]:
+        """Every direct child of `parent_id`, all pages. Read-only.
+
+        Used by the portfolio walk, where a folder may exceed 100 children. The
+        single-visit path keeps its stricter 100-child `_children` guard.
+        Includes `createdTime` and `lastModifyingUser` for uploader capture.
+        """
         try:
-            response = self._service.files().list(
-                q=query,
-                spaces="drive",
-                fields=(
-                    "nextPageToken,files(id,name,mimeType,webViewLink,size,modifiedTime,"
-                    "trashed,capabilities(canDownload,canRename,canDelete))"
-                ),
-                supportsAllDrives=True,
-                includeItemsFromAllDrives=True,
-                pageSize=100,
+            from googleapiclient.errors import HttpError
+        except ImportError as error:
+            raise ExternalServiceError("Google Drive dependency is not installed.") from error
+        items: list[dict[str, Any]] = []
+        token: str | None = None
+        while True:
+            try:
+                response = self._service.files().list(
+                    q=f"'{parent_id}' in parents and trashed = false",
+                    spaces="drive",
+                    fields=(
+                        "nextPageToken,files(id,name,mimeType,createdTime,modifiedTime,size,"
+                        "lastModifyingUser(displayName,emailAddress))"
+                    ),
+                    supportsAllDrives=True,
+                    includeItemsFromAllDrives=True,
+                    pageSize=1000,
+                    pageToken=token,
+                ).execute()
+            except HttpError as error:
+                raise ExternalServiceError(f"Drive paged listing failed for {parent_id}: {error}") from error
+            items.extend(response.get("files", []))
+            token = response.get("nextPageToken")
+            if not token:
+                return items
+
+    def first_revision_user(self, file_id: str) -> dict[str, Any] | None:
+        """The user on a file's first revision (the uploader), or None. Read-only."""
+        try:
+            from googleapiclient.errors import HttpError
+        except ImportError as error:
+            raise ExternalServiceError("Google Drive dependency is not installed.") from error
+        try:
+            response = self._service.revisions().list(
+                fileId=file_id, fields="revisions(id,lastModifyingUser(displayName,emailAddress))", pageSize=1
             ).execute()
-        except HttpError as error:
-            raise ExternalServiceError(f"Drive immediate-child listing failed for {parent_id}: {error}") from error
-        if response.get("nextPageToken"):
-            raise ExternalServiceError("More than 100 immediate children; refine the test folder before use.")
-        return response.get("files", [])
+        except HttpError:
+            return None
+        revisions = response.get("revisions") or []
+        return (revisions[0].get("lastModifyingUser") if revisions else None) or None
 
     def list_visit_folders(self) -> list[VisitFolder]:
         return [
@@ -807,3 +863,134 @@ def insert_document_text(service: Any, document_id: str, text: str) -> dict[str,
         "inserted_characters": len(text),
         "revision_id": response.get("writeControl", {}).get("requiredRevisionId"),
     }
+
+
+# --- Portfolio helpers (2026-09-29, ADR 0010/0011) ---------------------------
+# Boundary: create, read, insert, and retitle ONLY. No function here issues a
+# Drive delete/trash, a Docs deleteTab / deleteContentRange, or a Sheets clear.
+
+
+def find_or_create_file(drive: Any, parent_id: str, title: str, mime_type: str) -> tuple[str, str | None, bool]:
+    """Reuse the newest non-trashed file named `title` directly in `parent_id`, else create it."""
+    try:
+        from googleapiclient.errors import HttpError
+    except ImportError as error:
+        raise ExternalServiceError("Google Drive dependency is not installed.") from error
+    if not parent_id.strip() or not title.strip():
+        raise ValidationError("find_or_create_file requires a parent folder and a title.")
+    service = _raw_drive_service(drive)
+    escaped = title.replace("\\", "\\\\").replace("'", "\\'")
+    try:
+        found = service.files().list(
+            q=f"'{parent_id}' in parents and name = '{escaped}' and mimeType = '{mime_type}' and trashed = false",
+            fields="files(id,webViewLink,createdTime)", orderBy="createdTime desc",
+            supportsAllDrives=True, includeItemsFromAllDrives=True, pageSize=10,
+        ).execute().get("files", [])
+        if found:
+            return found[0]["id"], found[0].get("webViewLink"), False
+        created = service.files().create(
+            body={"name": title, "mimeType": mime_type, "parents": [parent_id]},
+            fields="id,webViewLink", supportsAllDrives=True,
+        ).execute()
+    except HttpError as error:
+        raise ExternalServiceError(f"Drive find-or-create failed for {title!r} in {parent_id}: {error}") from error
+    return created["id"], created.get("webViewLink"), True
+
+
+def read_sheet_records(service: Any, spreadsheet_id: str, tab_name: str) -> list[dict[str, Any]]:
+    """Every data row of a tab as a header-keyed dict. Read-only. Missing tab -> []."""
+    try:
+        from googleapiclient.errors import HttpError
+    except ImportError as error:
+        raise ExternalServiceError("Google Sheets dependency is not installed.") from error
+    try:
+        values = service.spreadsheets().values().get(
+            spreadsheetId=spreadsheet_id, range=f"{tab_name}!A:ZZ"
+        ).execute().get("values", [])
+    except HttpError as error:
+        if "Unable to parse range" in str(error):
+            return []
+        raise ExternalServiceError(f"Sheets read failed for {tab_name}: {error}") from error
+    if not values:
+        return []
+    header = values[0]
+    return [
+        {name: (row[i] if i < len(row) else "") for i, name in enumerate(header)}
+        for row in values[1:]
+        if row and row[0]
+    ]
+
+
+def list_document_tabs(service: Any, document_id: str) -> list[dict[str, Any]]:
+    """Top-level tabs as [{tab_id, title, empty}]. Read-only."""
+    try:
+        from googleapiclient.errors import HttpError
+    except ImportError as error:
+        raise ExternalServiceError("Google Docs dependency is not installed.") from error
+    try:
+        doc = service.documents().get(documentId=document_id, includeTabsContent=True).execute()
+    except HttpError as error:
+        raise ExternalServiceError(f"Docs read failed for {document_id}: {error}") from error
+    tabs = []
+    for tab in doc.get("tabs", []):
+        props = tab.get("tabProperties", {})
+        content = tab.get("documentTab", {}).get("body", {}).get("content", [])
+        text = "".join(
+            run.get("textRun", {}).get("content", "")
+            for block in content for run in block.get("paragraph", {}).get("elements", [])
+        )
+        tabs.append({"tab_id": props.get("tabId"), "title": props.get("title"), "empty": not text.strip()})
+    return tabs
+
+
+def add_document_tab(service: Any, document_id: str, title: str) -> str:
+    """Create one tab and return its tabId."""
+    try:
+        from googleapiclient.errors import HttpError
+    except ImportError as error:
+        raise ExternalServiceError("Google Docs dependency is not installed.") from error
+    try:
+        response = service.documents().batchUpdate(
+            documentId=document_id,
+            body={"requests": [{"addDocumentTab": {"tabProperties": {"title": title}}}]},
+        ).execute()
+    except HttpError as error:
+        raise ExternalServiceError(f"Docs addDocumentTab failed for {document_id}: {error}") from error
+    reply = (response.get("replies") or [{}])[0].get("addDocumentTab", {})
+    tab_id = reply.get("tabProperties", {}).get("tabId")
+    if not tab_id:
+        raise ExternalServiceError(f"Docs addDocumentTab returned no tabId: {response}")
+    return tab_id
+
+
+def retitle_document_tab(service: Any, document_id: str, tab_id: str, title: str) -> None:
+    try:
+        from googleapiclient.errors import HttpError
+    except ImportError as error:
+        raise ExternalServiceError("Google Docs dependency is not installed.") from error
+    try:
+        service.documents().batchUpdate(
+            documentId=document_id,
+            body={"requests": [{"updateDocumentTabProperties": {
+                "tabProperties": {"tabId": tab_id, "title": title}, "fields": "title"}}]},
+        ).execute()
+    except HttpError as error:
+        raise ExternalServiceError(f"Docs tab retitle failed for {document_id}/{tab_id}: {error}") from error
+
+
+def insert_tab_text(service: Any, document_id: str, tab_id: str, text: str) -> dict[str, Any]:
+    """Insert text at index 1 of one tab: the newest report lands on top. insertText only."""
+    try:
+        from googleapiclient.errors import HttpError
+    except ImportError as error:
+        raise ExternalServiceError("Google Docs dependency is not installed.") from error
+    if not text.strip():
+        raise ValidationError("Refusing to write an empty report into the document.")
+    try:
+        service.documents().batchUpdate(
+            documentId=document_id,
+            body={"requests": [{"insertText": {"location": {"index": 1, "tabId": tab_id}, "text": text}}]},
+        ).execute()
+    except HttpError as error:
+        raise ExternalServiceError(f"Docs tab insert failed for {document_id}/{tab_id}: {error}") from error
+    return {"document_id": document_id, "tab_id": tab_id, "inserted_characters": len(text)}

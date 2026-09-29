@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from dataclasses import asdict, replace
 from pathlib import Path
@@ -11,19 +12,25 @@ from .config import (
     PROCESS_FOLDER_REQUIRED_SETTINGS,
     Settings,
     assert_output_targets_resolvable,
+    default_run_id,
     gcs_uri,
 )
 from .errors import ExternalServiceError, ValidationError, WorkflowError
 from .google import (
     DriveGateway,
     StorageGateway,
+    add_document_tab,
     asset_prefix,
     await_transcription,
     docs_service,
     ensure_catalog_spreadsheet,
     ensure_report_document,
     ensure_sheet_tab,
+    insert_tab_text,
+    list_document_tabs,
     read_batch_transcript,
+    read_sheet_records,
+    retitle_document_tab,
     run_prefix,
     runtime_credentials,
     sheets_service,
@@ -74,6 +81,252 @@ def cmd_config_check(_: argparse.Namespace) -> None:
             indent=2,
         )
     )
+
+
+def _catalogued_ids(settings: Settings, sheet_id: str, tab_name: str) -> set[str]:
+    """Row keys (Drive IDs) of rows whose asset_status is CATALOGUED. Read-only."""
+    values = (
+        sheets_service(settings).spreadsheets().values()
+        .get(spreadsheetId=sheet_id, range=f"{tab_name}!A:ZZ").execute().get("values", [])
+    )
+    if not values:
+        return set()
+    header = values[0]
+    if "asset_status" not in header:
+        return set()
+    col = header.index("asset_status")
+    return {row[0] for row in values[1:] if row and len(row) > col and row[col] == "CATALOGUED"}
+
+
+def cmd_list_portfolio(args: argparse.Namespace) -> None:
+    """Read-only coverage report of every visit folder under the master folder."""
+    from .portfolio import inventory_summary, walk_portfolio
+
+    settings = Settings.from_environment(required=("GOOGLE_CLOUD_PROJECT",))
+    root = args.root or os.environ.get("PORTFOLIO_ROOT_ID", "")
+    drive = DriveGateway.from_settings(settings)
+    visits = walk_portfolio(root, drive.list_children_paged)
+    done: set[str] = set()
+    for sheet_id in args.catalog_sheet_id or []:
+        done |= _catalogued_ids(settings, sheet_id, args.tab_name)
+    summary = inventory_summary(visits, done)
+    summary["root_id"] = root
+    summary["catalogued_ids_known"] = len(done)
+    if args.details:
+        summary["visit_details"] = [v.to_dict() for v in visits]
+    print(json.dumps(summary, indent=2, default=str), flush=True)
+
+
+MASTER_CATALOG_TITLE = "Site Visit Master Catalog"
+
+
+def _portfolio_context(args: argparse.Namespace):
+    """Shared setup: settings, Drive, walk, master Sheet, and its current records."""
+    from . import portfolio as pf
+
+    settings = Settings.from_environment(required=("GOOGLE_CLOUD_PROJECT", "GCS_STAGING_BUCKET"))
+    root = (args.root or os.environ.get("PORTFOLIO_ROOT_ID", "")).strip()
+    if not root:
+        raise ValidationError("process-portfolio requires --root or PORTFOLIO_ROOT_ID.")
+    drive = DriveGateway.from_settings(settings)
+    visits = pf.walk_portfolio(root, drive.list_children_paged)
+    sheet_id = (args.catalog_sheet_id or settings.catalog_sheet_id or "").strip()
+    sheets = sheets_service(settings)
+    created = False
+    if not sheet_id:
+        from .google import SPREADSHEET_MIME_TYPE, find_or_create_file
+
+        sheet_id, _, created = find_or_create_file(drive, root, MASTER_CATALOG_TITLE, SPREADSHEET_MIME_TYPE)
+    tab = settings.catalog_tab_name
+    ensure_sheet_tab(sheets, sheet_id, tab)
+    records = {r["row_key"]: r for r in read_sheet_records(sheets, sheet_id, tab)}
+    _emit({"gate": "portfolio-outputs", "root_id": root, "master_catalog_sheet_id": sheet_id,
+           "master_catalog_created": created, "visit_count": len(visits),
+           "clip_count": sum(len(v.clips) for v in visits), "known_rows": len(records)})
+    return settings, drive, sheets, visits, sheet_id, tab, records, root
+
+
+def _uploaders(settings: Settings, drive: DriveGateway, visit) -> dict[str, tuple[str | None, str | None]]:
+    """Uploader per clip, captured BEFORE any rename; revision fallback if the SA is last modifier."""
+    from .portfolio import resolve_uploader
+
+    result = {}
+    for clip in visit.clips:
+        who = resolve_uploader(clip, settings.runtime_service_account)
+        if who == (None, None):
+            who = resolve_uploader(clip, settings.runtime_service_account, drive.first_revision_user(clip.drive_id))
+        result[clip.drive_id] = who
+    return result
+
+
+def _write_visit_report(settings, drive, sheets, sheet_id, tab, visit, prompts_dir, run_id) -> dict[str, Any]:
+    """Gate 7 for one visit: property Doc -> visit tab -> newest report on top -> retitle."""
+    from . import portfolio as pf
+    from . import report as rp
+    from .extraction import build_client
+    from .google import DOCUMENT_MIME_TYPE, find_or_create_file
+
+    rows = [r for r in read_sheet_records(sheets, sheet_id, tab) if r.get("visit_drive_id") == visit.drive_id]
+    if not rows:
+        return {"status": "SKIPPED_NO_ROWS"}
+    docs = docs_service(settings)
+    property_folder = visit.path[:2]
+    doc_parent = _property_folder_id(drive, visit)
+    doc_id, doc_link, doc_created = find_or_create_file(
+        drive, doc_parent, f"{visit.property_name or property_folder[-1]} Site Visit Reports", DOCUMENT_MIME_TYPE
+    )
+    ensure_sheet_tab(sheets, sheet_id, pf.REPORTS_TAB)
+    registry = {r["row_key"]: r for r in read_sheet_records(sheets, sheet_id, pf.REPORTS_TAB)}
+    title = pf.tab_title(rows)
+    tabs = list_document_tabs(docs, doc_id)
+    known = registry.get(visit.drive_id, {})
+    tab_id = known.get("tab_id") if known.get("doc_id") == doc_id else None
+    if tab_id and tab_id not in {t["tab_id"] for t in tabs}:
+        tab_id = None  # a human removed the tab; make a new one rather than fail
+    if not tab_id:
+        claimed = {r.get("tab_id") for r in registry.values() if r.get("doc_id") == doc_id}
+        spare = next((t for t in tabs if t["empty"] and t["tab_id"] not in claimed), None)
+        tab_id = spare["tab_id"] if spare else add_document_tab(docs, doc_id, title)
+    prompt = rp.load_report_prompt(prompts_dir)
+    generated_at = utc_now()
+    folder_label = f"{visit.property_name} / {visit.name}"
+    summary = rp.build_report_summary(run_id, folder_label, rows, generated_at=generated_at,
+                                      new_names=pf.renamed_names(rows))
+    narrative, usage = rp.generate_report_text(build_client(settings), settings, prompt, summary)
+    body = rp.compose_document_text(run_id, folder_label, generated_at, narrative, counts=summary["counts"])
+    insert_tab_text(docs, doc_id, tab_id, body)
+    retitle_document_tab(docs, doc_id, tab_id, title)
+    upsert_catalog_row(sheets, sheet_id, pf.REPORTS_TAB, pf.REPORT_REGISTRY_HEADERS,
+                       [visit.drive_id, visit.property_name or "", visit.name, doc_id, tab_id, title, utc_now()],
+                       visit.drive_id)
+    return {"status": rp.REPORT_STATUS_WRITTEN, "doc_id": doc_id, "doc_web_link": doc_link,
+            "doc_created": doc_created, "tab_id": tab_id, "tab_title": title,
+            "prompt_version": prompt.version, "counts": summary["counts"], "usage": usage}
+
+
+def _property_folder_id(drive: DriveGateway, visit) -> str:
+    """The Drive ID of the visit's Property folder (path segment 2), found by walking up."""
+    service = drive._service  # noqa: SLF001 - read-only parent lookup
+    current = visit.drive_id
+    chain = []
+    for _ in range(len(visit.path)):
+        meta = service.files().get(fileId=current, fields="id,parents", supportsAllDrives=True).execute()
+        chain.append(meta["id"])
+        parents = meta.get("parents") or []
+        if not parents:
+            break
+        current = parents[0]
+    # chain = [visit, ..., state]; the Property folder is len(path)-2 steps above the visit.
+    index = len(visit.path) - 2
+    return chain[index] if 0 <= index < len(chain) else visit.drive_id
+
+
+def cmd_process_portfolio(args: argparse.Namespace) -> None:
+    """Every visit under the master folder: new clips only, then one report per touched visit.
+
+    Reuses `cmd_process_folder` per visit (Gates 1-6) with portfolio hooks, so
+    there is exactly one implementation of the gates. Gate 7 runs here, per
+    visit, over ALL of that visit's rows in the master Sheet.
+    """
+    from types import SimpleNamespace
+
+    from . import portfolio as pf
+
+    settings, drive, sheets, visits, sheet_id, tab, records, root = _portfolio_context(args)
+    run_id = (args.run_id or "").strip() or default_run_id()
+    budget = args.max_clips
+    results = []
+    only = set(args.visit_id or [])
+    registry: dict[str, dict[str, Any]] = {}
+    if args.report and not args.dry_run:
+        ensure_sheet_tab(sheets, sheet_id, pf.REPORTS_TAB)
+        registry = {r["row_key"]: r for r in read_sheet_records(sheets, sheet_id, pf.REPORTS_TAB)}
+    for index, visit in enumerate(visits, start=1):
+        if only and visit.drive_id not in only:
+            continue
+        skip, attempts = pf.select_pending(visit, records)
+        pending = len(visit.clips) - len(skip)
+        entry: dict[str, Any] = {"visit": visit.name, "property": visit.property_name,
+                                 "visit_drive_id": visit.drive_id, "pending": pending, "processed": 0}
+        if pending == 0:
+            entry["status"] = "NOTHING_PENDING"
+        elif budget is not None and budget <= 0:
+            entry["status"] = "DEFERRED_BUDGET"
+        else:
+            os.environ["DRIVE_SHARED_FOLDER_ID"] = visit.drive_id
+            os.environ["DRIVE_OUTPUT_PARENT_ID"] = visit.drive_id
+            visit_args = SimpleNamespace(
+                dry_run=args.dry_run, run_id=f"{run_id}-v{index:02d}", catalog_sheet_id=sheet_id,
+                report_doc_id="", report=False, rename_approved=args.rename_approved,
+                sheet_name=tab, prompts_dir=args.prompts_dir, work_dir=None, asset_id=None,
+                limit=budget, poll_timeout_seconds=args.poll_timeout_seconds, output=None,
+                skip_asset_ids=skip,
+                row_extras=pf.row_extras(visit, _uploaders(settings, drive, visit), attempts),
+            )
+            try:
+                summary = cmd_process_folder(visit_args)
+                entry["status_counts"] = summary.get("status_counts", {})
+                entry["processed"] = len(summary.get("assets", []))
+                if budget is not None:
+                    budget -= entry["processed"]
+                entry["status"] = "PROCESSED"
+            except Exception as error:  # noqa: BLE001 - one visit must not end the run
+                entry["status"] = "FAILED"
+                entry["error"] = _sanitized(error)
+        # Gate 7 self-heals: report when this run processed clips OR the visit's
+        # rows are newer than its last written report (e.g. a prior report failed).
+        if args.report and not args.dry_run:
+            visit_rows = [r for r in read_sheet_records(sheets, sheet_id, tab)
+                          if r.get("visit_drive_id") == visit.drive_id]
+            if pf.report_is_due(visit_rows, registry.get(visit.drive_id), entry["processed"]):
+                try:
+                    entry["report"] = _write_visit_report(
+                        settings, drive, sheets, sheet_id, tab, visit, args.prompts_dir, run_id)
+                except Exception as error:  # noqa: BLE001 - a report failure never fails the run
+                    entry["report"] = {"status": "FAILED", "error": _sanitized(error)}
+        results.append(entry)
+        _emit({"gate": "portfolio-visit", "run_id": run_id, **entry})
+    _emit({"gate": "portfolio-summary", "run_id": run_id, "root_id": root,
+           "master_catalog_sheet_id": sheet_id, "dry_run": args.dry_run,
+           "rename_approved_flag": args.rename_approved, "max_clips": args.max_clips,
+           "visits": results})
+
+
+def cmd_migrate_catalog(args: argparse.Namespace) -> None:
+    """Copy rows from an old per-visit catalog into the master Sheet. Never deletes the source.
+
+    Portfolio columns are filled from the walk (state/property/visit/uploader).
+    A row already present in the master Sheet is left alone.
+    """
+    from . import portfolio as pf
+    from .catalog import FULL_CATALOG_HEADERS
+
+    settings, drive, sheets, visits, sheet_id, tab, records, _ = _portfolio_context(args)
+    by_clip = {c.drive_id: v for v in visits for c in v.clips}
+    moved, skipped = 0, 0
+    for row in read_sheet_records(sheets, args.source_sheet_id, args.source_tab):
+        key = row.get("row_key", "")
+        if not key or key in records:
+            skipped += 1
+            continue
+        visit = by_clip.get(key)
+        if visit is not None:
+            clip = next(c for c in visit.clips if c.drive_id == key)
+            uploader = _uploaders(settings, drive, SimpleNamespaceVisit(visit, clip))[key]
+            row.update(pf.row_extras(visit, {key: uploader}, {})[key])
+        values = [row.get(name, "") for name in FULL_CATALOG_HEADERS]
+        upsert_catalog_row(sheets, sheet_id, tab, FULL_CATALOG_HEADERS, values, key)
+        moved += 1
+    _emit({"gate": "migrate-catalog", "source_sheet_id": args.source_sheet_id,
+           "master_catalog_sheet_id": sheet_id, "copied": moved, "skipped_existing": skipped})
+
+
+class SimpleNamespaceVisit:
+    """A one-clip view of a visit, so `_uploaders` can resolve a single clip."""
+
+    def __init__(self, visit, clip) -> None:
+        self.clips = (clip,)
+        self.drive_id = visit.drive_id
 
 
 def cmd_list_visits(_: argparse.Namespace) -> None:
@@ -488,7 +741,7 @@ def _gate4_extract(
     return outcome
 
 
-def cmd_process_folder(args: argparse.Namespace) -> None:
+def cmd_process_folder(args: argparse.Namespace) -> dict[str, Any]:
     """Run Gates 1 to 7 over the configured Drive folder, one asset at a time.
 
     Gates 1-5 are discovery, media, transcription, extraction, and the catalog
@@ -555,7 +808,18 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
         "dry_run": dry_run,
     })
 
-    assets = select_assets(manifest, asset_id=args.asset_id, limit=args.limit)
+    # Portfolio hooks (ADR 0009). Absent on a plain process-folder run, so its
+    # behaviour is unchanged. `skip_asset_ids` is applied BEFORE `--limit` so
+    # the clip budget is spent only on clips that still need work.
+    skip_ids: set[str] = set(getattr(args, "skip_asset_ids", None) or ())
+    row_extras: dict[str, dict[str, Any]] = getattr(args, "row_extras", None) or {}
+    pending_files = tuple(a for a in manifest.media_files if a.drive_id not in skip_ids)
+    if not pending_files:
+        _emit({"gate": "select", "run_id": settings.run_id, "pending": 0,
+               "note": "Every clip in this folder is already catalogued or under review."})
+        return {"run_id": settings.run_id, "status_counts": {}, "assets": [], "catalog_rows": []}
+    pending_manifest = replace(manifest, media_files=pending_files) if skip_ids else manifest
+    assets = select_assets(pending_manifest, asset_id=args.asset_id, limit=args.limit)
     client = None
     sheets = None
     # Resolved ONCE, here, before the asset loop. Everything downstream uses
@@ -698,7 +962,7 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
                 asset.original_name,
                 getattr(l1_parsed, "suggested_filename", None),
                 asset_status,
-                l1_parsed is not None,
+                rn.l1_has_finding(l1_parsed),
                 rename_authorized,
                 dry_run=dry_run,
                 taken_names=folder_names,
@@ -735,6 +999,7 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
                 l2=layers.get("l2_parsed"),
                 l3=layers.get("l3_parsed"),
                 drive_rename_decision=rename_decision,
+                extras=row_extras.get(asset.drive_id),
             )
             catalog_rows.append(row)
             storage.write_json(f"{evidence_prefix}/catalog-row.json", row)
@@ -755,6 +1020,20 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
         except Exception as error:  # noqa: BLE001 - one asset must not end the run
             summary["asset_status"] = ASSET_STATUS_FAILED
             summary["error"] = _sanitized(error)
+        if summary.get("asset_status") == ASSET_STATUS_FAILED and row_extras and sheets is not None:
+            # Portfolio runs record a FAILED row so the Sheet shows the clip and
+            # its attempt_count, which caps nightly retries. Best effort only.
+            try:
+                failed_row = build_catalog_row(
+                    asset=asset, visit_drive_id=manifest.visit.drive_id, run_id=settings.run_id,
+                    asset_status=ASSET_STATUS_FAILED, transcription={}, updated_at=utc_now(),
+                    evidence_gcs_prefix=gcs_uri(storage.bucket_name, evidence_prefix),
+                    drive_rename_decision="NOT_RENAMED_FAILED", extras=row_extras.get(asset.drive_id),
+                )
+                upsert_catalog_row(sheets, catalog_sheet_id, tab_name, FULL_CATALOG_HEADERS,
+                                   row_values(failed_row), failed_row["row_key"])
+            except Exception as row_error:  # noqa: BLE001
+                summary["failed_row_error"] = _sanitized(row_error)
         summaries.append(summary)
         _emit(summary)
 
@@ -838,8 +1117,10 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
     except WorkflowError as error:
         run_summary["run_summary_write_error"] = _sanitized(error)
     _emit(run_summary)
-    if args.output:
+    if getattr(args, "output", None):
         write_json(args.output, run_summary)
+    run_summary["catalog_rows"] = catalog_rows
+    return run_summary
 
 
 def parser() -> argparse.ArgumentParser:
@@ -861,6 +1142,47 @@ def parser() -> argparse.ArgumentParser:
         "list-visits",
         help="Explicitly list only immediate visit folders in the configured Drive folder.",
     ).set_defaults(func=cmd_list_visits)
+
+    portfolio = commands.add_parser(
+        "list-portfolio",
+        help="Read-only: walk the master folder and report every visit folder and clip count.",
+    )
+    portfolio.add_argument("--root", default="", help="Master folder ID (default: PORTFOLIO_ROOT_ID).")
+    portfolio.add_argument(
+        "--catalog-sheet-id", action="append", default=[],
+        help="Catalog Sheet(s) whose CATALOGUED rows count as done. Repeatable.",
+    )
+    portfolio.add_argument("--tab-name", default="Catalog")
+    portfolio.add_argument("--details", action="store_true", help="Include per-clip detail.")
+    portfolio.set_defaults(func=cmd_list_portfolio)
+
+    run_portfolio = commands.add_parser(
+        "process-portfolio",
+        help="Every visit under the master folder: new clips only, then one report per touched visit.",
+    )
+    run_portfolio.add_argument("--root", default="", help="Master folder ID (default: PORTFOLIO_ROOT_ID).")
+    run_portfolio.add_argument("--catalog-sheet-id", default="",
+                               help="Master Sheet ID (default: CATALOG_SHEET_ID; created in --root if empty).")
+    run_portfolio.add_argument("--run-id", default="")
+    run_portfolio.add_argument("--max-clips", type=int, default=None,
+                               help="Clip budget for this run; leftovers roll to the next run.")
+    run_portfolio.add_argument("--visit-id", action="append", default=[],
+                               help="Limit to these visit folder IDs (repeatable). Default: all.")
+    run_portfolio.add_argument("--dry-run", action="store_true")
+    run_portfolio.add_argument("--rename-approved", action="store_true")
+    run_portfolio.add_argument("--report", action="store_true")
+    run_portfolio.add_argument("--prompts-dir", type=Path, default=Path("prompts"))
+    run_portfolio.add_argument("--poll-timeout-seconds", type=int, default=1800)
+    run_portfolio.set_defaults(func=cmd_process_portfolio)
+
+    migrate = commands.add_parser(
+        "migrate-catalog", help="Copy rows from an old catalog into the master Sheet. Never deletes."
+    )
+    migrate.add_argument("--root", default="")
+    migrate.add_argument("--catalog-sheet-id", default="")
+    migrate.add_argument("--source-sheet-id", required=True)
+    migrate.add_argument("--source-tab", default="Catalog")
+    migrate.set_defaults(func=cmd_migrate_catalog)
 
     process = commands.add_parser(
         "process-folder",

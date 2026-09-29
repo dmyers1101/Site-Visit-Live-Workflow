@@ -284,7 +284,8 @@ def _generate(client: Any, settings: Settings, layer: str, prompt_text: str) -> 
     except ImportError as error:
         raise ExternalServiceError("google-genai is not installed.") from error
     try:
-        response = client.models.generate_content(
+        response = generate_with_backoff(
+            client,
             model=settings.vertex_model,
             contents=prompt_text,
             config=types.GenerateContentConfig(
@@ -472,3 +473,28 @@ def run_l3(
         ),
         refinement,
     )
+
+
+RETRYABLE_MARKERS = ("429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE")
+
+
+def generate_with_backoff(client: Any, attempts: int = 6, base_seconds: float = 10.0, sleep: Any = None, **kwargs: Any) -> Any:
+    """`client.models.generate_content(**kwargs)` with exponential backoff on quota/unavailable.
+
+    Added 2026-09-29: portfolio run 20260929-portfolio-venue-01 hit Vertex 429
+    on the report call. Without a retry, a transient quota error in L1-L3 would
+    mark a clip NEEDS_REVIEW, which the nightly run treats as terminal. Waits
+    10, 20, 40, 80, 160s; any other error is raised immediately.
+    """
+    import time
+
+    wait = sleep or time.sleep
+    for attempt in range(attempts):
+        try:
+            return client.models.generate_content(**kwargs)
+        except Exception as error:  # noqa: BLE001 - classified below
+            text = str(error)
+            if attempt == attempts - 1 or not any(marker in text for marker in RETRYABLE_MARKERS):
+                raise
+            wait(base_seconds * (2 ** attempt))
+    raise ExternalServiceError("unreachable")  # pragma: no cover

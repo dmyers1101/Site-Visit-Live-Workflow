@@ -34,7 +34,7 @@ from typing import Any
 
 from .config import Settings
 from .errors import ExternalServiceError, ValidationError
-from .extraction import _VERSION_PATTERN, _fenced_block, _sdk_version
+from .extraction import _VERSION_PATTERN, _fenced_block, _sdk_version, generate_with_backoff
 from .models import CODE_FENCE_MARKER, utc_now
 
 REPORT_PROMPT_FILE = "report-synthesis.md"
@@ -189,7 +189,7 @@ def generate_report_text(
         raise ExternalServiceError("google-genai is not installed.") from error
     contents = prompt.instruction_text + "\n\nINPUT:\n" + json.dumps(summary, sort_keys=True)
     try:
-        response = client.models.generate_content(
+        response = generate_with_backoff(client,
             model=settings.vertex_model,
             contents=contents,
             config=types.GenerateContentConfig(temperature=0.0),
