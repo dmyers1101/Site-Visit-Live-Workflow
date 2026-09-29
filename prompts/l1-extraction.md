@@ -1,6 +1,6 @@
 # L1 extraction prompt
 
-**Semantic version:** 1.2.0
+**Semantic version:** 1.3.0
 
 ## Purpose
 
@@ -25,6 +25,12 @@ would have failed any clip with no identifiable location. The validator in
 empty string is still rejected, so "no location was stated" stays
 distinguishable from "the model dropped the field."
 
+**Changed in 1.3.0 (2026-09-29):** `suggested_filename` must not contain the
+source_asset_identifier or any other identifier. In run 20260918T100802Z, L1
+returned `<drive-id>_multiple_hallway_issues`, which Gate 6 then applied. The
+rule is also enforced in code: `rename.build_new_name` strips the asset ID
+before sanitizing, so the prompt text is not the only guard (ADR 0008).
+
 ## Expected input JSON/text
 
 ```json
@@ -41,8 +47,11 @@ Do not return severity, priority, trade, task, report, diagnosis, or actions.
 If the transcript does not state a location, return null for location rather
 than guessing or returning an empty string. If it states no issue, return null
 for issue_description. suggested_filename and confidence_note are always
-required non-empty strings. State uncertainty in confidence_note; do not
-fabricate missing facts.
+required non-empty strings. suggested_filename is a short descriptive name
+built from the location and issue, words joined by underscores, with no file
+extension, and it must never contain source_asset_identifier, a Drive ID, or
+the original file name. State uncertainty in confidence_note; do not fabricate
+missing facts.
 ```
 
 ## Output schema

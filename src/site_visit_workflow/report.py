@@ -11,7 +11,8 @@ source video.
 Unlike L1/L2/L3 this layer is deliberately UNSTRUCTURED: the output is prose
 for a human, so there is no `response_schema` and no strict JSON parse. The
 only validation is "non-empty, and not a code fence", per
-`prompts/report-synthesis.md` (0.1.0, PLACEHOLDER).
+`prompts/report-synthesis.md` (0.2.0, PLACEHOLDER). Clip counts are written
+into the Doc by `format_counts_line`, never by the model.
 
 How to update this later
 ------------------------
@@ -203,14 +204,38 @@ def generate_report_text(
     return validate_report_text(response.text or ""), usage
 
 
+def format_counts_line(counts: dict[str, Any]) -> str:
+    """The clip counts, written by code. The model never totals these.
+
+    Run 20260918T100802Z's report said "15 findings, 2 need review" of 16 clips
+    and then "one clip could not be assessed" - the model re-derived counts it
+    had been handed and got them wrong. Numbers now come only from here.
+    """
+    line = (
+        f"Clips reviewed: {counts.get('total', 0)}. "
+        f"Catalogued with findings: {counts.get('catalogued', 0)}. "
+        f"Needs human review: {counts.get('needs_review', 0)}. "
+        f"Failed: {counts.get('failed', 0)}."
+    )
+    if counts.get("other"):
+        line += f" Other status: {counts['other']}."
+    return line
+
+
 def compose_document_text(
-    run_id: str, folder_name: str, generated_at: str, narrative: str
+    run_id: str,
+    folder_name: str,
+    generated_at: str,
+    narrative: str,
+    counts: dict[str, Any] | None = None,
 ) -> str:
-    """Title line, run ID, date, then the model's narrative. Inserted as one block."""
+    """Title, run ID, date, code-computed counts, then the model's narrative."""
+    counts_block = f"{format_counts_line(counts)}\n\n" if counts is not None else ""
     return (
         f"Site visit report - {folder_name}\n"
         f"Run ID: {run_id}\n"
         f"Generated: {generated_at}\n\n"
+        f"{counts_block}"
         f"{narrative.strip()}\n\n"
     )
 
@@ -267,7 +292,9 @@ def run_report(
         settings.run_id, folder_name, rows, generated_at=generated_at, new_names=new_names
     )
     narrative, usage = generate_report_text(client, settings, prompt, summary)
-    body = compose_document_text(settings.run_id, folder_name, generated_at, narrative)
+    body = compose_document_text(
+        settings.run_id, folder_name, generated_at, narrative, counts=summary["counts"]
+    )
     insert_document_text(docs, document_id, body)
     return ReportRecord(
         run_id=settings.run_id,

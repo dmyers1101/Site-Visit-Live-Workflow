@@ -600,6 +600,11 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
     catalog_rows: list[dict[str, Any]] = []
     rename_outcomes: list[rn.RenameOutcome] = []
     new_drive_names: dict[str, str | None] = {}
+    # Every name currently held in the folder, for Gate 6's collision check.
+    # The whole manifest plus excluded items, not just the --limit selection.
+    folder_names: set[str] = {item.original_name for item in manifest.media_files} | {
+        str(item.get("name")) for item in manifest_doc["excluded_items"] if isinstance(item, dict) and item.get("name")
+    }
     for index, asset in enumerate(assets, start=1):
         # Sequential by design: conservative, documented concurrency of one.
         evidence_prefix = asset_prefix(settings, asset.drive_id)
@@ -696,7 +701,11 @@ def cmd_process_folder(args: argparse.Namespace) -> None:
                 l1_parsed is not None,
                 rename_authorized,
                 dry_run=dry_run,
+                taken_names=folder_names,
             )
+            if rename_outcome.rename_status == rn.RENAME_RENAMED and rename_outcome.new_drive_name:
+                folder_names.discard(asset.original_name)
+                folder_names.add(rename_outcome.new_drive_name)
             rename_outcomes.append(rename_outcome)
             summary["drive_rename"] = rename_outcome.to_dict()
             new_drive_names[asset.drive_id] = (

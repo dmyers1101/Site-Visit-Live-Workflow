@@ -44,13 +44,15 @@ operator workstation.
 
 | Thing | Location |
 | --- | --- |
-| Primary working folder | `C:\Users\SHIRA\My Drive\Site Visit App\apps\live-workflow` |
+| Primary working folder | `<user home>\My Drive\Site Visit App\apps\live-workflow` (varies by device, e.g. `C:\Users\SHIRA\…`, `C:\Users\dmyer\…`) |
 | GitHub | `dmyers1101/Site-Visit-Live-Workflow`, branch `main` |
 | GCP project | `shir-sitevisit` (number `847827326811`) |
 | Cloud Run Job | `site-visit-workflow`, region `us-central1` |
 | Test video library (Drive) | `1Q_VVIbFKSZQCNVsaNW8pxxAMAwbIAoMF` — "2026-08 Executive - Parth Vaidya" |
 | Staging bucket | `gs://shir-sitevisit-staging` (US, uniform access, no delete) |
-| Catalog Sheet | `158eA2K5FgGc4dQ43xHxdTuri-KOwPSuNn8qQqsasBy0`, tab `Catalog` |
+| Catalog Sheet (current; SA-created in Shared Drive 2026-09-18) | `1GW3fg8IeobZn9uhs_4W5yOUUURISI0Ll0xRYhpOu22U` |
+| Report Doc (SA-created 2026-09-18) | `1l2htL4V3Lyy8nI1jiw00nr-pCM-qEWH6Eh9eN4W4ZTU` |
+| Legacy Catalog Sheet (09-17 runs; individually owned) | `158eA2K5FgGc4dQ43xHxdTuri-KOwPSuNn8qQqsasBy0`, tab `Catalog` |
 | Image repo | `us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit` |
 
 The local folder and GitHub `main` hold the same files. A second worktree exists
@@ -116,7 +118,7 @@ memory limit, and the work directory is never cleaned. Use `--memory=8Gi
 
 ## Prompts are versioned governance artifacts
 
-`prompts/l1-extraction.md` (1.2.0), `l2-enrichment.md` (1.1.0),
+`prompts/l1-extraction.md` (1.3.0), `l2-enrichment.md` (1.1.0),
 `l3-refinement.md` (1.2.0) are read from disk at runtime and are shipped in the
 image by `COPY prompts ./prompts`. Changing a prompt means bumping its version
 and updating the validator and tests first. The layer boundaries are enforced in
@@ -128,7 +130,7 @@ note. L2 adds trade, area type, severity (integer 1–4), recommended action. L3
 adds responsible party and urgency window and may **not** overwrite upstream
 values — it reports disagreement via `disputed_prior_fields`.
 
-## Current verified state (2026-09-17)
+## Current verified state (2026-09-18)
 
 The pipeline has been run end to end against the full test library.
 
@@ -138,6 +140,7 @@ The pipeline has been run end to end against the full test library.
 | `20260917T072151Z` | 16 assets | 13 catalogued, 3 needs-review |
 | `20260917T073809Z` | 16 assets | 9 failed on Speech 429 quota — fixed with backoff |
 | `20260917T075400Z` | 16 assets | **14 catalogued, 2 needs-review, 0 failed** |
+| `20260918T100802Z` | 16 assets, `--rename-approved --report` | 14 catalogued + renamed, 2 needs-review, report Doc written — `docs/evidence/20260918-e2e-full-run/RESULT.md` |
 
 The catalog Sheet holds exactly 16 rows, one per video, after four runs. Every
 upsert in the final run was an UPDATE, so the idempotent row key works.
@@ -158,13 +161,17 @@ failing, but the underlying quota is still finite.
   explanation in `enrichment_note`. Widening needs an ADR.
 - **No GCS lifecycle policy.** Artifacts accumulate and the service account
   cannot delete them. Cleanup is a separate, human-authorized action (ADR 0005).
-- **Catalog Sheet is owned by an individual account**, so it leaves with that
-  account. A Shared Drive home is the likely long-term fix (ADR 0007).
+- **Catalog Sheet ownership — resolved for new runs (2026-09-18):** the SA now
+  creates the Sheet/Doc in the Shared Drive. The legacy `158eA2…` Sheet is still
+  individually owned.
+- **Open from the 09-18 run** (see its RESULT.md): L1 can embed the Drive ID in
+  `suggested_filename`; report counts are model-computed and were wrong; no
+  sibling-name collision check in Gate 6; the report Doc is append-only.
 - **Diagrams under `docs/diagrams/` are stale** — they predate `process-folder`
   and still show the single-asset, approval-per-write flow.
-- **The service account is not a member of the Shared Drive** (`drives.get`
-  returns 404); it is shared on the folder only. This is the least-privilege
-  state and is intentional.
+- **Corrected 2026-09-18:** the service account CAN create and rename files in
+  the Shared Drive (`canAddChildren: true`). `drives.get` returning 404 only
+  means it cannot enumerate the drive object, not that it cannot write.
 
 ## How to update this later
 

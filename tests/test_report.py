@@ -18,6 +18,7 @@ from site_visit_workflow.report import (
     REPORT_PROMPT_FILE,
     build_report_summary,
     compose_document_text,
+    format_counts_line,
     load_report_prompt,
     validate_report_text,
 )
@@ -146,3 +147,23 @@ def test_the_document_block_carries_the_title_run_id_and_date() -> None:
     assert "Run ID: run-1" in body
     assert "Generated: 2026-09-18T00:00:00+00:00" in body
     assert body.rstrip().endswith("Narrative.")
+
+
+def test_counts_are_written_by_code_above_the_narrative() -> None:
+    counts = {"total": 16, "catalogued": 14, "needs_review": 2, "failed": 0, "other": 0}
+
+    body = compose_document_text("run-1", "Alma", "2026-09-29T00:00:00+00:00", "Narrative.", counts)
+
+    line = format_counts_line(counts)
+    assert line == (
+        "Clips reviewed: 16. Catalogued with findings: 14. Needs human review: 2. Failed: 0."
+    )
+    assert body.index(line) < body.index("Narrative.")
+
+
+def test_the_report_prompt_no_longer_asks_the_model_for_counts() -> None:
+    prompt = load_report_prompt(PROMPTS_DIR)
+
+    assert prompt.version == "0.2.0"
+    assert "how many clips were reviewed" not in prompt.instruction_text
+    assert "Do not state any" in prompt.instruction_text

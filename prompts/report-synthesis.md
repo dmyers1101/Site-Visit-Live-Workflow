@@ -1,9 +1,15 @@
 # Report synthesis prompt — PLACEHOLDER
 
-**Semantic version:** 0.1.0
+**Semantic version:** 0.2.0
 **Status:** **PLACEHOLDER.** Deliberately simple. Written to prove the Google
 Docs leg of the pipeline works end to end, not to produce a report anyone would
 send to an owner. Expect to replace it wholesale.
+
+**Changed in 0.2.0 (2026-09-29):** the model no longer states clip counts.
+Run 20260918T100802Z's report mis-totalled them (15 + 2 of 16, then "one clip
+could not be assessed"). `report.py` now writes a code-computed counts line
+above the narrative (`format_counts_line`), and the overview paragraph no
+longer asks for numbers.
 
 ## Purpose
 
@@ -47,8 +53,10 @@ property manager. Use only the findings supplied. Write plain prose. Do not
 use markdown, headings, bullets, or code fences.
 
 Structure it as:
-A one-paragraph overview stating how many clips were reviewed, how many
-produced findings, and how many need human review.
+A one-paragraph overview of the visit's overall condition. Do not state any
+count or total of clips, findings, or reviews anywhere in the report; the
+counts are printed above your text by the system and must not be repeated
+or recalculated.
 Then a paragraph on the most urgent items, defined as severity 1 and 2,
 naming the location and the issue for each.
 Then a short paragraph on routine items, severity 3 and 4, summarised rather

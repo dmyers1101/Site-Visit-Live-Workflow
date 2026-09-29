@@ -24,6 +24,7 @@ from site_visit_workflow.rename import (
     RENAME_SKIPPED_NO_SUGGESTION,
     asset_is_eligible,
     build_new_name,
+    deduplicate_name,
     execute_rename,
     plan_rename,
     rename_is_authorized,
@@ -262,3 +263,39 @@ def test_the_catalog_row_key_is_unaffected_by_a_rename() -> None:
 
 def test_an_unapproved_run_keeps_the_historical_proposal_wording() -> None:
     assert _row("IMG_0001.MOV", None)["drive_rename_decision"] == RENAME_DECISION
+
+
+# --- 2026-09-29: asset-ID stripping and sibling collisions ----------------
+
+
+def test_the_asset_id_is_stripped_from_a_suggestion() -> None:
+    asset_id = "1p-9pppEYKrgVPVIlG-dSp9Df7u4EstOw"
+
+    new_name = build_new_name("IMG_3651.MOV", f"{asset_id}_multiple_hallway_issues", asset_id)
+
+    assert new_name == "multiple_hallway_issues.MOV"
+
+
+def test_a_suggestion_that_is_only_the_asset_id_is_skipped() -> None:
+    assert build_new_name("IMG_0001.MOV", "abc123", "abc123") is None
+
+
+def test_deduplicate_name_appends_the_next_free_counter() -> None:
+    taken = {"roof_leak.MOV", "ROOF_LEAK_2.mov"}
+
+    assert deduplicate_name("roof_leak.MOV", taken) == "roof_leak_3.MOV"
+    assert deduplicate_name("gym_door.MOV", taken) == "gym_door.MOV"
+
+
+def test_a_colliding_rename_gets_a_suffix_not_a_duplicate() -> None:
+    drive = RecordingDrive()
+    taken = {"IMG_0002.MOV", "kitchen-leak.MOV"}
+
+    outcome = execute_rename(
+        drive, "id-2", "IMG_0002.MOV", "kitchen-leak", "CATALOGUED", True,
+        authorized=True, taken_names=taken,
+    )
+
+    assert outcome.rename_status == RENAME_RENAMED
+    assert outcome.new_drive_name == "kitchen-leak_2.MOV"
+    assert drive.calls == [("id-2", "kitchen-leak_2.MOV")]

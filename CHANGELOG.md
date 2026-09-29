@@ -10,6 +10,24 @@ this file is not rewritten.
 
 ## [Unreleased]
 
+### Fixed (2026-09-29) — defects recorded by run 20260918T100802Z
+
+- **Asset ID in filenames.** `rename.build_new_name` now takes the asset ID and
+  strips it from the L1 suggestion before sanitizing; `prompts/l1-extraction.md`
+  bumped to 1.3.0 with an explicit rule against identifiers in
+  `suggested_filename`.
+- **Wrong counts in the report.** Clip counts are now written into the Doc by
+  `report.format_counts_line` (code), above the narrative;
+  `prompts/report-synthesis.md` bumped to 0.2.0 and forbids the model from
+  stating any count.
+- **Sibling-name collisions.** Gate 6 tracks every name in the folder (all
+  manifest media plus excluded items) and `rename.deduplicate_name` appends
+  `_2`, `_3`, ... on a case-insensitive collision.
+- `docs/HANDOFF.md` brought up to date with the 09-18 run (new Sheet/Doc IDs,
+  Shared Drive write capability confirmed, per-device working path).
+
+Not yet deployed: needs an image rebuild and a verification run.
+
 Run of 2026-09-18: Gate 6 (approval-gated Drive rename) and Gate 7 (Google Docs
 report) added, and the run's output files become self-provisioned. Operator
 authorization: rename the Drive source videos in this run; create the Sheet and

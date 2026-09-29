@@ -88,7 +88,21 @@ def sanitize_stem(suggested_filename: str) -> str:
     return stem
 
 
-def build_new_name(original_name: str, suggested_filename: str | None) -> str | None:
+def _strip_asset_id(suggested_filename: str, asset_id: str | None) -> str:
+    """Remove the Drive asset ID if the model baked it into its suggestion.
+
+    Observed in run 20260918T100802Z: L1 returned
+    "<drive-id>_multiple_hallway_issues". An identifier is never a descriptive
+    name, so it is removed here in code rather than trusted to prompt text.
+    """
+    if not asset_id or not asset_id.strip():
+        return suggested_filename
+    return suggested_filename.replace(asset_id.strip(), " ")
+
+
+def build_new_name(
+    original_name: str, suggested_filename: str | None, asset_id: str | None = None
+) -> str | None:
     """Compose the new Drive name, or None meaning "skip, do not rename".
 
     The ORIGINAL file's extension is preserved exactly, including its case: the
@@ -100,7 +114,7 @@ def build_new_name(original_name: str, suggested_filename: str | None) -> str | 
         raise ValidationError("A rename requires the file's original Drive name.")
     if not suggested_filename or not isinstance(suggested_filename, str):
         return None
-    stem = sanitize_stem(suggested_filename)
+    stem = sanitize_stem(_strip_asset_id(suggested_filename, asset_id))
     if not stem:
         return None
     extension = PurePosixPath(original_name.strip()).suffix
@@ -110,6 +124,26 @@ def build_new_name(original_name: str, suggested_filename: str | None) -> str | 
 def asset_is_eligible(asset_status: str, l1_validated: bool) -> bool:
     """Only a CATALOGUED asset whose L1 validated may be renamed."""
     return asset_status == "CATALOGUED" and bool(l1_validated)
+
+
+def deduplicate_name(new_name: str, taken_names: set[str] | None) -> str:
+    """Return `new_name`, or `stem_2.ext`, `stem_3.ext`... if a sibling holds it.
+
+    Drive tolerates duplicate names, so a collision would not error - it would
+    silently leave two clips with the same name. Comparison is case-insensitive
+    so "Roof.MOV" and "roof.MOV" count as a collision.
+    """
+    if not taken_names:
+        return new_name
+    taken = {name.lower() for name in taken_names}
+    if new_name.lower() not in taken:
+        return new_name
+    path = PurePosixPath(new_name)
+    stem, extension = new_name[: len(new_name) - len(path.suffix)], path.suffix
+    counter = 2
+    while f"{stem}_{counter}{extension}".lower() in taken:
+        counter += 1
+    return f"{stem}_{counter}{extension}"
 
 
 def rename_is_authorized(env_flag: bool, cli_flag: bool) -> bool:
@@ -173,7 +207,7 @@ def plan_rename(
         return RenameOutcome(asset_id, RENAME_SKIPPED_NOT_APPROVED, original_drive_name)
     if not asset_is_eligible(asset_status, l1_validated):
         return RenameOutcome(asset_id, RENAME_SKIPPED_ASSET_NOT_ELIGIBLE, original_drive_name)
-    if build_new_name(original_drive_name, suggested_filename) is None:
+    if build_new_name(original_drive_name, suggested_filename, asset_id) is None:
         return RenameOutcome(asset_id, RENAME_SKIPPED_NO_SUGGESTION, original_drive_name)
     return RenameOutcome(asset_id, RENAME_RENAMED, original_drive_name)
 
@@ -187,6 +221,7 @@ def execute_rename(
     l1_validated: bool,
     authorized: bool,
     dry_run: bool = False,
+    taken_names: set[str] | None = None,
 ) -> RenameOutcome:
     """Gate 6 for one asset: plan, then rename only when the plan says RENAMED.
 
@@ -194,6 +229,10 @@ def execute_rename(
     with every other gate. `original_drive_name` is the DISCOVERY-time name and
     is passed through unchanged, so the catalogue keeps the name the file had
     when the run started.
+
+    `taken_names` is the set of names currently held by the asset's siblings
+    in the folder. A colliding name gets a numeric suffix. On a successful
+    rename the caller must update the set (remove the old name, add the new).
     """
     planned = plan_rename(
         asset_id,
@@ -206,7 +245,7 @@ def execute_rename(
     )
     if planned.rename_status != RENAME_RENAMED:
         return planned
-    new_name = build_new_name(original_drive_name, suggested_filename)
+    new_name = build_new_name(original_drive_name, suggested_filename, asset_id)
     if new_name is None:  # pragma: no cover - plan_rename already excluded this
         return RenameOutcome(asset_id, RENAME_SKIPPED_NO_SUGGESTION, original_drive_name)
     if new_name == original_drive_name:
@@ -215,6 +254,8 @@ def execute_rename(
         return RenameOutcome(
             asset_id, RENAME_SKIPPED_NO_SUGGESTION, original_drive_name, new_drive_name=new_name
         )
+    siblings = {name for name in (taken_names or set()) if name != original_drive_name}
+    new_name = deduplicate_name(new_name, siblings)
     try:
         rename_asset(drive_service, asset_id, new_name)
     except Exception as error:  # noqa: BLE001 - one asset's failure is not fatal
