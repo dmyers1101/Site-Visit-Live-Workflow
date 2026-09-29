@@ -906,7 +906,7 @@ def read_sheet_records(service: Any, spreadsheet_id: str, tab_name: str) -> list
     try:
         values = service.spreadsheets().values().get(
             spreadsheetId=spreadsheet_id, range=f"{tab_name}!A:ZZ"
-        ).execute().get("values", [])
+        ).execute(num_retries=5).get("values", [])
     except HttpError as error:
         if "Unable to parse range" in str(error):
             return []

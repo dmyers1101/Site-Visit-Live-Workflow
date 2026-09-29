@@ -199,7 +199,7 @@ def _attempts(record: dict[str, Any] | None) -> int:
 
 
 def select_pending(
-    visit: PortfolioVisit, records_by_id: dict[str, dict[str, Any]]
+    visit: PortfolioVisit, records_by_id: dict[str, dict[str, Any]], retry_failed: bool = False
 ) -> tuple[set[str], dict[str, int]]:
     """(skip_ids, next_attempt_by_id) for one visit.
 
@@ -212,7 +212,8 @@ def select_pending(
     for clip in visit.clips:
         record = records_by_id.get(clip.drive_id)
         status = str((record or {}).get("asset_status") or "")
-        if status in TERMINAL_STATUSES or _attempts(record) >= MAX_FAILED_ATTEMPTS:
+        capped = _attempts(record) >= MAX_FAILED_ATTEMPTS and not (retry_failed and status == "FAILED")
+        if status in TERMINAL_STATUSES or capped:
             skip.add(clip.drive_id)
         else:
             attempts[clip.drive_id] = _attempts(record) + 1

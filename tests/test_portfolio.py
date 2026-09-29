@@ -174,3 +174,24 @@ def test_generate_with_backoff_retries_quota_then_succeeds() -> None:
     waits = []
     assert generate_with_backoff(Client(), sleep=waits.append, model="m") == "ok"
     assert waits == [10.0, 20.0]
+
+
+def test_select_audio_stream_skips_a_codecless_spatial_audio_track() -> None:
+    from site_visit_workflow.media import select_audio_stream
+
+    probe = {"streams": [
+        {"index": 0, "codec_type": "video", "codec_name": "hevc"},
+        {"index": 1, "codec_type": "audio", "codec_name": "none"},
+        {"index": 2, "codec_type": "audio", "codec_name": "aac"},
+    ]}
+    assert select_audio_stream(probe) == 2
+    assert select_audio_stream({"streams": [{"index": 0, "codec_type": "video"}]}) is None
+
+
+def test_retry_failed_overrides_the_attempt_cap_only_for_failed() -> None:
+    records = {"c1": {"asset_status": "CATALOGUED", "attempt_count": "3"},
+               "c2": {"asset_status": "FAILED", "attempt_count": "3"}}
+
+    skip, attempts = select_pending(_alma(), records, retry_failed=True)
+
+    assert skip == {"c1"} and attempts == {"c2": 4}

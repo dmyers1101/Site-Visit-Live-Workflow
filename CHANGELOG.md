@@ -33,7 +33,14 @@ this file is not rewritten.
   (`rename.l1_has_finding`). Three Venue clips renamed this way by run
   `20260929-portfolio-venue-01` were restored to their `IMG_` names by hand.
 - Drive child listing paginates; the 100-child guard rejected the Alta visit.
-- A failed report is retried automatically on the next run (report-due rule).
+- A failed report is retried automatically on the next run (report-due rule).
+- Report due-check Sheet read moved inside error handling; Sheet reads retry
+  transient errors (`BrokenPipeError` crashed backfill batch 2).
+- `media.select_audio_stream`: explicit `-map` to the first decodable audio
+  stream (iPhone spatial-audio track broke IMG_8054.MOV); ffmpeg errors keep the tail.
+- `process-portfolio --retry-failed` overrides the 3-attempt cap after a fix.
+- Task timeout raised to 14400s on both jobs. Backfill complete (224/224 rows);
+  nightly trigger enabled. Evidence: `docs/evidence/20260929-backfill/`.
 
 ### Fixed (2026-09-29) — defects recorded by run 20260918T100802Z
 

@@ -37,7 +37,7 @@ Filter the master Sheet `Catalog` tab on `asset_status = NEEDS_REVIEW`. Typical 
 | visit `status: FAILED` | whole visit errored (e.g. Drive permission) | read `error`; re-run manually (`backfill.md`) |
 | `report.status: FAILED` | report only; clips are saved | nothing — the next night retries it automatically |
 | clips `FAILED` | transient per-clip error | retried nightly up to 3 attempts (`attempt_count`) |
-| execution timed out | >2h | lower `--max-clips` on the job (`change-guide.md`) |
+| execution timed out | >4h (task-timeout 14400s) | lower `--max-clips` on the job (`change-guide.md`) |
 | Speech/Vertex 429 | quota | calls back off automatically; if persistent, request quota increase |
 
 ## Pause / resume

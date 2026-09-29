@@ -27,6 +27,26 @@ WAV_SAMPLE_RATE = 16000
 WAV_CODEC = "pcm_s16le"
 
 
+UNDECODABLE_CODECS = frozenset({"", "none", "unknown", "apac"})
+
+
+def select_audio_stream(probe_data: dict[str, Any]) -> int | None:
+    """Absolute index of the first audio stream with a decodable codec, or None.
+
+    Added 2026-09-29: IMG_8054.MOV (iPhone) carries a spatial-audio stream that
+    ffprobe reports with no codec; ffmpeg's automatic choice picked it and failed
+    ("no decoder found for: none"). An explicit -map to the normal AAC track fixes it.
+    """
+    for stream in probe_data.get("streams") or []:
+        if stream.get("codec_type") != "audio":
+            continue
+        if str(stream.get("codec_name") or "").lower() in UNDECODABLE_CODECS:
+            continue
+        if isinstance(stream.get("index"), int):
+            return stream["index"]
+    return None
+
+
 def prepare_wav(video_path: Path, wav_path: Path) -> dict[str, Any]:
     """Probe a staged source and extract a mono, 16 kHz WAV without changing the source."""
     if not video_path.is_file():
@@ -41,10 +61,13 @@ def prepare_wav(video_path: Path, wav_path: Path) -> dict[str, Any]:
             text=True,
         )
         probe_data = json.loads(probe.stdout)
+        audio_index = select_audio_stream(probe_data)
+        if audio_index is None:
+            raise ExternalServiceError("No decodable audio stream in the source video.")
         wav_path.parent.mkdir(parents=True, exist_ok=True)
         subprocess.run(
             [
-                "ffmpeg", "-nostdin", "-i", str(video_path), "-vn", "-ac", "1", "-ar", "16000",
+                "ffmpeg", "-nostdin", "-i", str(video_path), "-map", f"0:{audio_index}", "-vn", "-ac", "1", "-ar", "16000",
                 "-c:a", "pcm_s16le", str(wav_path),
             ],
             capture_output=True,
@@ -54,7 +77,10 @@ def prepare_wav(video_path: Path, wav_path: Path) -> dict[str, Any]:
     except FileNotFoundError as error:
         raise ExternalServiceError("ffprobe and ffmpeg must be available on PATH.") from error
     except subprocess.CalledProcessError as error:
-        raise ExternalServiceError(f"Media preparation failed: {error.stderr.strip()}") from error
+        # Keep the TAIL: ffmpeg prints a long version banner first, and the run
+        # summary truncates messages to 600 chars, which hid the real cause for
+        # IMG_8054.MOV (2026-09-29).
+        raise ExternalServiceError(f"Media preparation failed: ...{error.stderr.strip()[-500:]}") from error
     except json.JSONDecodeError as error:
         raise ExternalServiceError("ffprobe produced invalid JSON.") from error
     if not wav_path.is_file() or wav_path.stat().st_size == 0:

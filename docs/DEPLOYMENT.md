@@ -296,7 +296,7 @@ gcloud iam service-accounts create site-visit-scheduler --project=shir-sitevisit
 $IMG = "us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit:TAG"
 gcloud run jobs create site-visit-nightly --region=us-central1 --image=$IMG `
   --service-account=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com `
-  --memory=8Gi --cpu=2 --task-timeout=7200s --max-retries=0 --tasks=1 `
+  --memory=8Gi --cpu=2 --task-timeout=14400s --max-retries=0 --tasks=1 `
   --set-env-vars=SITE_VISIT_ENVIRONMENT=deployed,GOOGLE_CLOUD_PROJECT=shir-sitevisit,SITE_VISIT_RUNTIME_SERVICE_ACCOUNT=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com,GCS_STAGING_BUCKET=shir-sitevisit-staging,GCS_STAGING_PREFIX=site-visit-staging,CATALOG_TAB_NAME=Catalog,SPEECH_LOCATION=us,SPEECH_MODEL=chirp_3,VERTEX_LOCATION=us-central1,VERTEX_MODEL=gemini-2.5-flash,RENAME_APPROVED=true,PORTFOLIO_ROOT_ID=1UkjYIHnSs-igeOy9k-Iw_d1-bEnH-mwN,CATALOG_SHEET_ID=1oFq1rzag23706HYXSGoBseuLj5ouFyQ0BHuIAaLtj-o `
   --args=process-portfolio,--max-clips,60,--rename-approved,--report
 

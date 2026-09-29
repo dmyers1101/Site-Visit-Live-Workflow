@@ -244,7 +244,7 @@ def cmd_process_portfolio(args: argparse.Namespace) -> None:
     for index, visit in enumerate(visits, start=1):
         if only and visit.drive_id not in only:
             continue
-        skip, attempts = pf.select_pending(visit, records)
+        skip, attempts = pf.select_pending(visit, records, retry_failed=args.retry_failed)
         pending = len(visit.clips) - len(skip)
         entry: dict[str, Any] = {"visit": visit.name, "property": visit.property_name,
                                  "visit_drive_id": visit.drive_id, "pending": pending, "processed": 0}
@@ -276,14 +276,16 @@ def cmd_process_portfolio(args: argparse.Namespace) -> None:
         # Gate 7 self-heals: report when this run processed clips OR the visit's
         # rows are newer than its last written report (e.g. a prior report failed).
         if args.report and not args.dry_run:
-            visit_rows = [r for r in read_sheet_records(sheets, sheet_id, tab)
-                          if r.get("visit_drive_id") == visit.drive_id]
-            if pf.report_is_due(visit_rows, registry.get(visit.drive_id), entry["processed"]):
-                try:
+            # The due-check read is inside the try too: run site-visit-nightly-6nvhm
+            # died on a BrokenPipe in this read, outside any handler (2026-09-29).
+            try:
+                visit_rows = [r for r in read_sheet_records(sheets, sheet_id, tab)
+                              if r.get("visit_drive_id") == visit.drive_id]
+                if pf.report_is_due(visit_rows, registry.get(visit.drive_id), entry["processed"]):
                     entry["report"] = _write_visit_report(
                         settings, drive, sheets, sheet_id, tab, visit, args.prompts_dir, run_id)
-                except Exception as error:  # noqa: BLE001 - a report failure never fails the run
-                    entry["report"] = {"status": "FAILED", "error": _sanitized(error)}
+            except Exception as error:  # noqa: BLE001 - a report failure never fails the run
+                entry["report"] = {"status": "FAILED", "error": _sanitized(error)}
         results.append(entry)
         _emit({"gate": "portfolio-visit", "run_id": run_id, **entry})
     _emit({"gate": "portfolio-summary", "run_id": run_id, "root_id": root,
@@ -1168,6 +1170,8 @@ def parser() -> argparse.ArgumentParser:
                                help="Clip budget for this run; leftovers roll to the next run.")
     run_portfolio.add_argument("--visit-id", action="append", default=[],
                                help="Limit to these visit folder IDs (repeatable). Default: all.")
+    run_portfolio.add_argument("--retry-failed", action="store_true",
+                               help="Retry FAILED clips even past the 3-attempt cap (after a code fix).")
     run_portfolio.add_argument("--dry-run", action="store_true")
     run_portfolio.add_argument("--rename-approved", action="store_true")
     run_portfolio.add_argument("--report", action="store_true")
