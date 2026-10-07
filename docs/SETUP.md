@@ -160,7 +160,7 @@ media folder would violate the single-folder immutable-source rule. See
 ## Access validation (explicit operator action)
 
 1. Confirm the active Git remote (`dmyers1101/Site-Visit-Live-Workflow`) and intended
-   branch (`agents/pasted-text-processing`).
+   branch (`main`).
 2. Run `auth-preflight` **as the deployed job** and read the JSON record. It reports
    identity, Drive folder metadata and capabilities, GCS bucket location plus which of
    `objects.create/get/list/delete` are held, and Sheets reachability.

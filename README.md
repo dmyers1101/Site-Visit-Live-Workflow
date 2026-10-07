@@ -42,7 +42,7 @@ Google Drive folder
 | Speech | model `chirp_3`, `SPEECH_LOCATION=us` (the `us` **multi-region**, not `us-central1`) |
 | Extraction | `google-genai` SDK, `gemini-2.5-flash`, `VERTEX_LOCATION=us-central1` |
 | Container | Python 3.11.16 + ffmpeg 7.1.5 / ffprobe |
-| GitHub | `dmyers1101/Site-Visit-Live-Workflow`, working branch `agents/pasted-text-processing` |
+| GitHub | `dmyers1101/Site-Visit-Live-Workflow`, working branch `main` |
 
 ## Quickstart on a new machine
 
@@ -53,7 +53,6 @@ Git, and a Google account with deploy rights on `shir-sitevisit`.
 # 1. Clone
 git clone https://github.com/dmyers1101/Site-Visit-Live-Workflow.git
 cd Site-Visit-Live-Workflow
-git checkout agents/pasted-text-processing
 
 # 2. Authenticate the DEPLOYER only. This identity never reads Drive media.
 gcloud auth login

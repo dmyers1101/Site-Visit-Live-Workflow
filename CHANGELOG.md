@@ -10,6 +10,12 @@ this file is not rewritten.
 
 ## [Unreleased]
 
+### Changed (2026-10-07) — docs
+
+- `README.md`, `docs/SETUP.md`, `docs/HANDOFF.md`: the working branch is `main`;
+  `agents/pasted-text-processing` is merged and stale.
+- `docs/HANDOFF.md` open items: the 09-18 run defects are marked resolved (2026-09-29).
+
 ### Added (2026-09-29) — portfolio rollout + nightly trigger (ADRs 0009–0012)
 
 - `portfolio.py`: read-only recursive walk of the master folder (visit = folder

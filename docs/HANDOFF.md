@@ -75,10 +75,9 @@ operator workstation.
 | Legacy Catalog Sheet (09-17 runs; individually owned) | `158eA2K5FgGc4dQ43xHxdTuri-KOwPSuNn8qQqsasBy0`, tab `Catalog` |
 | Image repo | `us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit` |
 
-The local folder and GitHub `main` hold the same files. A second worktree exists
-at `apps/live-workflow.worktrees/pasted-text-processing` on branch
-`agents/pasted-text-processing`; it was the build branch and is merged into
-`main`. Note that Google Drive sync has twice reverted files in one worktree to
+The local folder and GitHub `main` hold the same files. Work happens on `main`.
+The former build branch `agents/pasted-text-processing` is merged and behind
+`main`; do not use it. Note that Google Drive sync has twice reverted files in one worktree to
 the other's copy — if a file looks like it lost content, check `git diff HEAD`
 before trusting the working copy.
 
@@ -184,9 +183,10 @@ failing, but the underlying quota is still finite.
 - **Catalog Sheet ownership — resolved for new runs (2026-09-18):** the SA now
   creates the Sheet/Doc in the Shared Drive. The legacy `158eA2…` Sheet is still
   individually owned.
-- **Open from the 09-18 run** (see its RESULT.md): L1 can embed the Drive ID in
-  `suggested_filename`; report counts are model-computed and were wrong; no
-  sibling-name collision check in Gate 6; the report Doc is append-only.
+- **Resolved 2026-09-29 — defects from the 09-18 run** (see its RESULT.md):
+  the asset ID is stripped from filenames, report counts are written by code,
+  Gate 6 de-duplicates sibling names, and reports now go to per-property Docs
+  with one tab per visit (newest on top) instead of one append-only Doc.
 - **Diagrams under `docs/diagrams/` are stale** — they predate `process-folder`
   and still show the single-asset, approval-per-write flow.
 - **Corrected 2026-09-18:** the service account CAN create and rename files in
