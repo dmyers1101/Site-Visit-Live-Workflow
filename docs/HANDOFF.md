@@ -196,6 +196,12 @@ failing, but the underlying quota is still finite.
   the Shared Drive (`canAddChildren: true`). `drives.get` returning 404 only
   means it cannot enumerate the drive object, not that it cannot write.
 
+## Next work
+
+Resume prompts live in `docs/handoffs/`: `01-appfolio-work-orders.md` (AppFolio v0
+API work orders) and `02-asana-task-workflow.md` (Asana task workflow). Each opens
+with a scope-clarification round.
+
 ## How to update this later
 
 Update this file whenever a resource ID, identity, boundary, or safety rule
