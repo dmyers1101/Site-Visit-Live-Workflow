@@ -10,6 +10,28 @@ this file is not rewritten.
 
 ## [Unreleased]
 
+### Added (2026-10-07) — work-order request flag (ADR 0014)
+
+- `work_order.py`: deterministic transcript match for "create work order" /
+  "need a work order" (variants). Catalog columns `work_order_requested`
+  (YES/NO/blank) and `work_order_phrase` appended; existing Sheet headers are
+  extended to the right automatically. The report flags these items.
+
+### Changed (2026-10-07) — report template + prompt 1.0.0 (ADR 0013)
+
+- `prompts/report-synthesis.md` 1.0.0 replaces the 0.2.0 placeholder: Vertex Gemini
+  returns schema-validated JSON (summary, merged action items citing `ref_<n>`,
+  observations by area); code builds the layout.
+- `report.py`: explicit-status routing (action / needs review / no finding), tiers from
+  severity (1 Immediate, 2 Priority, 3-4 Routine), traceability + count/filename/ID
+  validation, backfill of omitted clips, two attempts then catalogue-only fallback,
+  and a sectioned Docs renderer (headings, bullets, clip links, "Suggested" L3 fields).
+- `google.write_report_requests`: one atomic, revision-guarded batchUpdate; a
+  registered visit tab is cleared and rewritten together, so reruns no longer stack.
+- Routine items are grouped by area; previewed on Alta (46 clips, validated first attempt).
+- New `preview-report` command writes a visit report to a scratch Doc tab for review.
+- Research note `docs/research/gcp/docs-api-formatting.md`.
+
 ### Changed (2026-10-07) — docs
 
 - `README.md`, `docs/SETUP.md`, `docs/HANDOFF.md`: the working branch is `main`;

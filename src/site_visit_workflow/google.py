@@ -641,6 +641,35 @@ def ensure_sheet_tab(service: Any, spreadsheet_id: str, tab_name: str) -> dict[s
     return {"created": True, "tab_name": tab_name, "existing_tabs": existing}
 
 
+_HEADERS_CHECKED: set[tuple[str, str, int]] = set()
+
+
+def _extend_header_once(service: Any, spreadsheet_id: str, tab_name: str, headers: tuple[str, ...]) -> None:
+    """Append missing header cells to the RIGHT of an existing header row (ADR 0014).
+
+    Only when the sheet's header is an exact prefix of `headers`; anything else
+    is a hard stop, never a rewrite. Checked once per sheet/tab per process.
+    """
+    key = (spreadsheet_id, tab_name, len(headers))
+    if key in _HEADERS_CHECKED:
+        return
+    current = service.spreadsheets().values().get(
+        spreadsheetId=spreadsheet_id, range=f"{tab_name}!1:1"
+    ).execute(num_retries=5).get("values", [])
+    row = current[0] if current else []
+    if row and len(row) < len(headers):
+        if tuple(row) != tuple(headers[: len(row)]):
+            raise ValidationError("Catalog header is not a prefix of the expected headers; refusing to extend it.")
+        start = column_letter(len(row) + 1)
+        service.spreadsheets().values().update(
+            spreadsheetId=spreadsheet_id,
+            range=f"{tab_name}!{start}1:{column_letter(len(headers))}1",
+            valueInputOption="RAW",
+            body={"values": [list(headers[len(row):])]},
+        ).execute()
+    _HEADERS_CHECKED.add(key)
+
+
 def upsert_catalog_row(
     service: Any,
     spreadsheet_id: str,
@@ -666,6 +695,7 @@ def upsert_catalog_row(
     span = f"{tab_name}!A:{last}"
     header_written = False
     try:
+        _extend_header_once(service, spreadsheet_id, tab_name, headers)
         existing = (
             service.spreadsheets()
             .values()
@@ -865,9 +895,70 @@ def insert_document_text(service: Any, document_id: str, text: str) -> dict[str,
     }
 
 
+def write_report_requests(
+    service: Any,
+    document_id: str,
+    tab_id: str | None,
+    build_requests: Any,
+    replace: bool = False,
+) -> dict[str, Any]:
+    """Write one fully built report in ONE atomic batchUpdate (ADR 0013).
+
+    Reads the tab first to learn its end index and the Doc's revision. With
+    `replace=True` the request list starts with a `deleteContentRange` over the
+    tab's existing body, so clearing the old report and writing the new one
+    succeed or fail together; `requiredRevisionId` makes the batch fail rather
+    than clear content someone edited after the read. With `replace=False` the
+    report is inserted at the top and nothing is deleted.
+
+    The caller decides `replace`: only a tab the Reports registry maps to this
+    visit (or one it just created or claimed empty) may be cleared.
+    `build_requests(start_index)` returns the insert/style requests.
+    """
+    try:
+        from googleapiclient.errors import HttpError
+    except ImportError as error:
+        raise ExternalServiceError("Google Docs dependency is not installed.") from error
+    if not document_id.strip():
+        raise ValidationError("A report write requires a non-empty document ID.")
+    try:
+        doc = service.documents().get(documentId=document_id, includeTabsContent=True).execute()
+    except HttpError as error:
+        raise ExternalServiceError(f"Docs read failed for {document_id}: {error}") from error
+    tabs = doc.get("tabs", [])
+    tab = next((t for t in tabs if t.get("tabProperties", {}).get("tabId") == tab_id), None) if tab_id \
+        else (tabs[0] if tabs else None)
+    if tab is None:
+        raise ValidationError(f"Tab {tab_id!r} not found in document {document_id}.")
+    content = tab.get("documentTab", {}).get("body", {}).get("content", [])
+    body_end = content[-1].get("endIndex", 2) if content else 2
+    requests: list[dict[str, Any]] = []
+    cleared = 0
+    if replace and body_end - 1 > 1:
+        rng: dict[str, Any] = {"startIndex": 1, "endIndex": body_end - 1}
+        if tab_id:
+            rng["tabId"] = tab_id
+        requests.append({"deleteContentRange": {"range": rng}})
+        cleared = body_end - 2
+    report_requests = build_requests(1)
+    if not report_requests or not report_requests[0].get("insertText", {}).get("text", "").strip():
+        raise ValidationError("Refusing to write an empty report into the document.")
+    requests.extend(report_requests)
+    body: dict[str, Any] = {"requests": requests}
+    if doc.get("revisionId"):
+        body["writeControl"] = {"requiredRevisionId": doc["revisionId"]}
+    try:
+        service.documents().batchUpdate(documentId=document_id, body=body).execute()
+    except HttpError as error:
+        raise ExternalServiceError(f"Docs report write failed for {document_id}/{tab_id}: {error}") from error
+    return {"document_id": document_id, "tab_id": tab_id, "cleared_characters": cleared,
+            "request_count": len(requests)}
+
+
 # --- Portfolio helpers (2026-09-29, ADR 0010/0011) ---------------------------
 # Boundary: create, read, insert, and retitle ONLY. No function here issues a
 # Drive delete/trash, a Docs deleteTab / deleteContentRange, or a Sheets clear.
+# (The one sanctioned deleteContentRange is `write_report_requests`, ADR 0013.)
 
 
 def find_or_create_file(drive: Any, parent_id: str, title: str, mime_type: str) -> tuple[str, str | None, bool]:

@@ -15,7 +15,7 @@ ADRs 0009–0012; runbooks `RUNBOOKS/nightly-operations.md`, `backfill.md`, `cha
 | --- | --- |
 | Master video folder | `1UkjYIHnSs-igeOy9k-Iw_d1-bEnH-mwN` (State / Property / [Group] / Visit) |
 | Master catalog Sheet | `1oFq1rzag23706HYXSGoBseuLj5ouFyQ0BHuIAaLtj-o` — tabs `Catalog`, `Reports` |
-| Report Docs | "<Property> Site Visit Reports" in each Property folder; one tab per visit |
+| Report Docs | "<Property> Site Visit Reports" in each Property folder; one tab per visit, replaced in place on each report (ADR 0013) |
 | Nightly job | Cloud Run `site-visit-nightly` — `process-portfolio --max-clips 60 --rename-approved --report` |
 | Manual job | Cloud Run `site-visit-workflow` — safe default `list-portfolio`; pass `--args` per run |
 | Schedule | Cloud Scheduler `site-visit-nightly-trigger`, `us-central1`, `0 2 * * *` America/New_York |
@@ -101,7 +101,7 @@ continuing past a single asset's failure:
 | 4 extraction | Vertex L1 → L2 → L3, each gated on the previous validating | per-layer prompt/response evidence |
 | 5 catalog | Upserts one Sheet row per asset, keyed on the immutable Drive asset ID | catalog row |
 | 6 rename (2026-09-18) | Renames each CATALOGUED asset to its suggested filename — ONLY with both approvals | per-asset rename record |
-| 7 report (2026-09-18) | One Vertex call over the run's in-memory catalogue rows; inserts the narrative into a Google Doc | report record, Doc text |
+| 7 report (2026-09-18; template 2026-10-07) | Vertex (Gemini) writes schema-validated words; code builds the sectioned report and writes it in one atomic Docs batch (ADR 0013, prompt 1.0.0) | report record, Doc text |
 
 Gate 7 runs after Gate 6 so the report can name the new filenames. A failure in
 Gate 6 or Gate 7 is recorded and the run continues; neither can fail the run.
@@ -186,7 +186,10 @@ failing, but the underlying quota is still finite.
 - **Resolved 2026-09-29 — defects from the 09-18 run** (see its RESULT.md):
   the asset ID is stripped from filenames, report counts are written by code,
   Gate 6 de-duplicates sibling names, and reports now go to per-property Docs
-  with one tab per visit (newest on top) instead of one append-only Doc.
+  with one tab per visit instead of one append-only Doc.
+- **Report template (2026-10-07, ADR 0013):** sectioned report, three action
+  tiers, clip links; reruns replace the visit tab in place. Review changes with
+  `preview-report` into a scratch Doc first.
 - **Diagrams under `docs/diagrams/` are stale** — they predate `process-folder`
   and still show the single-asset, approval-per-write flow.
 - **Corrected 2026-09-18:** the service account CAN create and rename files in

@@ -73,9 +73,15 @@ FULL_CATALOG_HEADERS: tuple[str, ...] = (
     "uploader_name",
     "uploaded_at",
     "attempt_count",
+    # Appended 2026-10-07 (ADR 0014): work-order request heard in the transcript.
+    "work_order_requested",
+    "work_order_phrase",
 )
 
-PORTFOLIO_COLUMNS: tuple[str, ...] = FULL_CATALOG_HEADERS[FULL_CATALOG_HEADERS.index("state"):]
+PORTFOLIO_COLUMNS: tuple[str, ...] = FULL_CATALOG_HEADERS[
+    FULL_CATALOG_HEADERS.index("state"):FULL_CATALOG_HEADERS.index("attempt_count") + 1
+]
+WORK_ORDER_COLUMNS: tuple[str, ...] = ("work_order_requested", "work_order_phrase")
 
 # The DEFAULT decision: a suggested name stays a proposal unless Gate 6 ran
 # with both approvals present. A run that renames passes its actual per-asset
@@ -101,6 +107,7 @@ def build_catalog_row(
     l3: L3Refinement | None = None,
     drive_rename_decision: str | None = None,
     extras: dict[str, Any] | None = None,
+    work_order: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build the full, ordered catalog record for one asset.
 
@@ -159,6 +166,8 @@ def build_catalog_row(
         raise ValidationError("Unknown catalog extras: " + ", ".join(sorted(unknown)))
     for name in PORTFOLIO_COLUMNS:
         row[name] = _blank((extras or {}).get(name))
+    for name in WORK_ORDER_COLUMNS:
+        row[name] = _blank((work_order or {}).get(name))
     if tuple(row) != FULL_CATALOG_HEADERS:
         raise ValidationError("Catalog row keys drifted from FULL_CATALOG_HEADERS.")
     return row

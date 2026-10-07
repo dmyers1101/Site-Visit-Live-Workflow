@@ -16,6 +16,7 @@ from .config import (
     gcs_uri,
 )
 from .errors import ExternalServiceError, ValidationError, WorkflowError
+from .work_order import detect_work_order_request
 from .google import (
     DriveGateway,
     StorageGateway,
@@ -26,7 +27,6 @@ from .google import (
     ensure_catalog_spreadsheet,
     ensure_report_document,
     ensure_sheet_tab,
-    insert_tab_text,
     list_document_tabs,
     read_batch_transcript,
     read_sheet_records,
@@ -160,7 +160,7 @@ def _uploaders(settings: Settings, drive: DriveGateway, visit) -> dict[str, tupl
 
 
 def _write_visit_report(settings, drive, sheets, sheet_id, tab, visit, prompts_dir, run_id) -> dict[str, Any]:
-    """Gate 7 for one visit: property Doc -> visit tab -> newest report on top -> retitle."""
+    """Gate 7 for one visit: property Doc -> visit tab -> report replaces that tab (ADR 0013) -> retitle."""
     from . import portfolio as pf
     from . import report as rp
     from .extraction import build_client
@@ -183,25 +183,27 @@ def _write_visit_report(settings, drive, sheets, sheet_id, tab, visit, prompts_d
     tab_id = known.get("tab_id") if known.get("doc_id") == doc_id else None
     if tab_id and tab_id not in {t["tab_id"] for t in tabs}:
         tab_id = None  # a human removed the tab; make a new one rather than fail
+    # ADR 0013: only the tab the registry maps to THIS visit may be cleared. A
+    # new tab, or an unclaimed empty one, has nothing to clear.
+    clear_existing = bool(tab_id)
     if not tab_id:
         claimed = {r.get("tab_id") for r in registry.values() if r.get("doc_id") == doc_id}
         spare = next((t for t in tabs if t["empty"] and t["tab_id"] not in claimed), None)
         tab_id = spare["tab_id"] if spare else add_document_tab(docs, doc_id, title)
-    prompt = rp.load_report_prompt(prompts_dir)
-    generated_at = utc_now()
     folder_label = f"{visit.property_name} / {visit.name}"
-    summary = rp.build_report_summary(run_id, folder_label, rows, generated_at=generated_at,
-                                      new_names=pf.renamed_names(rows))
-    narrative, usage = rp.generate_report_text(build_client(settings), settings, prompt, summary)
-    body = rp.compose_document_text(run_id, folder_label, generated_at, narrative, counts=summary["counts"])
-    insert_tab_text(docs, doc_id, tab_id, body)
+    record = rp.run_report(build_client(settings), replace(settings, run_id=run_id), docs,
+                           prompts_dir, doc_id, doc_link, doc_created, folder_label, rows,
+                           new_names=pf.renamed_names(rows), tab_id=tab_id, replace=clear_existing)
     retitle_document_tab(docs, doc_id, tab_id, title)
     upsert_catalog_row(sheets, sheet_id, pf.REPORTS_TAB, pf.REPORT_REGISTRY_HEADERS,
                        [visit.drive_id, visit.property_name or "", visit.name, doc_id, tab_id, title, utc_now()],
                        visit.drive_id)
-    return {"status": rp.REPORT_STATUS_WRITTEN, "doc_id": doc_id, "doc_web_link": doc_link,
+    return {"status": record.status, "doc_id": doc_id, "doc_web_link": doc_link,
             "doc_created": doc_created, "tab_id": tab_id, "tab_title": title,
-            "prompt_version": prompt.version, "counts": summary["counts"], "usage": usage}
+            "replaced_existing": record.replaced_existing, "prompt_version": record.prompt_version,
+            "action_items": record.action_item_count, "backfilled_refs": record.backfilled_refs,
+            "validation_errors": record.validation_errors, "counts": record.summary_counts,
+            "usage": record.usage}
 
 
 def _property_folder_id(drive: DriveGateway, visit) -> str:
@@ -292,6 +294,36 @@ def cmd_process_portfolio(args: argparse.Namespace) -> None:
            "master_catalog_sheet_id": sheet_id, "dry_run": args.dry_run,
            "rename_approved_flag": args.rename_approved, "max_clips": args.max_clips,
            "visits": results})
+
+
+def cmd_preview_report(args: argparse.Namespace) -> None:
+    """Write one visit's report into a NEW tab of a scratch Doc for review.
+
+    Read-only against the catalog and the property report Docs: it never
+    touches a property Doc, never clears anything, and never writes the
+    Reports registry. Used to review a template or prompt change (ADR 0013).
+    """
+    from . import portfolio as pf
+    from . import report as rp
+    from .extraction import build_client
+
+    settings = Settings.from_environment(required=("GOOGLE_CLOUD_PROJECT",))
+    sheet_id = (args.catalog_sheet_id or settings.catalog_sheet_id or "").strip()
+    if not sheet_id or not args.doc_id.strip():
+        raise ValidationError("preview-report requires --doc-id and --catalog-sheet-id (or CATALOG_SHEET_ID).")
+    sheets = sheets_service(settings)
+    rows = [r for r in read_sheet_records(sheets, sheet_id, args.tab_name)
+            if r.get("visit_drive_id") == args.visit_id]
+    if not rows:
+        raise ValidationError(f"No catalog rows for visit {args.visit_id} in {sheet_id}/{args.tab_name}.")
+    docs = docs_service(settings)
+    run_id = (args.run_id or "").strip() or default_run_id()
+    tab_id = add_document_tab(docs, args.doc_id, f"Preview {run_id} · {pf.tab_title(rows)}")
+    label = f"{rows[0].get('property', '')} / {rows[0].get('visit_name', '')}"
+    record = rp.run_report(build_client(settings), replace(settings, run_id=run_id), docs, args.prompts_dir,
+                           args.doc_id, None, False, label, rows,
+                           new_names=pf.renamed_names(rows), tab_id=tab_id, replace=False)
+    _emit({"gate": "preview-report", "visit_id": args.visit_id, "report": record.to_dict()})
 
 
 def cmd_migrate_catalog(args: argparse.Namespace) -> None:
@@ -933,6 +965,10 @@ def cmd_process_folder(args: argparse.Namespace) -> dict[str, Any]:
                 "transcript_gcs_uri": transcript_uri,
             }
 
+            work_order = detect_work_order_request(
+                transcript if final["status"] == TranscriptStatus.COMPLETED.value else None
+            )
+            summary["work_order"] = work_order
             layers: dict[str, Any] = {}
             if final["status"] == TranscriptStatus.COMPLETED.value and transcript.strip():
                 layers = _gate4_extract(settings, client, prompts_dir, asset, transcript)
@@ -1002,6 +1038,7 @@ def cmd_process_folder(args: argparse.Namespace) -> dict[str, Any]:
                 l3=layers.get("l3_parsed"),
                 drive_rename_decision=rename_decision,
                 extras=row_extras.get(asset.drive_id),
+                work_order=work_order,
             )
             catalog_rows.append(row)
             storage.write_json(f"{evidence_prefix}/catalog-row.json", row)
@@ -1178,6 +1215,18 @@ def parser() -> argparse.ArgumentParser:
     run_portfolio.add_argument("--prompts-dir", type=Path, default=Path("prompts"))
     run_portfolio.add_argument("--poll-timeout-seconds", type=int, default=1800)
     run_portfolio.set_defaults(func=cmd_process_portfolio)
+
+    preview = commands.add_parser(
+        "preview-report",
+        help="Write one visit's report into a new tab of a scratch Doc (no property Doc touched).",
+    )
+    preview.add_argument("--visit-id", required=True, help="Visit folder Drive ID.")
+    preview.add_argument("--doc-id", required=True, help="Scratch Google Doc to add the preview tab to.")
+    preview.add_argument("--catalog-sheet-id", default="")
+    preview.add_argument("--tab-name", default="Catalog")
+    preview.add_argument("--run-id", default="")
+    preview.add_argument("--prompts-dir", type=Path, default=Path("prompts"))
+    preview.set_defaults(func=cmd_preview_report)
 
     migrate = commands.add_parser(
         "migrate-catalog", help="Copy rows from an old catalog into the master Sheet. Never deletes."

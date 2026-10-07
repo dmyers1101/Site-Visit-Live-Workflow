@@ -14,7 +14,7 @@
 1. Walks the master folder; every folder with videos is a visit.
 2. Skips clips already `CATALOGUED` / `NEEDS_REVIEW` (or FAILED 3×).
 3. Processes up to 60 new clips (transcribe → L1/L2/L3 → Sheet → rename).
-4. Rewrites the report tab for every visit that got new rows (newest on top).
+4. Rewrites the report tab for every visit that got new rows — the old report is replaced in place (ADR 0013).
 
 ## Morning check (2 minutes)
 ```powershell

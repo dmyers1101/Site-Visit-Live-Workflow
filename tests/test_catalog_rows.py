@@ -124,8 +124,8 @@ def test_row_width_and_order_match_the_header_contract() -> None:
     assert tuple(built) == FULL_CATALOG_HEADERS
     assert len(values) == len(FULL_CATALOG_HEADERS)
     assert values[0] == ASSET_ID
-    # 34 original columns + 8 portfolio columns (ADR 0010).
-    assert column_letter(len(FULL_CATALOG_HEADERS)) == "AP"
+    # 34 original + 8 portfolio (ADR 0010) + 2 work-order columns (ADR 0014).
+    assert column_letter(len(FULL_CATALOG_HEADERS)) == "AR"
 
 
 def test_headers_start_with_the_original_catalog_draft_columns() -> None:

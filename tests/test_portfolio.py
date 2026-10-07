@@ -125,7 +125,8 @@ def test_row_extras_carry_the_path_and_uploader() -> None:
 
 def test_portfolio_columns_are_appended_not_inserted() -> None:
     assert FULL_CATALOG_HEADERS[:34][-1] == "updated_at"
-    assert FULL_CATALOG_HEADERS[34:] == PORTFOLIO_COLUMNS
+    assert FULL_CATALOG_HEADERS[34:42] == PORTFOLIO_COLUMNS
+    assert FULL_CATALOG_HEADERS[42:] == ("work_order_requested", "work_order_phrase")
 
 
 def test_tab_title_uses_latest_date_and_most_frequent_uploader() -> None:
