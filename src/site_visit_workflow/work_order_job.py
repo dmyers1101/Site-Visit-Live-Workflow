@@ -180,6 +180,17 @@ def cmd_wo_run(args: Any) -> dict[str, Any]:
     sheet_id = (args.catalog_sheet_id or settings.catalog_sheet_id).strip()
     if not sheet_id:
         raise ValidationError("wo-run requires --catalog-sheet-id or CATALOG_SHEET_ID.")
+    if getattr(args, "check_auth", False):
+        # Read-only credential probe: one GET, counts only, no values printed.
+        af = AppFolioClient(load_credentials())
+        since = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        try:
+            count, status = len(af.work_orders_since(since)), "OK"
+        except Exception as error:  # noqa: BLE001 - report the class, not secrets
+            count, status = None, f"{type(error).__name__}: {str(error)[:200]}"
+        print(json.dumps({"gate": "wo-auth-check", "status": status,
+                          "work_orders_updated_last_24h": count, "appfolio_calls": af.call_count}), flush=True)
+        return {"status": status}
     sheets = sheets_service(settings)
     ledger = read_sheet_records(sheets, sheet_id, wp.LEDGER_TAB)
     mapping = wp.load_mapping(read_sheet_records(sheets, sheet_id, wp.MAPPING_TAB))

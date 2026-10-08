@@ -1330,6 +1330,7 @@ def parser() -> argparse.ArgumentParser:
     wo_run.add_argument("--wo-key", action="append", default=[], help="Limit to these ledger keys (repeatable).")
     wo_run.add_argument("--max-creates", type=int, default=1, help="Hard cap on POSTs this run (default 1).")
     wo_run.add_argument("--live", action="store_true", help="Create in AppFolio; also needs env WORK_ORDERS_LIVE=1.")
+    wo_run.add_argument("--check-auth", action="store_true", help="Read-only AppFolio credential probe; nothing else.")
     wo_run.set_defaults(func=_wo("cmd_wo_run"))
 
     reproc = commands.add_parser(
