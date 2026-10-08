@@ -644,6 +644,27 @@ def ensure_sheet_tab(service: Any, spreadsheet_id: str, tab_name: str) -> dict[s
 _HEADERS_CHECKED: set[tuple[str, str, int]] = set()
 
 
+def _ensure_column_count(service: Any, spreadsheet_id: str, tab_name: str, needed: int) -> None:
+    """Widen the tab's grid to `needed` columns (appendDimension; adds, never removes).
+
+    values.update cannot write past the grid edge ("exceeds grid limits"), which
+    is what failed the 2026-10-08 reprocess runs on the 42-column master Sheet.
+    """
+    meta = service.spreadsheets().get(
+        spreadsheetId=spreadsheet_id, fields="sheets.properties(sheetId,title,gridProperties.columnCount)"
+    ).execute(num_retries=5)
+    props = next((s["properties"] for s in meta.get("sheets", []) if s["properties"].get("title") == tab_name), None)
+    if props is None:
+        raise ValidationError(f"Tab {tab_name!r} not found in {spreadsheet_id}.")
+    have = props.get("gridProperties", {}).get("columnCount", 0)
+    if have < needed:
+        service.spreadsheets().batchUpdate(
+            spreadsheetId=spreadsheet_id,
+            body={"requests": [{"appendDimension": {
+                "sheetId": props["sheetId"], "dimension": "COLUMNS", "length": needed - have}}]},
+        ).execute()
+
+
 def _extend_header_once(service: Any, spreadsheet_id: str, tab_name: str, headers: tuple[str, ...]) -> None:
     """Append missing header cells to the RIGHT of an existing header row (ADR 0014).
 
@@ -660,6 +681,7 @@ def _extend_header_once(service: Any, spreadsheet_id: str, tab_name: str, header
     if row and len(row) < len(headers):
         if tuple(row) != tuple(headers[: len(row)]):
             raise ValidationError("Catalog header is not a prefix of the expected headers; refusing to extend it.")
+        _ensure_column_count(service, spreadsheet_id, tab_name, len(headers))
         start = column_letter(len(row) + 1)
         service.spreadsheets().values().update(
             spreadsheetId=spreadsheet_id,
