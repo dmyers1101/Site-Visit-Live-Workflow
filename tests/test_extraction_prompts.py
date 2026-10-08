@@ -141,3 +141,43 @@ def test_l2_prompt_separates_already_tracked_from_no_finding() -> None:
     assert "ALREADY_TRACKED" in prompt.instruction_text
     assert "never a reason for\nNO_FINDING" in prompt.instruction_text
     assert "ALREADY_TRACKED" in L2_RESPONSE_SCHEMA["properties"]["enrichment_status"]["enum"]
+
+
+def _l2_inputs():
+    from types import SimpleNamespace
+
+    from site_visit_workflow.extraction import LayerResult
+    from site_visit_workflow.models import L1Extraction
+
+    l1 = L1Extraction("asset-1", "Unit 4B", "Leak under sink", "unit_4b_leak", "clear")
+    l1_result = LayerResult("L1", "asset-1", "L1-rec-1", "p", "1", "h", "m", "s", {}, "", {}, True, "t0", "t1")
+    settings = SimpleNamespace(vertex_model="gemini-2.5-flash")
+    good = ('{"source_asset_identifier":"asset-1","prior_layer":"L1","prior_layer_record_id":"L1-rec-1",'
+            '"enrichment_status":"ENRICHED","trade":"plumbing","area_type":"unit","severity":2,'
+            '"recommended_action":"Fix the leak","enrichment_note":"Leak stated."}')
+    bad = good.replace("L1-rec-1", "L1-rec-l")  # the observed mis-copy
+    return l1, l1_result, settings, good, bad
+
+
+def test_l2_recovers_from_repeated_record_id_mis_copies(monkeypatch: pytest.MonkeyPatch) -> None:
+    from site_visit_workflow import extraction as ex
+
+    l1, l1_result, settings, good, bad = _l2_inputs()
+    answers = iter([bad, bad, bad, good])
+    monkeypatch.setattr(ex, "_generate", lambda *a, **k: (next(answers), {}))
+    _result, enrichment = ex.run_l2(None, settings, Path(__file__).resolve().parents[1] / "prompts",
+                                    "asset-1", l1_result, l1, "There is a leak under the sink in unit 4B.")
+    assert enrichment.enrichment_status == "ENRICHED"
+    assert ex.L2_VALIDATION_ATTEMPTS == 4
+
+
+def test_l2_raises_after_the_last_attempt(monkeypatch: pytest.MonkeyPatch) -> None:
+    from site_visit_workflow import extraction as ex
+
+    l1, l1_result, settings, _good, bad = _l2_inputs()
+    calls = []
+    monkeypatch.setattr(ex, "_generate", lambda *a, **k: (calls.append(1) or bad, {}))
+    with pytest.raises(ValidationError, match="prior_layer_record_id"):
+        ex.run_l2(None, settings, Path(__file__).resolve().parents[1] / "prompts",
+                  "asset-1", l1_result, l1, "There is a leak under the sink in unit 4B.")
+    assert len(calls) == ex.L2_VALIDATION_ATTEMPTS

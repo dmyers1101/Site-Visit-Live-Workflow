@@ -212,7 +212,7 @@ def _property_folder_id(drive: DriveGateway, visit) -> str:
     current = visit.drive_id
     chain = []
     for _ in range(len(visit.path)):
-        meta = service.files().get(fileId=current, fields="id,parents", supportsAllDrives=True).execute()
+        meta = service.files().get(fileId=current, fields="id,parents", supportsAllDrives=True).execute(num_retries=5)
         chain.append(meta["id"])
         parents = meta.get("parents") or []
         if not parents:
