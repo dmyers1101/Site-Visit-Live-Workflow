@@ -10,6 +10,22 @@ this file is not rewritten.
 
 ## [Unreleased]
 
+### Added (2026-10-08) — AppFolio work orders via walker confirmation (ADR 0015)
+
+- `appfolio.py`: v0 Database API client (port of `_dev/warehouse/scripts/afv0.py`),
+  env-only credentials from Secret Manager, 6/200/4000 rate limiter, POST-only
+  idempotency keys, no blind write retries.
+- `work_order_plan.py`: candidate selection (flagged clips + unflagged severity 1–2),
+  validated Gemini grouping, `WorkOrders` ledger, priority 1 Urgent / 2 Normal / 3–4 Low,
+  plan invariants; `tests/test_work_order_plan.py` (22 tests).
+- `work_order_job.py` + commands `wo-candidates`, `wo-run` (dry by default; live needs
+  `--live` and `WORK_ORDERS_LIVE=1`, capped by `--max-creates`, refused 9PM–4AM PT).
+- `prompts/work-order-grouping.md` 1.0.0.
+- `apps-script/work-order-forms/`: per-visit Google Form to the uploader, 24h reminder,
+  48h escalation to dmyers@shircapital.com and jcohen@signaturenexus.com.
+- `docs/research/appfolio/v0-work-orders.md`, `docs/RUNBOOKS/work-orders.md`.
+- Dependency: `requests>=2.32.0`.
+
 ### Added (2026-10-08) — `reprocess-l2`
 
 - `reprocess-l2 --visit-id <id> [--dry-run] [--report]`: re-runs L2 (+L3) with the
@@ -78,7 +94,8 @@ this file is not rewritten.
   (`rename.l1_has_finding`). Three Venue clips renamed this way by run
   `20260929-portfolio-venue-01` were restored to their `IMG_` names by hand.
 - Drive child listing paginates; the 100-child guard rejected the Alta visit.
-- A failed report is retried automatically on the next run (report-due rule).
+- A failed report is retried automatically on the next run (report-due rule).
+
 - Report due-check Sheet read moved inside error handling; Sheet reads retry
   transient errors (`BrokenPipeError` crashed backfill batch 2).
 - `media.select_audio_stream`: explicit `-map` to the first decodable audio

@@ -1308,6 +1308,30 @@ def parser() -> argparse.ArgumentParser:
     run_portfolio.add_argument("--poll-timeout-seconds", type=int, default=1800)
     run_portfolio.set_defaults(func=cmd_process_portfolio)
 
+    # AppFolio work orders (ADR 0015). Imported lazily so the core CLI never needs `requests`.
+    def _wo(name: str):
+        def run(args: argparse.Namespace) -> None:
+            from . import work_order_job
+
+            getattr(work_order_job, name)(args)
+        return run
+
+    wo_cand = commands.add_parser("wo-candidates", help="Append new work-order candidates (PENDING_REVIEW) to the WorkOrders tab.")
+    wo_cand.add_argument("--catalog-sheet-id", default="")
+    wo_cand.add_argument("--sheet-name", default="")
+    wo_cand.add_argument("--visit-id", action="append", default=[])
+    wo_cand.add_argument("--prompts-dir", type=Path, default=Path("prompts"))
+    wo_cand.add_argument("--dry-run", action="store_true", help="Print the rows; write nothing.")
+    wo_cand.set_defaults(func=_wo("cmd_wo_candidates"))
+
+    wo_run = commands.add_parser("wo-run", help="Plan (default) or create (--live) AppFolio work orders for approved rows.")
+    wo_run.add_argument("--catalog-sheet-id", default="")
+    wo_run.add_argument("--run-id", default="")
+    wo_run.add_argument("--wo-key", action="append", default=[], help="Limit to these ledger keys (repeatable).")
+    wo_run.add_argument("--max-creates", type=int, default=1, help="Hard cap on POSTs this run (default 1).")
+    wo_run.add_argument("--live", action="store_true", help="Create in AppFolio; also needs env WORK_ORDERS_LIVE=1.")
+    wo_run.set_defaults(func=_wo("cmd_wo_run"))
+
     reproc = commands.add_parser(
         "reprocess-l2",
         help="Re-run L2/L3 on one visit's clips with the current prompts (transcripts and L1 unchanged).",

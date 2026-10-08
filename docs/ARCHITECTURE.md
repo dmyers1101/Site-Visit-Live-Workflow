@@ -114,6 +114,9 @@ without a network call, and **one** module owns each external boundary.
 | `extraction.py` | **Gate 4.** Builds the Vertex `google-genai` client, loads `prompts/l1-extraction.md`, `l2-enrichment.md`, `l3-refinement.md` **at runtime**, and runs each layer with a strict `response_schema` | Yes (Vertex) |
 | `catalog.py` | **Pure Gate 5 logic.** `FULL_CATALOG_HEADERS` (schema 2.0) and `build_catalog_row` / `row_values`. Asserts the row never drifts from the header order. Writes nothing | No |
 | `preflight.py` | Strictly read-only authorization report: runtime environment, identity, Drive, Cloud Storage, Sheets. Each check captures its own sanitized error | Yes (read-only) |
+| `appfolio.py` | **The only AppFolio boundary** (ADR 0015): v0 client, env-only credentials, rate limiter, POST idempotency | No (AppFolio) |
+| `work_order_plan.py` | Pure work-order candidates, grouping validation, `WorkOrders` ledger, plan invariants | No |
+| `work_order_job.py` | `wo-candidates` / `wo-run` orchestration (Sheets, Vertex grouping, AppFolio) | Yes |
 | `cli.py` | Argument parsing and orchestration. `cmd_process_folder` runs Gates 1–5 sequentially, one asset at a time, emitting one JSON line per step and continuing past a single asset's failure | Via the modules above |
 
 Boundary rules the layering encodes ([ADR-0008](decisions/0008-layer-boundaries-enforced-in-code.md)):

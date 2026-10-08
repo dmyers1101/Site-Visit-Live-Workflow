@@ -198,6 +198,9 @@ failing, but the underlying quota is still finite.
 
 ## Next work
 
+**AppFolio work orders (2026-10-08, ADR 0015):** built dry-run only. Setup and first
+live test: `RUNBOOKS/work-orders.md`. Asana is next (`handoffs/02-asana-task-workflow.md`).
+
 Resume prompts live in `docs/handoffs/`: `01-appfolio-work-orders.md` (AppFolio v0
 API work orders) and `02-asana-task-workflow.md` (Asana task workflow). Each opens
 with a scope-clarification round.

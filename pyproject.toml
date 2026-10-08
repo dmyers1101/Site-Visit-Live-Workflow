@@ -17,6 +17,8 @@ dependencies = [
   # google-genai 2.x is the SDK surface extraction.py is written against
   # (Client(vertexai=True), types.GenerateContentConfig, response_schema).
   "google-genai>=2.24.0",
+  # AppFolio v0 client (ADR 0015); same library as _dev/warehouse/scripts/afv0.py.
+  "requests>=2.32.0",
 ]
 
 [project.optional-dependencies]
