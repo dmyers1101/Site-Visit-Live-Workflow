@@ -194,7 +194,7 @@ def test_l2_coupling_rule_enriched_requires_all_four_fields() -> None:
         L2Enrichment.from_external_result(l2_payload(severity=None), ASSET, L1_RECORD)
 
 
-@pytest.mark.parametrize("status", ["NO_FINDING", "INSUFFICIENT_EVIDENCE"])
+@pytest.mark.parametrize("status", ["NO_FINDING", "INSUFFICIENT_EVIDENCE", "ALREADY_TRACKED"])
 def test_l2_coupling_rule_other_statuses_require_all_four_nulls(status: str) -> None:
     with pytest.raises(ValidationError, match="must be null"):
         L2Enrichment.from_external_result(l2_payload(enrichment_status=status), ASSET, L1_RECORD)
@@ -213,7 +213,7 @@ def test_l2_without_supporting_evidence_may_only_be_no_finding() -> None:
         severity=None,
         recommended_action=None,
     )
-    with pytest.raises(ValidationError, match="NO_FINDING"):
+    with pytest.raises(ValidationError, match="NO_FINDING or ALREADY_TRACKED"):
         L2Enrichment.from_external_result(
             cleared, ASSET, L1_RECORD, evidence_supports_finding=False
         )
@@ -233,7 +233,7 @@ def test_l2_traceability_is_enforced_in_both_directions() -> None:
 
 def test_l3_runs_only_on_an_enriched_l2() -> None:
     assert l3_is_permitted(validated_l2()) is True
-    for status in ("NO_FINDING", "INSUFFICIENT_EVIDENCE"):
+    for status in ("NO_FINDING", "INSUFFICIENT_EVIDENCE", "ALREADY_TRACKED"):
         downgraded = validated_l2(
             enrichment_status=status,
             trade=None,
@@ -301,3 +301,10 @@ def test_l3_disputed_fields_must_be_a_unique_array_from_the_fixed_list() -> None
 def test_l3_rejects_a_null_note() -> None:
     with pytest.raises(ValidationError, match="refinement_note"):
         L3Refinement.from_external_result(l3_payload(refinement_note=None), ASSET, L2_RECORD)
+
+
+def test_already_tracked_is_allowed_without_an_l1_issue() -> None:
+    cleared = l2_payload(enrichment_status="ALREADY_TRACKED", trade=None, area_type=None,
+                         severity=None, recommended_action=None)
+    record = L2Enrichment.from_external_result(cleared, ASSET, L1_RECORD, evidence_supports_finding=False)
+    assert record.enrichment_status == "ALREADY_TRACKED"

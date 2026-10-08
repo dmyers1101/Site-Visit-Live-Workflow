@@ -130,3 +130,14 @@ def test_gcs_prefixes_are_run_scoped_and_carry_the_asset_id(monkeypatch: pytest.
     assert speech_output_prefix(settings, "asset-1", 1).endswith("speech-output/attempt-1/")
     with pytest.raises(ValidationError):
         wav_object_name(settings, "asset-1", 2)
+
+
+def test_l2_prompt_separates_already_tracked_from_no_finding() -> None:
+    """l2 1.2.0: "I already have a task for that" is ALREADY_TRACKED, never NO_FINDING."""
+    from site_visit_workflow.extraction import L2_RESPONSE_SCHEMA, load_prompt_file
+
+    prompt = load_prompt_file("L2", Path(__file__).resolve().parents[1] / "prompts")
+    assert prompt.version == "1.2.0"
+    assert "ALREADY_TRACKED" in prompt.instruction_text
+    assert "never a reason for\nNO_FINDING" in prompt.instruction_text
+    assert "ALREADY_TRACKED" in L2_RESPONSE_SCHEMA["properties"]["enrichment_status"]["enum"]

@@ -48,6 +48,7 @@ from .errors import ExternalServiceError, ValidationError
 from .models import (
     L1_FIELDS,
     L2_FIELDS,
+    L2_STATUSES,
     L3_FIELDS,
     L1Extraction,
     L2Enrichment,
@@ -109,7 +110,7 @@ L2_RESPONSE_SCHEMA: dict[str, Any] = {
         "source_asset_identifier": _string(),
         "prior_layer": _string(enum=("L1",)),
         "prior_layer_record_id": _string(),
-        "enrichment_status": _string(enum=("ENRICHED", "NO_FINDING", "INSUFFICIENT_EVIDENCE")),
+        "enrichment_status": _string(enum=L2_STATUSES),
         "trade": _string(nullable=True),
         "area_type": _string(nullable=True),
         # Severity is the INTEGER 1-4 scale, typed as an integer on the wire so
@@ -385,15 +386,24 @@ def run_l2(
         "transcript_text": transcript,
     }
     started_at = utc_now()
-    raw, usage = _generate(client, settings, "L2", _compose(prompt, payload))
-    parsed = parse_strict_json(raw, "L2")
-    enrichment = L2Enrichment.from_external_result(
-        parsed,
-        asset_id,
-        l1_result.record_id,
-        evidence_supports_finding=transcript_is_processable(transcript)
-        and bool((l1.issue_description or "").strip()),
-    )
+    # One retry on a validation failure: the 2026-10-07 A/B saw Gemini mis-copy
+    # prior_layer_record_id in about 1 of 40 calls. A second failure is raised.
+    for attempt in range(2):
+        raw, usage = _generate(client, settings, "L2", _compose(prompt, payload))
+        try:
+            parsed = parse_strict_json(raw, "L2")
+            enrichment = L2Enrichment.from_external_result(
+                parsed,
+                asset_id,
+                l1_result.record_id,
+                evidence_supports_finding=transcript_is_processable(transcript)
+                and bool((l1.issue_description or "").strip()),
+            )
+            break
+        except ValidationError:
+            if attempt:
+                raise
+    usage = {**usage, "attempts": attempt + 1}
     return (
         LayerResult(
             layer="L2",
@@ -431,7 +441,7 @@ def run_l3(
         raise ValidationError("L3 requires a validated L2 record.")
     if not l3_is_permitted(l2):
         raise ValidationError(
-            "L3 runs only on an ENRICHED L2 record; NO_FINDING and INSUFFICIENT_EVIDENCE stop here."
+            "L3 runs only on an ENRICHED L2 record; every other status stops here."
         )
     prompt = load_prompt_file("L3", prompts_dir)
     assert_prompt_schema_matches(prompt)

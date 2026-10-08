@@ -54,6 +54,7 @@ MODEL_ATTEMPTS = 2
 BUCKET_ACTION = "ACTION"
 BUCKET_REVIEW = "REVIEW"
 BUCKET_NO_FINDING = "NO_FINDING"
+BUCKET_TRACKED = "ALREADY_TRACKED"
 
 TIERS = (
     ("immediate", "Immediate — safety (severity 1)", (1,)),
@@ -138,6 +139,7 @@ def classify_row(row: dict[str, Any]) -> tuple[str, str | None]:
 
     - CATALOGUED + L2 ENRICHED + severity 1-4  -> ACTION
     - CATALOGUED + L2 NO_FINDING               -> NO_FINDING
+    - CATALOGUED + L2 ALREADY_TRACKED          -> ALREADY_TRACKED (listed, not a new item)
     - everything else                           -> REVIEW, with the reason
     """
     asset_status = str(row.get("asset_status") or "").strip()
@@ -150,6 +152,8 @@ def classify_row(row: dict[str, Any]) -> tuple[str, str | None]:
         return BUCKET_REVIEW, f"Unrecognised status {asset_status or '(blank)'}"
     if l2_status == "NO_FINDING":
         return BUCKET_NO_FINDING, None
+    if l2_status == "ALREADY_TRACKED":
+        return BUCKET_TRACKED, None
     if l2_status == "INSUFFICIENT_EVIDENCE":
         return BUCKET_REVIEW, "Not enough detail in the narration to assess"
     if l2_status == "ENRICHED":
@@ -188,7 +192,7 @@ def build_report_summary(
     """
     names = new_names or {}
     counts = {"total": len(rows), "catalogued": 0, "needs_review": 0, "failed": 0, "other": 0,
-              "action": 0, "review": 0, "no_finding": 0}
+              "action": 0, "review": 0, "no_finding": 0, "tracked": 0}
     clips: list[dict[str, Any]] = []
     for index, row in enumerate(rows, start=1):
         status = str(row.get("asset_status") or "UNKNOWN")
@@ -196,7 +200,7 @@ def build_report_summary(
                 "FAILED": "failed"}.get(status, "other")] += 1
         bucket, reason = classify_row(row)
         counts[{BUCKET_ACTION: "action", BUCKET_REVIEW: "review",
-                BUCKET_NO_FINDING: "no_finding"}[bucket]] += 1
+                BUCKET_NO_FINDING: "no_finding", BUCKET_TRACKED: "tracked"}[bucket]] += 1
         severity = _severity(row.get("l2_severity"))
         new_name = names.get(str(row.get("row_key"))) or None
         clips.append({
@@ -601,6 +605,7 @@ def build_report_requests(
         ("Clips reviewed: ", str(counts["total"])),
         ("Action items: ", f"{len(content['action_items'])} ({tier_line})"),
         ("Needs human review: ", _clips(counts["review"])),
+        ("Already tracked: ", _clips(counts["tracked"])),
         ("No issue found: ", _clips(counts["no_finding"])),
         ("Work order requested on site: ",
          _clips(sum(1 for c in summary["clips"] if c["work_order"]))),
@@ -649,6 +654,17 @@ def build_report_requests(
                 if note["clips"]:
                     parts += [(" (", None)] + _clip_parts(note["clips"]) + [(")", None)]
                 doc.paragraph(parts, bullet=True)
+
+    tracked = [c for c in summary["clips"] if c["bucket"] == BUCKET_TRACKED]
+    if tracked:
+        doc.paragraph([("Already tracked", None)], style="HEADING_2")
+        doc.paragraph([("Issues the walker said are already tasked or were identified earlier. "
+                        "Not repeated as new action items.", ITALIC)], small=True)
+        for clip in tracked:
+            what = clip["location"] or "Location not stated"
+            if clip["issue_description"]:
+                what += f" — {clip['issue_description']}"
+            doc.paragraph([(what, None), (" ", None)] + _clip_parts([clip]), bullet=True)
 
     review = [c for c in summary["clips"] if c["bucket"] == BUCKET_REVIEW]
     doc.paragraph([("Needs human review", None)], style="HEADING_2")

@@ -193,7 +193,9 @@ L2_AREA_TYPES = ("unit", "common-interior", "exterior", "amenity")
 # "2", "urgent-safety") is a validation failure, never something to coerce.
 L2_SEVERITIES = (1, 2, 3, 4)
 L2_SEVERITY_MEANINGS = {1: "urgent/safety", 2: "high", 3: "medium", 4: "low/cosmetic"}
-L2_STATUSES = ("ENRICHED", "NO_FINDING", "INSUFFICIENT_EVIDENCE")
+# ALREADY_TRACKED (2026-10-07, l2 1.2.0): the walker names a real issue but says it
+# is already tasked or was already identified. Not a new finding; not "no finding".
+L2_STATUSES = ("ENRICHED", "NO_FINDING", "INSUFFICIENT_EVIDENCE", "ALREADY_TRACKED")
 
 L3_FIELDS = frozenset(
     {
@@ -315,10 +317,12 @@ class L2Enrichment:
         if payload["prior_layer_record_id"] != expected_prior_record_id:
             raise ValidationError("L2 prior_layer_record_id does not match the validated L1 record.")
         status = _enum(payload["enrichment_status"], L2_STATUSES, "L2 enrichment_status")
-        if not evidence_supports_finding and status != "NO_FINDING":
+        # ALREADY_TRACKED carries no finding fields, so it is allowed without an
+        # L1 issue ("that one's already on the list" names no issue to extract).
+        if not evidence_supports_finding and status not in ("NO_FINDING", "ALREADY_TRACKED"):
             raise ValidationError(
-                "L2 must return NO_FINDING when the L1 issue description or the transcript "
-                "carries no evidence of a finding."
+                "L2 must return NO_FINDING or ALREADY_TRACKED when the L1 issue description "
+                "or the transcript carries no evidence of a finding."
             )
         _required(payload["enrichment_note"], "L2 field enrichment_note")
         _gated_nullable(payload, L2_CONDITIONAL_FIELDS, status == "ENRICHED", "L2")
@@ -369,7 +373,7 @@ class L3Refinement:
 
 
 def l3_is_permitted(enrichment: L2Enrichment) -> bool:
-    """L3 runs only on an ENRICHED L2; NO_FINDING and INSUFFICIENT_EVIDENCE stop the chain."""
+    """L3 runs only on an ENRICHED L2; every other status stops the chain."""
     return enrichment.enrichment_status == "ENRICHED"
 
 

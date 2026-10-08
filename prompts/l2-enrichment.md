@@ -1,11 +1,18 @@
 # L2 enrichment prompt
 
-**Semantic version:** 1.1.0
+**Semantic version:** 1.2.0
 
 ## Purpose
 
 Add controlled analysis fields to a single **validated** L1 result. It is a
 payload for an approved model run.
+
+**Changed in 1.2.0 (2026-10-07):** new status `ALREADY_TRACKED`. Two Alta
+clips (run `20260929T185459Z-v01`) were returned as `NO_FINDING` although they
+name real work — "I already have a task for that" (repainting, siding, carpet)
+and "I already identified this area and that stain". They are neither a new
+finding nor no finding; `ALREADY_TRACKED` records them honestly so the report
+lists them without duplicating action items.
 
 **Changed in 1.1.0 (2026-09-17):** the prior statement that "the CLI never
 invokes Vertex AI or Gemini automatically" is superseded — `process-folder`
@@ -60,10 +67,16 @@ prior_layer_record_id, enrichment_status, trade, area_type, severity,
 recommended_action, enrichment_note. Copy source_asset_identifier and
 prior_layer_record_id exactly from the input; set prior_layer to "L1".
 Set enrichment_status to ENRICHED only when the transcript states a
-maintenance issue; use NO_FINDING when the transcript records no issue,
-records a positive observation, or is empty, and INSUFFICIENT_EVIDENCE when
-an issue is implied but cannot be classified. When the status is not
-ENRICHED, set trade, area_type, severity, and recommended_action to null.
+maintenance issue; use ALREADY_TRACKED when the transcript states an issue
+but the speaker says it is already tasked, already reported, or was already
+identified earlier in the walk (for example "I already have a task for
+that", "I already identified this"); use NO_FINDING only when the
+transcript records no issue at all, records a positive observation, or is
+empty; and INSUFFICIENT_EVIDENCE when an issue is implied but cannot be
+classified. Saying an issue is already known is never a reason for
+NO_FINDING. When the status is not ENRICHED, set trade, area_type, severity,
+and recommended_action to null, and for ALREADY_TRACKED say in
+enrichment_note what the speaker said was already tracked.
 trade is one of plumbing, electrical, hvac, landscaping, cleaning,
 general-maintenance, safety, structural. area_type is one of unit,
 common-interior, exterior, amenity. severity is the integer 1, 2, 3, or 4,
@@ -80,7 +93,7 @@ issue_description.
 ## Output schema
 
 ```json
-{"source_asset_identifier":"string","prior_layer":"L1","prior_layer_record_id":"string","enrichment_status":"ENRICHED|NO_FINDING|INSUFFICIENT_EVIDENCE","trade":"plumbing|electrical|hvac|landscaping|cleaning|general-maintenance|safety|structural|null","area_type":"unit|common-interior|exterior|amenity|null","severity":"1|2|3|4|null","recommended_action":"string|null","enrichment_note":"string"}
+{"source_asset_identifier":"string","prior_layer":"L1","prior_layer_record_id":"string","enrichment_status":"ENRICHED|NO_FINDING|INSUFFICIENT_EVIDENCE|ALREADY_TRACKED","trade":"plumbing|electrical|hvac|landscaping|cleaning|general-maintenance|safety|structural|null","area_type":"unit|common-interior|exterior|amenity|null","severity":"1|2|3|4|null","recommended_action":"string|null","enrichment_note":"string"}
 ```
 
 `severity` is an integer enum (`1|2|3|4`) or `null` — never a string.
@@ -99,10 +112,11 @@ issue_description.
 - `enrichment_note` is a non-empty string. Every other nullable field is
   present with an explicit `null`; a missing key is a rejection.
 - When `enrichment_status` is `ENRICHED`, `trade`, `area_type`, `severity`,
-  and `recommended_action` must all be non-null. When it is `NO_FINDING` or
-  `INSUFFICIENT_EVIDENCE`, all four must be `null`.
+  and `recommended_action` must all be non-null. When it is `NO_FINDING`,
+  `INSUFFICIENT_EVIDENCE` or `ALREADY_TRACKED`, all four must be `null`.
 - If the input `transcript_text` is empty or the L1 `issue_description` is
-  null or empty, the only acceptable status is `NO_FINDING`. Any enriched
+  null or empty, the only acceptable statuses are `NO_FINDING` and (1.2.0)
+  `ALREADY_TRACKED`. Any enriched
   result on that input is a rejection.
 - On uncertainty the model must downgrade the status, never guess an enum:
   unclassifiable evidence is `INSUFFICIENT_EVIDENCE` with the reason recorded

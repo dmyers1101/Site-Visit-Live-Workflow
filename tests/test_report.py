@@ -87,6 +87,7 @@ def _good_output() -> dict[str, Any]:
     ({"l2_status": "ENRICHED", "l2_severity": ""}, rp.BUCKET_REVIEW),
     ({"l2_status": "ENRICHED", "l2_severity": "7"}, rp.BUCKET_REVIEW),
     ({"l2_status": "INSUFFICIENT_EVIDENCE"}, rp.BUCKET_REVIEW),
+    ({"l2_status": "ALREADY_TRACKED", "l2_severity": ""}, rp.BUCKET_TRACKED),
     ({"asset_status": "NEEDS_REVIEW"}, rp.BUCKET_REVIEW),
     ({"asset_status": "FAILED"}, rp.BUCKET_REVIEW),
     ({"asset_status": ""}, rp.BUCKET_REVIEW),
@@ -287,6 +288,22 @@ def test_routine_items_are_grouped_by_area_and_none_are_lost() -> None:
     routine = lines[lines.index("Routine (severity 3–4)"):lines.index("Needs human review")]
     assert [h for h in routine if h in ("Units", "Exterior", "General")] == ["Units", "Exterior", "General"]
     assert sum(1 for line in routine if line.startswith(("Unit 4B", "Siding", "Roof"))) == 3
+
+
+def test_already_tracked_clips_are_listed_but_never_become_action_items() -> None:
+    rows = _rows() + [_row("9", l2_status="ALREADY_TRACKED", l2_severity="", location="North Wing",
+                           issue_description="stain")]
+    summary = rp.build_report_summary("run-1", "Alma", rows)
+    output = _good_output()
+    output["action_items"][0]["refs"].append("ref_9")
+    with pytest.raises(ValidationError, match="no actionable finding"):
+        rp.validate_report_content(json.dumps(output), summary)
+
+    content = rp.validate_report_content(json.dumps(_good_output()), summary)
+    text = rp.build_report_requests(summary, content, "1.0.0", "m")[0]["insertText"]["text"]
+    assert "Already tracked: 1 clip" in text
+    assert "North Wing — stain IMG_9.MOV" in text
+    assert summary["counts"]["action"] + summary["counts"]["review"] + summary["counts"]["no_finding"]         + summary["counts"]["tracked"] == summary["counts"]["total"]
 
 
 def test_indices_count_utf16_units_not_characters() -> None:

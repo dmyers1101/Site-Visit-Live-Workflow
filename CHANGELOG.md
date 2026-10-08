@@ -10,6 +10,15 @@ this file is not rewritten.
 
 ## [Unreleased]
 
+### Changed (2026-10-07) — L2 1.2.0: ALREADY_TRACKED status
+
+- New L2 status `ALREADY_TRACKED` for issues the walker says are already tasked or
+  already identified ("I already have a task for that"). Previously these were
+  `NO_FINDING` (two Alta clips, run `20260929T185459Z-v01`). L3 does not run on them;
+  the report lists them under "Already tracked", never as new action items.
+- `docs/handoffs/`: resume prompts for AppFolio work orders (v0 API) and the Asana
+  task workflow.
+
 ### Added (2026-10-07) — work-order request flag (ADR 0014)
 
 - `work_order.py`: deterministic transcript match for "create work order" /
