@@ -17,7 +17,7 @@ Run once per secret; `read -rs` hides the value and keeps it out of shell histor
 for s in appfolio-v0-client-id appfolio-v0-client-secret appfolio-v0-developer-id; do gcloud secrets create $s --project=shir-sitevisit --replication-policy=automatic </dev/null; read -rsp "value for $s: " V; echo; printf '%s' "$V" | gcloud secrets versions add $s --project=shir-sitevisit --data-file=-; unset V; gcloud secrets add-iam-policy-binding $s --project=shir-sitevisit --member=serviceAccount:site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com --role=roles/secretmanager.secretAccessor </dev/null; done
 ```
 
-Env-var secrets are pinned to version `1` (docs advise numbered versions). Rotating a
+Env-var secrets are pinned (deployed 2026-10-08: client-id `:2`, client-secret `:2`, developer-id `:1`) (docs advise numbered versions). Rotating a
 credential = add version 2, then redeploy the jobs with `:2`.
 
 ## 2. Image and jobs
@@ -26,14 +26,14 @@ The nightly job runs a **tagged** image (`site-visit:l2-20261008-4a67689`), so a
 does not touch it.
 
 ```bash
-gcloud builds submit --project=shir-sitevisit --config=infra/cloudbuild.yaml --substitutions=_IMAGE=us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit:wo-20261008-2fb1935 .
+gcloud builds submit --project=shir-sitevisit --config=infra/cloudbuild.yaml --substitutions=_IMAGE=us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit:wo-20261008-23c897f .
 ```
 
 Two jobs, because Scheduler cannot override args (see `cloud-scheduler-run-jobs.md`).
 Common flags (copy into both):
 
 ```bash
-COMMON="--project=shir-sitevisit --region=us-central1 --image=us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit:wo-20261008-2fb1935 --service-account=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com --memory=1Gi --cpu=1 --task-timeout=1800s --max-retries=0 --tasks=1 --parallelism=1 --set-env-vars=SITE_VISIT_ENVIRONMENT=deployed,GOOGLE_CLOUD_PROJECT=shir-sitevisit,SITE_VISIT_RUNTIME_SERVICE_ACCOUNT=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com,GCS_STAGING_BUCKET=shir-sitevisit-staging,GCS_STAGING_PREFIX=site-visit-staging,CATALOG_TAB_NAME=Catalog,VERTEX_LOCATION=us-central1,VERTEX_MODEL=gemini-2.5-flash,CATALOG_SHEET_ID=1oFq1rzag23706HYXSGoBseuLj5ouFyQ0BHuIAaLtj-o"
+COMMON="--project=shir-sitevisit --region=us-central1 --image=us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit:wo-20261008-23c897f --service-account=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com --memory=1Gi --cpu=1 --task-timeout=1800s --max-retries=0 --tasks=1 --parallelism=1 --set-env-vars=SITE_VISIT_ENVIRONMENT=deployed,GOOGLE_CLOUD_PROJECT=shir-sitevisit,SITE_VISIT_RUNTIME_SERVICE_ACCOUNT=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com,GCS_STAGING_BUCKET=shir-sitevisit-staging,GCS_STAGING_PREFIX=site-visit-staging,CATALOG_TAB_NAME=Catalog,VERTEX_LOCATION=us-central1,VERTEX_MODEL=gemini-2.5-flash,CATALOG_SHEET_ID=1oFq1rzag23706HYXSGoBseuLj5ouFyQ0BHuIAaLtj-o"
 ```
 
 ```bash
@@ -41,7 +41,7 @@ gcloud run jobs deploy site-visit-workorders-candidates $COMMON --args=wo-candid
 ```
 
 ```bash
-gcloud run jobs deploy site-visit-workorders $COMMON --set-secrets=AF_V0_CLIENT_ID=appfolio-v0-client-id:1,AF_V0_CLIENT_SECRET=appfolio-v0-client-secret:1,AF_V0_DEVELOPER_ID=appfolio-v0-developer-id:1 --args=wo-run
+gcloud run jobs deploy site-visit-workorders $COMMON --set-secrets=AF_V0_CLIENT_ID=appfolio-v0-client-id:2,AF_V0_CLIENT_SECRET=appfolio-v0-client-secret:2,AF_V0_DEVELOPER_ID=appfolio-v0-developer-id:1 --args=wo-run
 ```
 
 `WORK_ORDERS_LIVE` is deliberately absent: every `wo-run` is a dry run until it is added.
