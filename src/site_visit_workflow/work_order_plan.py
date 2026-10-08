@@ -83,11 +83,17 @@ def _severity(row: dict[str, Any]) -> int | None:
         return None
 
 
-def select_candidates(catalog_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Clips that belong on a form. Blank `work_order_requested` is never NO and never YES."""
+def select_candidates(catalog_rows: list[dict[str, Any]], cutover: str = "") -> list[dict[str, Any]]:
+    """Clips that belong on a form. Blank `work_order_requested` is never NO and never YES.
+
+    `cutover` (ISO date): only clips with `uploaded_at` on/after it. A blank or
+    unparseable `uploaded_at` is excluded — never assumed recent.
+    """
     out = []
     for row in catalog_rows:
         if row.get("asset_status") != "CATALOGUED" or not row.get("visit_drive_id"):
+            continue
+        if cutover and (row.get("uploaded_at") or "")[:10] < cutover[:10]:
             continue
         requested = row.get("work_order_requested") == WORK_ORDER_YES
         sev = _severity(row)

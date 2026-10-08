@@ -22,6 +22,8 @@ Keep AppFolio calls in `appfolio.py` and pure logic in `work_order_plan.py`.
 from __future__ import annotations
 
 import json
+import os
+import re
 from dataclasses import asdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -119,7 +121,10 @@ def cmd_wo_candidates(args: Any) -> dict[str, Any]:
         ensure_ledger(sheets, sheet_id)
     ledger = read_sheet_records(sheets, sheet_id, wp.LEDGER_TAB)
     claimed = {cid for r in ledger for cid in r.get("clip_asset_ids", "").split(wp.SEP) if cid}
-    candidates = [c for c in wp.select_candidates(catalog)
+    cutover = (os.environ.get("WORK_ORDERS_CUTOVER") or "").strip()
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", cutover):
+        raise ValidationError("wo-candidates requires WORK_ORDERS_CUTOVER=YYYY-MM-DD (visits before it never get forms).")
+    candidates = [c for c in wp.select_candidates(catalog, cutover)
                   if c["source_asset_identifier"] not in claimed
                   and (not args.visit_id or c["visit_drive_id"] in args.visit_id)]
     client = build_client(settings) if candidates else None
@@ -137,7 +142,7 @@ def cmd_wo_candidates(args: Any) -> dict[str, Any]:
                        "grouping": how, "new_rows": len(rows)})
     if not args.dry_run:
         append_ledger_rows(sheets, sheet_id, new_rows)
-    summary = {"gate": "wo-candidates", "dry_run": args.dry_run, "catalog_rows": len(catalog),
+    summary = {"gate": "wo-candidates", "dry_run": args.dry_run, "cutover": cutover, "catalog_rows": len(catalog),
                "ledger_rows_before": len(ledger), "candidates": len(candidates),
                "new_rows": len(new_rows), "visits": visits,
                "preview": [{k: r[k] for k in ("wo_key", "kind", "group_label", "priority", "clip_asset_ids")}

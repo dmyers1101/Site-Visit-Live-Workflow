@@ -27,6 +27,9 @@ this file is not rewritten.
 - Dependency: `requests>=2.32.0`.
 - Property map supports building-level rows (`address_match`, `neighborhood`) for Legacy;
   grouping prompt 1.1.0 never groups across addresses.
+- `wo-candidates` requires `WORK_ORDERS_CUTOVER`; clips uploaded before it (or with no
+  `uploaded_at`) never get forms. Grouping prompt 1.2.0: same fix + same trade only, no
+  catch-all labels. `wo-run --check-auth` read-only credential probe.
 
 ### Added (2026-10-08) — `reprocess-l2`
 

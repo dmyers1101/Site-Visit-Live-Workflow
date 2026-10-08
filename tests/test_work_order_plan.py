@@ -211,3 +211,9 @@ def test_write_transport_failure_is_ambiguous_not_retried():
 def test_get_requires_filter():
     with pytest.raises(ValidationError):
         list(AppFolioClient(CREDS, session=_Session([]), sleep=lambda _: None).get("/work_orders", {}))
+
+
+def test_cutover_excludes_old_and_blank_upload_dates():
+    rows = [clip("a", uploaded_at="2026-10-09T10:00:00Z"), clip("b", uploaded_at="2026-09-01T10:00:00Z"),
+            clip("c", uploaded_at="")]
+    assert [c["source_asset_identifier"] for c in wp.select_candidates(rows, "2026-10-08")] == ["a"]
