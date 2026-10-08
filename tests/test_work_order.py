@@ -45,9 +45,11 @@ def test_repeated_phrases_are_recorded_once() -> None:
 
 
 class _FakeSheets:
-    def __init__(self, header: list[str]) -> None:
+    def __init__(self, header: list[str], columns: int = 26) -> None:
         self.header = header
+        self.columns = columns
         self.updates: list[dict[str, Any]] = []
+        self.batches: list[dict[str, Any]] = []
 
     def spreadsheets(self) -> "_FakeSheets":
         return self
@@ -55,8 +57,16 @@ class _FakeSheets:
     def values(self) -> "_FakeSheets":
         return self
 
-    def get(self, **_kw: Any) -> Any:
+    def get(self, **kw: Any) -> Any:
+        if "fields" in kw:  # spreadsheets().get: grid metadata
+            meta = {"sheets": [{"properties": {"sheetId": 7, "title": "Catalog",
+                                               "gridProperties": {"columnCount": self.columns}}}]}
+            return SimpleNamespace(execute=lambda num_retries=0: meta)
         return SimpleNamespace(execute=lambda num_retries=0: {"values": [self.header]})
+
+    def batchUpdate(self, **kw: Any) -> Any:  # noqa: N802
+        self.batches.append(kw)
+        return SimpleNamespace(execute=lambda: {})
 
     def update(self, **kw: Any) -> Any:
         self.updates.append(kw)
@@ -77,3 +87,20 @@ def test_a_header_that_is_not_a_prefix_is_never_rewritten() -> None:
     with pytest.raises(ValidationError, match="not a prefix"):
         g._extend_header_once(sheets, "s", "Catalog", ("row_key", "a", "b"))
     assert sheets.updates == []
+
+
+def test_a_full_width_grid_is_widened_before_the_header_is_extended() -> None:
+    """2026-10-08: the 42-column master Sheet rejected AQ1:AR1 ("exceeds grid limits")."""
+    g._HEADERS_CHECKED.clear()
+    sheets = _FakeSheets(["row_key", "a"], columns=2)
+    g._extend_header_once(sheets, "s", "Catalog", ("row_key", "a", "work_order_requested", "work_order_phrase"))
+    assert sheets.batches == [{"spreadsheetId": "s", "body": {"requests": [{"appendDimension": {
+        "sheetId": 7, "dimension": "COLUMNS", "length": 2}}]}}]
+    assert len(sheets.updates) == 1
+
+
+def test_a_wide_enough_grid_is_not_touched() -> None:
+    g._HEADERS_CHECKED.clear()
+    sheets = _FakeSheets(["row_key", "a"], columns=26)
+    g._extend_header_once(sheets, "s", "Catalog", ("row_key", "a", "b"))
+    assert sheets.batches == []
