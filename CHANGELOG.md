@@ -25,6 +25,8 @@ this file is not rewritten.
   48h escalation to dmyers@shircapital.com and jcohen@signaturenexus.com.
 - `docs/research/appfolio/v0-work-orders.md`, `docs/RUNBOOKS/work-orders.md`.
 - Dependency: `requests>=2.32.0`.
+- Property map supports building-level rows (`address_match`, `neighborhood`) for Legacy;
+  grouping prompt 1.1.0 never groups across addresses.
 
 ### Added (2026-10-08) — `reprocess-l2`
 

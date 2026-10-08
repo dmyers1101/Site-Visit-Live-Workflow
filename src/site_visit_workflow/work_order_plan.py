@@ -32,7 +32,8 @@ from .work_order import WORK_ORDER_YES
 
 LEDGER_TAB = "WorkOrders"
 MAPPING_TAB = "AppFolioPropertyMap"
-MAPPING_HEADERS = ("catalog_property", "appfolio_property_id", "appfolio_property_name", "reviewed")
+MAPPING_HEADERS = ("catalog_property", "appfolio_property_id", "appfolio_property_name", "reviewed",
+                   "address_match", "neighborhood")
 
 LEDGER_HEADERS: tuple[str, ...] = (
     "wo_key", "visit_drive_id", "state", "property", "visit_name", "uploader_email",
@@ -202,9 +203,14 @@ class Plan:
     blocked: list[tuple[str, str, str]] = field(default_factory=list)  # (key, status, reason)
 
 
-def load_mapping(rows: list[dict[str, Any]]) -> dict[str, str]:
-    """Only reviewed=YES rows with a UUID count. Duplicate property names are a hard error."""
-    out: dict[str, str] = {}
+def load_mapping(rows: list[dict[str, Any]]) -> dict[str, list[tuple[str, str]]]:
+    """catalog_property -> [(address_match, property UUID)]. Only reviewed=YES rows with a UUID.
+
+    A property with blank `address_match` maps whole (e.g. Alta). A scattered-site
+    property (Legacy) has one row per building; a clip maps only when exactly one
+    building's address is heard in its location/issue text (`resolve_property`).
+    """
+    out: dict[str, list[tuple[str, str]]] = {}
     for r in rows:
         if (r.get("reviewed") or "").strip().upper() != "YES":
             continue
@@ -212,13 +218,52 @@ def load_mapping(rows: list[dict[str, Any]]) -> dict[str, str]:
         pid = (r.get("appfolio_property_id") or "").strip()
         if not name or not _UUID.match(pid):
             continue
-        if name in out and out[name] != pid:
-            raise ValueError(f"{MAPPING_TAB}: {name!r} maps to two property IDs")
-        out[name] = pid
+        entry = ((r.get("address_match") or "").strip(), pid)
+        if entry[0] == "" and any(a == "" and p != pid for a, p in out.get(name, [])):
+            raise ValueError(f"{MAPPING_TAB}: {name!r} maps whole to two property IDs")
+        out.setdefault(name, []).append(entry)
     return out
 
 
-def plan_creates(ledger: list[dict[str, Any]], mapping: dict[str, str],
+_ADDR_STOP = {"ave", "avenue", "st", "street", "e", "w", "s", "n", "dr", "drive", "the",
+              "apartments", "rd", "road", "blvd", "boulevard"}
+
+
+def _address_heard(address: str, text: str) -> bool:
+    """Street/name tokens must all appear; any house number of a range must appear.
+
+    Tokens are split on non-alphanumerics, so "16th" stays one token. Fraction
+    parts ("684 1/2") and other one-digit numbers are ignored when a real house
+    number is present, so "1" never matches on its own.
+    """
+    tokens = set(re.split(r"[^a-z0-9]+", text.lower()))
+    parts = [t for t in re.split(r"[^a-z0-9]+", address.lower()) if t]
+    words = [t for t in parts if not t.isdigit() and t not in _ADDR_STOP]
+    nums = [t for t in parts if t.isdigit()]
+    if any(len(n) > 1 for n in nums):
+        nums = [n for n in nums if len(n) > 1]
+    if not words or not all(w in tokens for w in words):
+        return False
+    return not nums or any(n in tokens for n in nums)
+
+
+def resolve_property(row: dict[str, Any], mapping: dict[str, list[tuple[str, str]]]) -> tuple[str | None, str]:
+    """(UUID, reason). Never guesses: zero or several building matches -> None."""
+    entries = mapping.get((row.get("property") or "").strip(), [])
+    whole = {p for a, p in entries if not a}
+    if whole:
+        return whole.pop(), "property"
+    if not entries:
+        return None, f"no reviewed mapping for {row.get('property')!r}"
+    text = f"{row.get('location', '')} {row.get('issue_summary', '')} {row.get('group_label', '')}"
+    hits = {p for a, p in entries if _address_heard(a, text)}
+    if len(hits) == 1:
+        return hits.pop(), "address"
+    return None, (f"no building address heard for {row.get('property')!r}" if not hits
+                  else f"{len(hits)} building addresses heard; split the item")
+
+
+def plan_creates(ledger: list[dict[str, Any]], mapping: dict[str, list[tuple[str, str]]],
                  only_keys: set[str] | None = None) -> Plan:
     plan = Plan()
     for row in ledger:
@@ -228,9 +273,9 @@ def plan_creates(ledger: list[dict[str, Any]], mapping: dict[str, str],
             continue
         if row.get("appfolio_work_order_ids"):
             continue  # already created; never again
-        pid = mapping.get(row.get("property", "").strip())
+        pid, why = resolve_property(row, mapping)
         if not pid:
-            plan.blocked.append((row["wo_key"], BLOCKED_NO_MAPPING, f"no reviewed mapping for {row.get('property')!r}"))
+            plan.blocked.append((row["wo_key"], BLOCKED_NO_MAPPING, why))
             continue
         clips = row["clip_asset_ids"].split(SEP)
         links = row["clip_links"].split(SEP)

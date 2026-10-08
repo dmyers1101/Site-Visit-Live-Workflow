@@ -23,8 +23,11 @@ unapproved writes. Asana is out of scope for this ADR (next session).
   Request/response evidence in GCS. Create only when the ID is empty; POST carries a
   deterministic `Idempotency-Key`.
 - **Mapping:** `AppFolioPropertyMap` tab (catalog property → property UUID), human-reviewed.
-  Property level only for now: the v0 docs on file lack `GET /units`, so unit matching
-  is deferred rather than guessed. Unmapped →
+  Property level only (no `GET /units` in our docs, so no unit matching). Hedge 1 & 2 maps
+  wholly to Hedge 1 (owner decision 2026-10-08). Legacy has one map row per building
+  (`address_match`, from the Asana Legacy walk subtasks); a clip maps only when exactly one
+  building address is heard in its location/issue text, else BLOCKED_NO_MAPPING. The map
+  lives in the Sheet only — AppFolio IDs are not committed to the repo. Unmapped →
   `BLOCKED_NO_MAPPING`.
 - **Fields:** `JobDescription` (location + issue + action + walker phrase), `PropertyId`
   or `UnitId`, `Priority` (severity 1 → Urgent, 2 → Normal, 3–4 → Low), `Status` New; clip links

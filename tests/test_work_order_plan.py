@@ -85,8 +85,24 @@ def test_mapping_requires_review_and_uuid():
     assert m == {}
 
 
+B1 = "25d186bc-913e-11e8-a048-b083fede658c"
+B2 = "25d189a3-913e-11e8-a048-b083fede658c"
+LEGACY = {"Legacy": [("2730 Broadway", B1), ("2910 Voelkel", B2), ("1511-1519 Bingham", PID)]}
+
+
+def test_legacy_maps_by_heard_address():
+    assert wp.resolve_property({"property": "Legacy", "location": "2730 Broadway, hallway"}, LEGACY) == (B1, "address")
+    assert wp.resolve_property({"property": "Legacy", "location": "1519 Bingham St rear"}, LEGACY)[0] == PID
+
+
+def test_legacy_no_or_two_addresses_blocked():
+    assert wp.resolve_property({"property": "Legacy", "location": "basement"}, LEGACY)[0] is None
+    assert wp.resolve_property({"property": "Legacy", "location": "2730 Broadway and 2910 Voelkel"}, LEGACY)[0] is None
+    assert wp.resolve_property({"property": "Legacy", "location": "2731 Broadway"}, LEGACY)[0] is None
+
+
 def test_split_creates_one_per_clip_with_distinct_keys():
-    plan = wp.plan_creates(_ledger("SPLIT"), {"Alta": PID})
+    plan = wp.plan_creates(_ledger("SPLIT"), {"Alta": [("", PID)]})
     assert len(plan.creates) == 2
     assert len({c.idempotency_key for c in plan.creates}) == 2
     assert wp.check_plan_invariants(plan, _ledger("SPLIT"), max_creates=5) == []
@@ -94,7 +110,7 @@ def test_split_creates_one_per_clip_with_distinct_keys():
 
 def test_clean_plan_passes_all_invariants():
     ledger = _ledger()
-    plan = wp.plan_creates(ledger, {"Alta": PID})
+    plan = wp.plan_creates(ledger, {"Alta": [("", PID)]})
     assert len(plan.creates) == 1
     body = plan.creates[0].body
     assert body["Priority"] == "Normal" and body["PropertyId"] == PID and body["Status"] == "New"
@@ -103,12 +119,12 @@ def test_clean_plan_passes_all_invariants():
 
 def test_no_recreate_when_id_present():
     ledger = _ledger(appfolio_work_order_ids="abc")
-    assert wp.plan_creates(ledger, {"Alta": PID}).creates == []
+    assert wp.plan_creates(ledger, {"Alta": [("", PID)]}).creates == []
 
 
 def test_invariant_flags_unapproved_and_cap():
     ledger = _ledger()
-    plan = wp.plan_creates(ledger, {"Alta": PID})
+    plan = wp.plan_creates(ledger, {"Alta": [("", PID)]})
     ledger[0]["decided_at"] = ""
     problems = wp.check_plan_invariants(plan, ledger, max_creates=0)
     assert any(p.startswith("human_approved") for p in problems)
@@ -117,7 +133,7 @@ def test_invariant_flags_unapproved_and_cap():
 
 def test_invariant_flags_array_and_bad_priority():
     ledger = _ledger()
-    plan = wp.plan_creates(ledger, {"Alta": PID})
+    plan = wp.plan_creates(ledger, {"Alta": [("", PID)]})
     plan.creates[0].body["AssignedUsers"] = []
     plan.creates[0].body["Priority"] = "High"
     problems = wp.check_plan_invariants(plan, ledger, max_creates=1)
@@ -132,7 +148,7 @@ def test_duplicate_ledger_keys_flagged():
 
 def test_marker_and_existing_match():
     ledger = _ledger()
-    c = wp.plan_creates(ledger, {"Alta": PID}).creates[0]
+    c = wp.plan_creates(ledger, {"Alta": [("", PID)]}).creates[0]
     found = wp.find_by_marker([{"Id": "x", "JobDescription": c.body["JobDescription"]}], c.marker)
     assert found["Id"] == "x"
     wos = [{"Id": PID, "Link": "https://shir.appfolio.com/work_orders/123", "WorkOrderNumber": "4521-1"}]

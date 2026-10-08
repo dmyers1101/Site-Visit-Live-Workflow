@@ -1,6 +1,6 @@
 # Work-order grouping prompt
 
-**Semantic version:** 1.0.0
+**Semantic version:** 1.1.0
 **Status:** Active (2026-10-08, ADR 0015).
 
 ## Purpose
@@ -20,7 +20,8 @@ Each input item has an id, a location, an issue and a recommended action.
 Put items in the same group ONLY when one vendor or crew would do them as one job
 (for example: touch-up paint in several units, several missing smoke detectors,
 several trip hazards on the same walkway). Different trades, or unrelated problems,
-stay in separate groups. A group of one is normal.
+stay in separate groups. Items at different street addresses or buildings are
+NEVER grouped together. A group of one is normal.
 
 Return JSON: {"groups": [{"label": "<short work-order title, max 80 chars>",
 "clip_ids": ["<id>", ...]}]}. Use every input id exactly once. Do not invent ids.
