@@ -324,7 +324,7 @@ class _FakeDocs:
         return self
 
     def get(self, **_kwargs: Any) -> Any:
-        return SimpleNamespace(execute=lambda: self.doc)
+        return SimpleNamespace(execute=lambda **_kw: self.doc)
 
     def batchUpdate(self, documentId: str, body: dict[str, Any]) -> Any:  # noqa: N802,N803
         self.batches.append(body)

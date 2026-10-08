@@ -58,6 +58,8 @@ from .models import (
     utc_now,
 )
 
+L2_VALIDATION_ATTEMPTS = 4
+
 PROMPT_FILES = {
     "L1": "l1-extraction.md",
     "L2": "l2-enrichment.md",
@@ -386,9 +388,10 @@ def run_l2(
         "transcript_text": transcript,
     }
     started_at = utc_now()
-    # One retry on a validation failure: the 2026-10-07 A/B saw Gemini mis-copy
-    # prior_layer_record_id in about 1 of 40 calls. A second failure is raised.
-    for attempt in range(2):
+    # Retry on a validation failure: Gemini mis-copies prior_layer_record_id in
+    # about 1 of 40 calls (2026-10-07 A/B), and one retry still left ~1 clip in 50
+    # in NEEDS_REVIEW on the 2026-10-08 reprocess. The last failure is raised.
+    for attempt in range(L2_VALIDATION_ATTEMPTS):
         raw, usage = _generate(client, settings, "L2", _compose(prompt, payload))
         try:
             parsed = parse_strict_json(raw, "L2")
@@ -401,7 +404,7 @@ def run_l2(
             )
             break
         except ValidationError:
-            if attempt:
+            if attempt == L2_VALIDATION_ATTEMPTS - 1:
                 raise
     usage = {**usage, "attempts": attempt + 1}
     return (

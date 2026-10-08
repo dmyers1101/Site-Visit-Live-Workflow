@@ -944,7 +944,7 @@ def write_report_requests(
     if not document_id.strip():
         raise ValidationError("A report write requires a non-empty document ID.")
     try:
-        doc = service.documents().get(documentId=document_id, includeTabsContent=True).execute()
+        doc = service.documents().get(documentId=document_id, includeTabsContent=True).execute(num_retries=5)
     except HttpError as error:
         raise ExternalServiceError(f"Docs read failed for {document_id}: {error}") from error
     tabs = doc.get("tabs", [])
@@ -998,7 +998,7 @@ def find_or_create_file(drive: Any, parent_id: str, title: str, mime_type: str) 
             q=f"'{parent_id}' in parents and name = '{escaped}' and mimeType = '{mime_type}' and trashed = false",
             fields="files(id,webViewLink,createdTime)", orderBy="createdTime desc",
             supportsAllDrives=True, includeItemsFromAllDrives=True, pageSize=10,
-        ).execute().get("files", [])
+        ).execute(num_retries=5).get("files", [])
         if found:
             return found[0]["id"], found[0].get("webViewLink"), False
         created = service.files().create(
@@ -1041,7 +1041,7 @@ def list_document_tabs(service: Any, document_id: str) -> list[dict[str, Any]]:
     except ImportError as error:
         raise ExternalServiceError("Google Docs dependency is not installed.") from error
     try:
-        doc = service.documents().get(documentId=document_id, includeTabsContent=True).execute()
+        doc = service.documents().get(documentId=document_id, includeTabsContent=True).execute(num_retries=5)
     except HttpError as error:
         raise ExternalServiceError(f"Docs read failed for {document_id}: {error}") from error
     tabs = []
