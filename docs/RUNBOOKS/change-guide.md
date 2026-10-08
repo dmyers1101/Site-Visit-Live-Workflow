@@ -45,3 +45,14 @@ update the column-letter pin in `tests/test_catalog_rows.py`. Removing a column 
 
 ## Reprocess a clip
 Clear its `asset_status` in the master Sheet `Catalog` tab; the next run picks it up.
+
+## After an L2/L3 prompt change: reprocess a visit (2026-10-08)
+
+Existing rows keep their old L2/L3 values until reprocessed. Per visit, on the
+manual job:
+
+1. `--args=reprocess-l2,--visit-id,<visit folder id>,--dry-run` — read the
+   `status_transitions` and `changed_rows` in the log; nothing is written.
+2. `--args=reprocess-l2,--visit-id,<visit folder id>,--report` — writes the
+   L2/L3 columns and rewrites that visit's report tab.
+Transcripts, L1, filenames and every other column are never changed.

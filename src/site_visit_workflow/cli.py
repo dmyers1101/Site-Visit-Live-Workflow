@@ -326,6 +326,98 @@ def cmd_preview_report(args: argparse.Namespace) -> None:
     _emit({"gate": "preview-report", "visit_id": args.visit_id, "report": record.to_dict()})
 
 
+def cmd_reprocess_l2(args: argparse.Namespace) -> None:
+    """Re-run L2 (+L3) on one visit's catalogued clips with the current prompts.
+
+    Transcripts and L1 are read from GCS evidence and never changed. Every new
+    row is computed and checked in memory first (`reprocess.py` invariants);
+    nothing is written unless all pass. `--dry-run` writes nothing at all.
+    """
+    import json as _json
+
+    from . import extraction as ex
+    from . import portfolio as pf
+    from . import reprocess as rpc
+    from .catalog import FULL_CATALOG_HEADERS, row_values
+    from .extraction import LayerResult
+    from .models import L1Extraction, l3_is_permitted
+
+    settings, drive, sheets, visits, sheet_id, tab, records, _root = _portfolio_context(args)
+    visit = next((v for v in visits if v.drive_id == args.visit_id), None)
+    if visit is None:
+        raise ValidationError(f"Visit {args.visit_id} is not under the portfolio root.")
+    run_id = (args.run_id or "").strip() or default_run_id()
+    settings = replace(settings, run_id=run_id)
+    storage = StorageGateway.from_settings(settings)
+    client = ex.build_client(settings)
+    rows = [r for r in records.values() if r.get("visit_drive_id") == visit.drive_id]
+    planned, skipped, failures = [], [], []
+    for row in rows:
+        ok, why = rpc.eligible(row)
+        if not ok:
+            skipped.append({"row_key": row["row_key"], "reason": why})
+            continue
+        try:
+            transcript = storage.read_text(rpc.object_name(row["transcript_gcs_uri"], storage.bucket_name))
+            l1_record = _json.loads(storage.read_text(rpc.object_name(
+                row["evidence_gcs_prefix"], storage.bucket_name) + "/prompt-execution/l1.json"))
+            from dataclasses import fields as _fields
+
+            known = {f.name for f in _fields(LayerResult)}
+            l1_result = LayerResult(**{k: v for k, v in l1_record.items() if k in known})
+            if l1_result.layer != "L1" or l1_result.source_asset_identifier != row["row_key"]                     or not l1_result.validated:
+                raise ValidationError(f"Stored L1 evidence for {row['row_key']} is not a validated L1 record.")
+            l1 = L1Extraction(**l1_result.parsed_output)
+            errors: dict[str, Any] = {}
+            l2_result = l2 = l3_result = l3 = None
+            try:
+                l2_result, l2 = ex.run_l2(client, settings, args.prompts_dir, row["row_key"], l1_result, l1, transcript)
+            except WorkflowError as error:
+                errors["L2"] = _sanitized(error)
+            if l2 is not None and l3_is_permitted(l2):
+                try:
+                    l3_result, l3 = ex.run_l3(client, settings, args.prompts_dir, row["row_key"],
+                                              l2_result, l2, l1, transcript)
+                except WorkflowError as error:
+                    errors["L3"] = _sanitized(error)
+            new = rpc.rebuild_row(row, l1, l2, l3, errors, utc_now())
+            changed = rpc.assert_only_layer_columns_changed(row, new)
+            planned.append({"row": new, "old": row, "changed": sorted(changed - {"updated_at"}),
+                            "l2": l2_result, "l3": l3_result, "errors": errors})
+        except WorkflowError as error:
+            failures.append({"row_key": row["row_key"], "error": _sanitized(error)})
+    if failures:
+        _emit({"gate": "reprocess-l2", "status": "ABORTED_NOTHING_WRITTEN", "failures": failures})
+        raise ValidationError(f"{len(failures)} row(s) failed the reprocess checks; nothing was written.")
+    if {p["row"]["row_key"] for p in planned} - {r["row_key"] for r in rows}:
+        raise ValidationError("Reprocess produced a row key outside the selected visit; nothing was written.")
+    transitions: dict[str, int] = {}
+    for p in planned:
+        key = f"{p['old'].get('l2_status') or '-'}->{p['row']['l2_status'] or '-'}"
+        transitions[key] = transitions.get(key, 0) + 1
+    summary = {"gate": "reprocess-l2", "run_id": run_id, "visit_id": visit.drive_id, "dry_run": args.dry_run,
+               "selected": len(rows), "reprocessed": len(planned), "skipped": skipped,
+               "status_transitions": transitions,
+               "changed_rows": [{"row_key": p["row"]["row_key"], "changed": p["changed"],
+                                 "l2_status": [p["old"].get("l2_status"), p["row"]["l2_status"]],
+                                 "errors": p["errors"]} for p in planned if p["changed"]]}
+    if args.dry_run:
+        _emit(summary)
+        return
+    prefix = f"{settings.gcs_staging_prefix}/{run_id}/reprocess-l2"
+    for p in planned:
+        key = p["row"]["row_key"]
+        for name in ("l2", "l3"):
+            if p[name] is not None:
+                storage.write_json(f"{prefix}/{key}/{name}.json", p[name].to_dict())
+        upsert_catalog_row(sheets, sheet_id, tab, FULL_CATALOG_HEADERS, row_values(p["row"]), key)
+    storage.write_json(f"{prefix}/summary.json", summary)
+    if args.report:
+        summary["report"] = _write_visit_report(settings, drive, sheets, sheet_id, tab, visit,
+                                                args.prompts_dir, run_id)
+    _emit(summary)
+
+
 def cmd_migrate_catalog(args: argparse.Namespace) -> None:
     """Copy rows from an old per-visit catalog into the master Sheet. Never deletes the source.
 
@@ -1215,6 +1307,19 @@ def parser() -> argparse.ArgumentParser:
     run_portfolio.add_argument("--prompts-dir", type=Path, default=Path("prompts"))
     run_portfolio.add_argument("--poll-timeout-seconds", type=int, default=1800)
     run_portfolio.set_defaults(func=cmd_process_portfolio)
+
+    reproc = commands.add_parser(
+        "reprocess-l2",
+        help="Re-run L2/L3 on one visit's clips with the current prompts (transcripts and L1 unchanged).",
+    )
+    reproc.add_argument("--visit-id", required=True)
+    reproc.add_argument("--root", default="", help="Master folder ID (default: PORTFOLIO_ROOT_ID).")
+    reproc.add_argument("--catalog-sheet-id", default="")
+    reproc.add_argument("--run-id", default="")
+    reproc.add_argument("--dry-run", action="store_true", help="Compute and check; write nothing.")
+    reproc.add_argument("--report", action="store_true", help="Rewrite the visit's report tab afterwards.")
+    reproc.add_argument("--prompts-dir", type=Path, default=Path("prompts"))
+    reproc.set_defaults(func=cmd_reprocess_l2)
 
     preview = commands.add_parser(
         "preview-report",

@@ -10,6 +10,14 @@ this file is not rewritten.
 
 ## [Unreleased]
 
+### Added (2026-10-08) — `reprocess-l2`
+
+- `reprocess-l2 --visit-id <id> [--dry-run] [--report]`: re-runs L2 (+L3) with the
+  current prompts on a visit's clips, reading the stored transcript and validated L1
+  from GCS evidence (never re-run). All rows are recomputed and checked in memory
+  first; only L2/L3 columns, `asset_status` and `updated_at` may change, else nothing
+  is written. New L2/L3 evidence goes under `<run-id>/reprocess-l2/`.
+
 ### Changed (2026-10-07) — L2 1.2.0: ALREADY_TRACKED status
 
 - New L2 status `ALREADY_TRACKED` for issues the walker says are already tasked or
