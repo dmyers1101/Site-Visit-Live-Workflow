@@ -26,14 +26,14 @@ The nightly job runs a **tagged** image (`site-visit:l2-20261008-4a67689`), so a
 does not touch it.
 
 ```bash
-gcloud builds submit --project=shir-sitevisit --config=infra/cloudbuild.yaml --substitutions=_IMAGE=us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit:wo-20261008-ba8119f .
+gcloud builds submit --project=shir-sitevisit --config=infra/cloudbuild.yaml --substitutions=_IMAGE=us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit:wo-20261009-876e803 .
 ```
 
 Two jobs, because Scheduler cannot override args (see `cloud-scheduler-run-jobs.md`).
 Common flags (copy into both):
 
 ```bash
-COMMON="--project=shir-sitevisit --region=us-central1 --image=us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit:wo-20261008-ba8119f --service-account=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com --memory=1Gi --cpu=1 --task-timeout=1800s --max-retries=0 --tasks=1 --parallelism=1 --set-env-vars=SITE_VISIT_ENVIRONMENT=deployed,GOOGLE_CLOUD_PROJECT=shir-sitevisit,SITE_VISIT_RUNTIME_SERVICE_ACCOUNT=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com,GCS_STAGING_BUCKET=shir-sitevisit-staging,GCS_STAGING_PREFIX=site-visit-staging,CATALOG_TAB_NAME=Catalog,VERTEX_LOCATION=us-central1,VERTEX_MODEL=gemini-2.5-flash,CATALOG_SHEET_ID=1oFq1rzag23706HYXSGoBseuLj5ouFyQ0BHuIAaLtj-o,WORK_ORDERS_CUTOVER=2026-10-08"
+COMMON="--project=shir-sitevisit --region=us-central1 --image=us-central1-docker.pkg.dev/shir-sitevisit/site-visit-workflow/site-visit:wo-20261009-876e803 --service-account=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com --memory=1Gi --cpu=1 --task-timeout=1800s --max-retries=0 --tasks=1 --parallelism=1 --set-env-vars=SITE_VISIT_ENVIRONMENT=deployed,GOOGLE_CLOUD_PROJECT=shir-sitevisit,SITE_VISIT_RUNTIME_SERVICE_ACCOUNT=site-visit-workflow@shir-sitevisit.iam.gserviceaccount.com,GCS_STAGING_BUCKET=shir-sitevisit-staging,GCS_STAGING_PREFIX=site-visit-staging,CATALOG_TAB_NAME=Catalog,VERTEX_LOCATION=us-central1,VERTEX_MODEL=gemini-2.5-flash,CATALOG_SHEET_ID=1oFq1rzag23706HYXSGoBseuLj5ouFyQ0BHuIAaLtj-o,WORK_ORDERS_CUTOVER=2026-10-08"
 ```
 
 ```bash
