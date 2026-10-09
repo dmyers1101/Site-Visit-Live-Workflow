@@ -59,6 +59,7 @@ from .models import (
 )
 
 L2_VALIDATION_ATTEMPTS = 4
+L3_VALIDATION_ATTEMPTS = 4
 
 PROMPT_FILES = {
     "L1": "l1-extraction.md",
@@ -463,9 +464,18 @@ def run_l3(
         "transcript_text": transcript,
     }
     started_at = utc_now()
-    raw, usage = _generate(client, settings, "L3", _compose(prompt, payload))
-    parsed = parse_strict_json(raw, "L3")
-    refinement = L3Refinement.from_external_result(parsed, asset_id, l2_result.record_id)
+    # Same retry as L2: on 2026-10-08 a Teak clip's L3 mis-copied
+    # prior_layer_record_id and, with no retry, the clip fell to NEEDS_REVIEW.
+    for attempt in range(L3_VALIDATION_ATTEMPTS):
+        raw, usage = _generate(client, settings, "L3", _compose(prompt, payload))
+        try:
+            parsed = parse_strict_json(raw, "L3")
+            refinement = L3Refinement.from_external_result(parsed, asset_id, l2_result.record_id)
+            break
+        except ValidationError:
+            if attempt == L3_VALIDATION_ATTEMPTS - 1:
+                raise
+    usage = {**usage, "attempts": attempt + 1}
     return (
         LayerResult(
             layer="L3",
