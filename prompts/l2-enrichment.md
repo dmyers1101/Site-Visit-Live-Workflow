@@ -1,17 +1,11 @@
 # L2 enrichment prompt
 
-**Semantic version:** 1.3.0
+**Semantic version:** 1.2.0
 
 ## Purpose
 
 Add controlled analysis fields to a single **validated** L1 result. It is a
 payload for an approved model run.
-
-**Changed in 1.3.0 (2026-10-09):** ENRICHED requires all four fields. A Teak
-clip (`1K9sPKgWy1_T1Nmlar9oDH7CrFTZBlDKU`) was returned as ENRICHED with a null
-`area_type` on four consecutive attempts and fell to NEEDS_REVIEW. The prompt now
-says that if any of trade, area_type or severity cannot be chosen from the lists,
-the status is INSUFFICIENT_EVIDENCE, never an ENRICHED record with a null.
 
 **Changed in 1.2.0 (2026-10-07):** new status `ALREADY_TRACKED`. Two Alta
 clips (run `20260929T185459Z-v01`) were returned as `NO_FINDING` although they
@@ -87,11 +81,8 @@ trade is one of plumbing, electrical, hvac, landscaping, cleaning,
 general-maintenance, safety, structural. area_type is one of unit,
 common-interior, exterior, amenity. severity is the integer 1, 2, 3, or 4,
 where 1 is urgent/safety, 2 is high, 3 is medium, and 4 is low/cosmetic.
-recommended_action is one concrete next step. ENRICHED requires all four of
-trade, area_type, severity and recommended_action; if any of them cannot be
-chosen from these lists, return INSUFFICIENT_EVIDENCE with all four null and
-say in enrichment_note which one could not be determined. Never return
-ENRICHED with a null field. Do not invent a value outside these lists. Do not echo the transcript. Do not restate, correct, or return
+recommended_action is one concrete next step. Do not invent a value outside
+these lists. Do not echo the transcript. Do not restate, correct, or return
 location, issue_description, or suggested_filename. Do not return priority,
 owner, assignee, due date, task, report, or Drive filename changes. State
 uncertainty in enrichment_note; do not fabricate missing facts, and never
