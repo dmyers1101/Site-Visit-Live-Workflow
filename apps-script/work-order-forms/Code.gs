@@ -59,11 +59,15 @@ function installTrigger() {
   ScriptApp.newTrigger('hourly').timeBased().everyHours(1).create();
 }
 
-/** Run once by hand after setting SENDER_FROM: proves the alias really sends. */
+/** Run by hand: always really sends one email to the owner, even when DRY_RUN=1. */
 function testSendAs() {
+  var p = PropertiesService.getScriptProperties().getProperties();
   var me = Session.getEffectiveUser().getEmail();
-  send_(me, 'Site Visit work-order forms — send-as test',
-    'If this arrived from the expected address, SENDER_FROM is valid.');
+  var opts = { name: 'Site Visit App' };
+  if (p.SENDER_FROM) opts.from = p.SENDER_FROM;
+  GmailApp.sendEmail(me, 'Site Visit work-order forms — send-as test',
+    'Sent as: ' + (p.SENDER_FROM || me) + '. If this arrived from that address, sending works.', opts);
+  Logger.log('testSendAs sent to ' + me + ' as ' + (p.SENDER_FROM || me));
 }
 
 // ---------------------------------------------------------------------------
