@@ -181,3 +181,22 @@ def test_l2_raises_after_the_last_attempt(monkeypatch: pytest.MonkeyPatch) -> No
         ex.run_l2(None, settings, Path(__file__).resolve().parents[1] / "prompts",
                   "asset-1", l1_result, l1, "There is a leak under the sink in unit 4B.")
     assert len(calls) == ex.L2_VALIDATION_ATTEMPTS
+
+
+def test_l3_recovers_from_repeated_record_id_mis_copies(monkeypatch: pytest.MonkeyPatch) -> None:
+    from site_visit_workflow import extraction as ex
+    from site_visit_workflow.extraction import LayerResult
+    from site_visit_workflow.models import L2Enrichment
+
+    l1, _l1_result, settings, _good, _bad = _l2_inputs()
+    l2 = L2Enrichment("asset-1", "L1", "L1-rec-1", "ENRICHED", "plumbing", "unit", 2, "Fix the leak", "Leak stated.")
+    l2_result = LayerResult("L2", "asset-1", "L2-rec-1", "p", "1", "h", "m", "s", {}, "", {}, True, "t0", "t1")
+    good = ('{"source_asset_identifier":"asset-1","prior_layer":"L2","prior_layer_record_id":"L2-rec-1",'
+            '"refinement_status":"REFINED","responsible_party":"in-house","urgency_window":"this-week",'
+            '"disputed_prior_fields":[],"refinement_note":"Clear."}')
+    answers = iter([good.replace("L2-rec-1", "L2-rec-l")] * 3 + [good])
+    monkeypatch.setattr(ex, "_generate", lambda *a, **k: (next(answers), {}))
+    _result, refinement = ex.run_l3(None, settings, Path(__file__).resolve().parents[1] / "prompts",
+                                    "asset-1", l2_result, l2, l1, "There is a leak under the sink in unit 4B.")
+    assert refinement.refinement_status == "REFINED"
+    assert ex.L3_VALIDATION_ATTEMPTS == 4
