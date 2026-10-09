@@ -217,3 +217,12 @@ def test_cutover_excludes_old_and_blank_upload_dates():
     rows = [clip("a", uploaded_at="2026-10-09T10:00:00Z"), clip("b", uploaded_at="2026-09-01T10:00:00Z"),
             clip("c", uploaded_at="")]
     assert [c["source_asset_identifier"] for c in wp.select_candidates(rows, "2026-10-08")] == ["a"]
+
+
+def test_walker_description_replaces_generated_text():
+    ledger = _ledger(walker_description="Patch and repaint the stairwell wall, 2nd floor east.")
+    plan = wp.plan_creates(ledger, {"Alta": [("", PID)]})
+    body = plan.creates[0].body
+    assert "Patch and repaint the stairwell wall" in body["JobDescription"]
+    assert "Issue:" not in body["JobDescription"]
+    assert wp.check_plan_invariants(plan, ledger, 1) == []

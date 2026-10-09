@@ -43,6 +43,8 @@ LEDGER_HEADERS: tuple[str, ...] = (
     "decision", "existing_ref", "decided_by", "decided_at",
     "status", "appfolio_property_id", "idempotency_keys", "appfolio_work_order_ids",
     "appfolio_links", "last_error", "created_at", "updated_at",
+    # Appended 2026-10-09: the walker's edited description from the form.
+    "walker_description",
 )
 
 KIND_REQUESTED = "REQUESTED"   # walker said "create/need a work order"
@@ -182,6 +184,15 @@ def job_description(row: dict[str, Any], clip_index: int | None = None) -> str:
         where = row["location"].split(SEP)[min(clip_index, len(row["location"].split(SEP)) - 1)] if row["location"] else ""
         issue = row["issue_summary"].split(SEP)[min(clip_index, len(row["issue_summary"].split(SEP)) - 1)] if row["issue_summary"] else ""
     lines = [f"Site visit {row.get('visit_name', '')}: {row['group_label']}".strip()]
+    walker = (row.get("walker_description") or "").strip()
+    if walker:
+        # The walker's own words replace the generated text (2026-10-09).
+        if clip_index is not None and where:
+            lines.append(f"Location: {where}")
+        lines.append(walker)
+        tail = marker(row["wo_key"], clip_index)
+        text = "\n".join(lines)
+        return text[: JOB_DESCRIPTION_MAX - len(tail) - 1] + "\n" + tail
     if where:
         lines.append(f"Location: {where}")
     if issue:

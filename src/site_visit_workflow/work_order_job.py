@@ -50,6 +50,11 @@ def ensure_ledger(sheets: Any, sheet_id: str) -> None:
                 body={"values": [list(headers)]}).execute()
         elif tuple(head[0][: len(headers)]) != headers[: len(head[0])]:
             raise ValidationError(f"{tab} header does not match the expected columns; refusing to write.")
+        elif len(head[0]) < len(headers):
+            # Append new trailing columns only; existing headers are never rewritten.
+            sheets.spreadsheets().values().update(
+                spreadsheetId=sheet_id, range=f"{tab}!{column_letter(len(head[0]) + 1)}1", valueInputOption="RAW",
+                body={"values": [list(headers[len(head[0]):])]}).execute()
 
 
 def append_ledger_rows(sheets: Any, sheet_id: str, rows: list[dict[str, Any]]) -> None:

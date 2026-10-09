@@ -31,7 +31,7 @@ var HEADERS = ['wo_key', 'visit_drive_id', 'state', 'property', 'visit_name', 'u
   'form_id', 'form_url', 'form_item_id', 'form_sent_at', 'reminder_sent_at', 'escalated_at',
   'decision', 'existing_ref', 'decided_by', 'decided_at',
   'status', 'appfolio_property_id', 'idempotency_keys', 'appfolio_work_order_ids',
-  'appfolio_links', 'last_error', 'created_at', 'updated_at'];
+  'appfolio_links', 'last_error', 'created_at', 'updated_at', 'walker_description'];
 var SEP = '; ';
 var CHOICE_ONE = 'Create one AppFolio work order';
 var CHOICE_SPLIT = 'Create a separate work order for each clip';
@@ -86,6 +86,14 @@ function ledger_(p) {
   if (!sheet) throw new Error('Tab ' + TAB + ' not found — run wo-candidates first.');
   var values = sheet.getDataRange().getValues();
   var head = values[0];
+  // Append missing trailing headers (never insert or rewrite existing ones).
+  var filled = head.filter(String).length;
+  if (filled < HEADERS.length && head.slice(0, filled).every(function (h, i) { return h === HEADERS[i]; }) && !p.dry) {
+    if (sheet.getMaxColumns() < HEADERS.length) sheet.insertColumnsAfter(sheet.getMaxColumns(), HEADERS.length - sheet.getMaxColumns());
+    sheet.getRange(1, filled + 1, 1, HEADERS.length - filled).setValues([HEADERS.slice(filled)]);
+    values = sheet.getDataRange().getValues();
+    head = values[0];
+  }
   HEADERS.forEach(function (h, i) {
     if (head[i] !== h) throw new Error('WorkOrders header mismatch at column ' + (i + 1) + ': ' + head[i] + ' != ' + h);
   });
@@ -147,6 +155,7 @@ function sendPendingForms_() {
       .setLimitOneResponsePerUser(false)
       .setAllowResponseEdits(false);
     if (p.FORMS_FOLDER_ID) DriveApp.getFileById(form.getId()).moveTo(DriveApp.getFolderById(p.FORMS_FOLDER_ID));
+    var items = [], ids = {};
     rows.forEach(function (r, n) {
       var clips = r.clip_links.split(SEP).filter(String);
       var help = [
@@ -161,17 +170,27 @@ function sendPendingForms_() {
       var mc = form.addMultipleChoiceItem()
         .setTitle((n + 1) + '. ' + r.group_label + (clips.length > 1 ? ' (' + clips.length + ' clips)' : ''))
         .setHelpText(help).setChoiceValues(choices).setRequired(true);
+      var desc = form.addParagraphTextItem()
+        .setTitle((n + 1) + '. Work order description (edit as needed - this text goes into AppFolio)');
       var txt = form.addTextItem()
         .setTitle((n + 1) + '. Existing AppFolio work order # or link (only if it already exists)');
-      write_(p, l, r.wo_key, { form_id: form.getId(), form_url: form.getPublishedUrl(),
-        form_item_id: mc.getId() + '|' + txt.getId(), form_sent_at: iso_(new Date()) });
+      items.push({ r: r, desc: desc });
+      ids[r.wo_key] = mc.getId() + '|' + txt.getId() + '|' + desc.getId();
+    });
+    // Pre-fill every description box with the generated text, so the walker only edits.
+    var pre = form.createResponse();
+    items.forEach(function (it) { pre.withItemResponse(it.desc.createResponse(defaultDescription_(it.r))); });
+    var url = pre.toPrefilledUrl();
+    rows.forEach(function (r) {
+      write_(p, l, r.wo_key, { form_id: form.getId(), form_url: url,
+        form_item_id: ids[r.wo_key], form_sent_at: iso_(new Date()) });
     });
     var to = first.uploader_email || p.FALLBACK_TO;
     send_(to, 'Action needed: work orders from your ' + first.property + ' site visit',
-      'Please confirm which items need an AppFolio work order: ' + form.getPublishedUrl(),
+      'Please confirm which items need an AppFolio work order, and edit the descriptions if needed: ' + url,
       '<p>Please confirm which items from your <b>' + first.property + '</b> site visit (' + first.visit_name +
-      ') need an AppFolio work order.</p><p><a href="' + form.getPublishedUrl() + '">Open the form</a> — ' +
-      rows.length + ' item(s).</p>');
+      ') need an AppFolio work order. Each description is pre-filled - edit it to refine the directions.</p>' +
+      '<p><a href="' + url + '">Open the form</a> - ' + rows.length + ' item(s).</p>');
   });
 }
 
@@ -195,6 +214,7 @@ function collectResponses_() {
       if (!choice) return;
       var ref = (answers[ids[1]] || '').trim();
       var c = { decided_by: resp.getRespondentEmail(), decided_at: iso_(resp.getTimestamp()), existing_ref: ref };
+      if (ids[2]) c.walker_description = (answers[ids[2]] || '').trim().slice(0, 1800);
       if (choice === CHOICE_ONE) { c.decision = 'CREATE_ONE'; c.status = 'APPROVED'; }
       else if (choice === CHOICE_SPLIT) { c.decision = 'SPLIT'; c.status = 'APPROVED'; }
       else if (choice === CHOICE_EXISTS) {
@@ -206,6 +226,31 @@ function collectResponses_() {
       write_(p, l, r.wo_key, c);
     });
   });
+}
+
+/** The text pre-filled in the description box (mirrors work_order_plan.job_description). */
+function defaultDescription_(r) {
+  return [r.location ? 'Location: ' + r.location : '',
+          r.issue_summary ? 'Issue: ' + r.issue_summary : '',
+          r.recommended_action ? 'Recommended: ' + r.recommended_action : ''].filter(String).join('\n');
+}
+
+/**
+ * Run by hand: forget the form on every row that is still unanswered, so the next
+ * `hourly` sends a fresh form (e.g. after a form change). Answered rows are untouched.
+ */
+function resetUnansweredForms() {
+  var p = props_();
+  var l = ledger_(p);
+  var n = 0;
+  l.rows.forEach(function (r) {
+    if (r.status === 'PENDING_REVIEW' && r.form_id && !r.decision) {
+      write_(p, l, r.wo_key, { form_id: '', form_url: '', form_item_id: '', form_sent_at: '',
+        reminder_sent_at: '', escalated_at: '' });
+      n++;
+    }
+  });
+  Logger.log('reset ' + n + ' unanswered row(s); run hourly to send fresh forms');
 }
 
 function remindAndEscalate_() {
