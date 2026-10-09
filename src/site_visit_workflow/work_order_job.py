@@ -124,7 +124,9 @@ def cmd_wo_candidates(args: Any) -> dict[str, Any]:
     cutover = (os.environ.get("WORK_ORDERS_CUTOVER") or "").strip()
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", cutover):
         raise ValidationError("wo-candidates requires WORK_ORDERS_CUTOVER=YYYY-MM-DD (visits before it never get forms).")
-    candidates = [c for c in wp.select_candidates(catalog, cutover)
+    if args.ignore_cutover and not args.visit_id:
+        raise ValidationError("--ignore-cutover is a test option and requires --visit-id.")
+    candidates = [c for c in wp.select_candidates(catalog, "" if args.ignore_cutover else cutover)
                   if c["source_asset_identifier"] not in claimed
                   and (not args.visit_id or c["visit_drive_id"] in args.visit_id)]
     client = build_client(settings) if candidates else None
@@ -136,13 +138,16 @@ def cmd_wo_candidates(args: Any) -> dict[str, Any]:
     for visit_id, clips in by_visit.items():
         groups, how = propose_groups(settings, client, Path(args.prompts_dir), clips)
         rows = wp.new_ledger_rows(clips, groups, existing, wp.now_iso())
+        if args.send_to:
+            # Test option: the form goes to this address instead of the uploader.
+            rows = [{**r, "uploader_email": args.send_to.strip()} for r in rows]
         existing |= {r["wo_key"] for r in rows}
         new_rows += rows
         visits.append({"visit_drive_id": visit_id, "clips": len(clips), "groups": len(groups),
                        "grouping": how, "new_rows": len(rows)})
     if not args.dry_run:
         append_ledger_rows(sheets, sheet_id, new_rows)
-    summary = {"gate": "wo-candidates", "dry_run": args.dry_run, "cutover": cutover, "catalog_rows": len(catalog),
+    summary = {"gate": "wo-candidates", "dry_run": args.dry_run, "cutover": cutover, "ignore_cutover": bool(args.ignore_cutover), "send_to": args.send_to or "", "catalog_rows": len(catalog),
                "ledger_rows_before": len(ledger), "candidates": len(candidates),
                "new_rows": len(new_rows), "visits": visits,
                "preview": [{k: r[k] for k in ("wo_key", "kind", "group_label", "priority", "clip_asset_ids")}

@@ -1322,6 +1322,8 @@ def parser() -> argparse.ArgumentParser:
     wo_cand.add_argument("--visit-id", action="append", default=[])
     wo_cand.add_argument("--prompts-dir", type=Path, default=Path("prompts"))
     wo_cand.add_argument("--dry-run", action="store_true", help="Print the rows; write nothing.")
+    wo_cand.add_argument("--ignore-cutover", action="store_true", help="TEST ONLY, needs --visit-id: include clips uploaded before WORK_ORDERS_CUTOVER.")
+    wo_cand.add_argument("--send-to", default="", help="TEST ONLY: send the form to this address instead of the uploader.")
     wo_cand.set_defaults(func=_wo("cmd_wo_candidates"))
 
     wo_run = commands.add_parser("wo-run", help="Plan (default) or create (--live) AppFolio work orders for approved rows.")
