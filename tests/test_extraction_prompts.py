@@ -137,7 +137,7 @@ def test_l2_prompt_separates_already_tracked_from_no_finding() -> None:
     from site_visit_workflow.extraction import L2_RESPONSE_SCHEMA, load_prompt_file
 
     prompt = load_prompt_file("L2", Path(__file__).resolve().parents[1] / "prompts")
-    assert prompt.version == "1.2.0"
+    assert prompt.version == "1.3.0"
     assert "ALREADY_TRACKED" in prompt.instruction_text
     assert "never a reason for\nNO_FINDING" in prompt.instruction_text
     assert "ALREADY_TRACKED" in L2_RESPONSE_SCHEMA["properties"]["enrichment_status"]["enum"]
@@ -200,3 +200,11 @@ def test_l3_recovers_from_repeated_record_id_mis_copies(monkeypatch: pytest.Monk
                                     "asset-1", l2_result, l2, l1, "There is a leak under the sink in unit 4B.")
     assert refinement.refinement_status == "REFINED"
     assert ex.L3_VALIDATION_ATTEMPTS == 4
+
+
+def test_l2_prompt_forbids_an_incomplete_enriched_record() -> None:
+    """l2 1.3.0: a field that cannot be chosen means INSUFFICIENT_EVIDENCE, not a null."""
+    from site_visit_workflow.extraction import load_prompt_file
+
+    prompt = load_prompt_file("L2", Path(__file__).resolve().parents[1] / "prompts")
+    assert "Never return\nENRICHED with a null field" in prompt.instruction_text

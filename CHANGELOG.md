@@ -10,6 +10,15 @@ this file is not rewritten.
 
 ## [Unreleased]
 
+### Changed (2026-10-09) — L2 1.3.0; L2/L3 retries
+
+- L2 prompt 1.3.0: ENRICHED needs all four fields; if trade, area_type or severity
+  cannot be chosen, the status is INSUFFICIENT_EVIDENCE (a Teak clip returned ENRICHED
+  with a null area_type four times running).
+- L2 and L3 retry up to 4 attempts on validation failure; report-path Drive/Docs
+  reads retry transient network errors; the catalog grid is widened before new
+  header columns are written.
+
 ### Added (2026-10-08) — AppFolio work orders via walker confirmation (ADR 0015)
 
 - `appfolio.py`: v0 Database API client (port of `_dev/warehouse/scripts/afv0.py`),
