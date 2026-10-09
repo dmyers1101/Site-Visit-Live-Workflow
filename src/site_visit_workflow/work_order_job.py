@@ -198,7 +198,12 @@ def cmd_wo_run(args: Any) -> dict[str, Any]:
         return {"status": status}
     sheets = sheets_service(settings)
     ledger = read_sheet_records(sheets, sheet_id, wp.LEDGER_TAB)
-    mapping = wp.load_mapping(read_sheet_records(sheets, sheet_id, wp.MAPPING_TAB))
+    map_rows = read_sheet_records(sheets, sheet_id, wp.MAPPING_TAB)
+    mapping = wp.load_mapping(map_rows)
+    map_stats = {"rows": len(map_rows),
+                 "reviewed_yes": sum((r.get("reviewed") or "").strip().upper() == "YES" for r in map_rows),
+                 "usable_entries": {k: len(v) for k, v in mapping.items()},
+                 "headers_ok": bool(map_rows) and all(h in map_rows[0] for h in wp.MAPPING_HEADERS)}
     af = AppFolioClient(load_credentials())  # pre-flight: creds present
 
     verified = _verify_existing(af, sheets, sheet_id, ledger, live)
@@ -260,7 +265,7 @@ def cmd_wo_run(args: Any) -> dict[str, Any]:
                 "appfolio_links": wp.SEP.join(p[2] for p in parts),
                 "last_error": "" if len(parts) == expected else f"{len(parts)}/{expected} parts created"})
     summary = {"gate": "wo-run", "run_id": run_id, "live": live, "plan_uri": plan_uri,
-               "planned_creates": len(plan.creates), "blocked": len(plan.blocked),
+               "mapping": map_stats, "planned_creates": len(plan.creates), "blocked": len(plan.blocked),
                "exists_checked": len(verified), "invariant_problems": problems, "stopped": stop,
                "results": results, "appfolio_calls": af.call_count,
                "dry_run_payloads": [] if live else [c.body for c in plan.creates[:10]]}
